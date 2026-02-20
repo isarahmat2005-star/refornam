@@ -88,7 +88,7 @@
         }
         .btn-tab.active { color: white !important; background: var(--primary); border-color: var(--primary); box-shadow: 0 3px 0 rgba(0,0,0,0.2); transform: translateY(-2px); }
 
-        #tabContent { min-height: 200px; } /* Mencegah loncatan konten */
+        #tabContent { min-height: 200px; }
 
         .input-group { margin-bottom: 10px; }
         .label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
@@ -270,13 +270,39 @@
     }
 
     async function selectOutputFolder() { 
-        try { outputDirHandle = await window.showDirectoryPicker(); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Output folder set."); validateStar(); } 
-        catch (e) {} 
+        try { 
+            outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); 
+            document.getElementById('outputPath').innerText = outputDirHandle.name; 
+            addLog(`Output folder set to: ${outputDirHandle.name}`); 
+            validateStar(); 
+        } 
+        catch (e) { addLog("Folder selection canceled or permission denied."); } 
     }
 
     function addLog(m) { const p = document.getElementById('logPanel'); const t = new Date().toLocaleTimeString(); p.innerHTML += `<div class="log-entry"><span>[${t}]</span> ${m}</div>`; p.scrollTop = p.scrollHeight; }
     function clearLogs() { document.getElementById('logPanel').innerHTML = ''; }
     function copyLogs() { navigator.clipboard.writeText(Array.from(document.querySelectorAll('.log-entry')).map(e=>e.innerText).join('\n')).then(()=>alert("Logs copied!")); }
+
+    function generateNewName(file) {
+        const originalExt = file.name.substring(file.name.lastIndexOf('.'));
+        if(currentTab === 'name') {
+            const n = parseInt(document.getElementById('numCount').value || 0), c = parseInt(document.getElementById('charCount').value || 0);
+            const nums = "0123456789", chars = "abcdefghijklmnopqrstuvwxyz";
+            let res = "";
+            for(let k=0; k<n; k++) res += nums[Math.floor(Math.random()*10)];
+            for(let k=0; k<c; k++) res += chars[Math.floor(Math.random()*26)];
+            let shuf = res.split('').sort(() => 0.5 - Math.random()).join('');
+            return (shuf.match(/.{1,5}/g) || [shuf]).join('-') + originalExt;
+        } else {
+            const sExt = document.getElementById('formatStart').value;
+            let eExt = document.getElementById('formatEnd').value;
+            if(!eExt.startsWith('.')) eExt = '.' + eExt;
+            if(sExt.includes("--") || file.name.toLowerCase().endsWith(sExt.toLowerCase())) {
+                return file.name.substring(0, file.name.lastIndexOf('.')) + eExt;
+            }
+            return file.name;
+        }
+    }
 
     async function startProcess() {
         isStopped = false; isPaused = false; currentIndex = 0;
@@ -290,27 +316,21 @@
             while(isPaused) await new Promise(r => setTimeout(r, 500));
             
             const file = inputFiles[currentIndex];
-            let name = file.name;
-            const originalExt = file.name.substring(file.name.lastIndexOf('.'));
+            const name = generateNewName(file);
 
-            if(currentTab === 'name') {
-                const n = parseInt(document.getElementById('numCount').value || 0), c = parseInt(document.getElementById('charCount').value || 0);
-                const nums = "0123456789", chars = "abcdefghijklmnopqrstuvwxyz";
-                let res = "";
-                for(let k=0; k<n; k++) res += nums[Math.floor(Math.random()*10)];
-                for(let k=0; k<c; k++) res += chars[Math.floor(Math.random()*26)];
-                let shuf = res.split('').sort(() => 0.5 - Math.random()).join('');
-                name = (shuf.match(/.{1,5}/g) || [shuf]).join('-') + originalExt;
-            } else {
-                const sExt = document.getElementById('formatStart').value;
-                let eExt = document.getElementById('formatEnd').value;
-                if(!eExt.startsWith('.')) eExt = '.' + eExt; // Pastikan ada titik
-                
-                if(sExt.includes("--") || file.name.toLowerCase().endsWith(sExt.toLowerCase())) {
-                    name = file.name.substring(0, file.name.lastIndexOf('.')) + eExt;
+            if(outputDirHandle) {
+                try {
+                    const fileHandle = await outputDirHandle.getFileHandle(name, { create: true });
+                    const writable = await fileHandle.createWritable();
+                    await writable.write(file);
+                    await writable.close();
+                    addLog(`Saved to Folder: ${name}`);
+                } catch (e) {
+                    addLog(`Error saving ${file.name}: ${e.message}`);
                 }
+            } else {
+                addLog(`Staged for ZIP: ${name}`);
             }
-            addLog(`Processed: ${name}`);
         }
         addLog("--- PROCESS COMPLETE ---");
         document.getElementById('btnZipExport').disabled = false;
@@ -337,11 +357,19 @@
         const def = currentTab === 'format' ? "REFORNAM_Format.zip" : "REFORNAM_Name.zip";
         const final = custom ? (custom.endsWith('.zip') ? custom : custom + '.zip') : def;
         addLog(`Bundling ZIP: ${final}...`);
+        
         const zip = new JSZip();
-        for(const f of inputFiles) { zip.file(f.name, f); }
+        for(const f of inputFiles) {
+            const name = generateNewName(f);
+            zip.file(name, f);
+        }
+        
         const b = await zip.generateAsync({type:"blob", compression:"STORE"});
-        const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = final; a.click();
-        addLog("ZIP Exported.");
+        const a = document.createElement('a'); 
+        a.href = URL.createObjectURL(b); 
+        a.download = final; 
+        a.click();
+        addLog("ZIP Exported Successfully.");
     }
 
     renderConfig();
