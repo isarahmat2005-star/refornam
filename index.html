@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         :root {
-            --primary: #2563eb;
+            --primary: #2563eb; /* Default Light Blue */
             --success: #22c55e;
             --bg-body: #f0f2f5;
             --card-bg: #ffffff;
@@ -24,11 +24,11 @@
             --grid-color: rgba(37, 99, 235, 0.1);
         }
 
-        /* --- Theme Definitions --- */
-        body.theme-luxury { --primary: #d4af37; --bg-body: #1a1a1a; --card-bg: #2a2a2a; --text: #f1f1f1; --border: #444; --input-bg: #111; --path-bg: #111; --path-text: #d4af37; --grid-color: rgba(212, 175, 55, 0.05); }
-        body.theme-midnight { --primary: #1e3a8a; --bg-body: #020617; --card-bg: #0f172a; --text: #f8fafc; --border: #1e293b; --input-bg: #020617; --path-bg: #020617; --path-text: #38bdf8; --grid-color: rgba(56, 189, 248, 0.03); }
-        body.theme-cyber { --primary: #f0abfc; --bg-body: #2e1065; --card-bg: #4c1d95; --text: #fdf4ff; --border: #701a75; --input-bg: #2e1065; --path-bg: #2e1065; --path-text: #fb7185; --grid-color: rgba(240, 171, 252, 0.1); }
-        body.theme-forest { --primary: #10b981; --bg-body: #064e3b; --card-bg: #065f46; --text: #ecfdf5; --border: #047857; --input-bg: #064e3b; --path-bg: #064e3b; --path-text: #34d399; --grid-color: rgba(16, 185, 129, 0.05); }
+        /* Daftar Tema Sesuai Pilihan */
+        .theme-luxury-gold { --primary: #d4af37; --grid-color: rgba(212, 175, 55, 0.1); }
+        .theme-cyberpunk { --primary: #fcee0a; --bg-body: #000; --card-bg: #111; --text: #fcee0a; --border: #fcee0a; --grid-color: rgba(252, 238, 10, 0.1); }
+        .theme-midnight-blue { --primary: #1e3a8a; --bg-body: #0f172a; --card-bg: #1e293b; --text: #f1f5f9; --border: #334155; }
+        .theme-dracula { --primary: #bd93f9; --bg-body: #282a36; --card-bg: #44475a; --text: #f8f8f2; --border: #6272a4; }
 
         body {
             font-family: 'Share Tech', sans-serif;
@@ -36,88 +36,92 @@
             background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
             background-size: 20px 20px;
             color: var(--text);
-            display: flex; justify-content: center; align-items: center;
-            height: 100vh; margin: 0; transition: all 0.3s ease; overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: all 0.3s ease;
+            overflow: hidden;
         }
 
         .container {
             background-color: var(--card-bg);
-            width: 100%; max-width: 600px; height: 600px;
-            padding: 25px; border-radius: 12px; border: 2px solid var(--border);
+            width: 100%;
+            max-width: 600px;
+            height: 600px;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid var(--border);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            display: flex; flex-direction: column; box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            position: relative;
         }
 
         .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .nav-actions { display: flex; gap: 10px; align-items: center; }
-
+        .action-icons { display: flex; gap: 10px; align-items: center; }
         h1 { color: var(--primary); text-transform: uppercase; margin: 0; letter-spacing: 2px; font-size: 20px; }
 
-        .btn-nav-icon {
-            background: var(--primary); color: white !important; border: none; width: 35px; height: 35px;
-            border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 3px 0 rgba(0,0,0,0.2); transition: 0.1s;
-        }
-        .btn-nav-icon.coffee { background: #6f4e37; }
-        .btn-nav-icon:active { transform: translateY(2px); box-shadow: none; }
-
-        .tab-container { position: relative; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; }
-        .tab-buttons { display: flex; gap: 15px; background: var(--card-bg); padding: 0 10px; z-index: 1; }
         .btn-tab {
-            background: var(--input-bg); border: 1px solid var(--border); font-family: 'Share Tech', sans-serif;
-            font-size: 14px; font-weight: bold; color: var(--text); cursor: pointer; padding: 10px 20px;
-            border-radius: 6px; box-shadow: 0 3px 0 var(--border); transition: 0.1s;
+            background: var(--input-bg); border: 1px solid var(--border); font-family: 'Share Tech';
+            font-size: 14px; font-weight: bold; color: var(--text);
+            cursor: pointer; padding: 10px 20px; border-radius: 6px;
+            box-shadow: 0 3px 0 var(--border); transition: 0.1s;
         }
-        .btn-tab.active { color: white; background: var(--primary); border-color: var(--primary); box-shadow: 0 3px 0 rgba(0,0,0,0.3); transform: translateY(-2px); }
+        .btn-tab.active { color: white; background: var(--primary); border-color: var(--primary); box-shadow: 0 3px 0 #00000033; transform: translateY(-2px); }
+
+        .nav-btn {
+            background: var(--primary); color: white; border: none;
+            width: 35px; height: 35px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 3px 0 #00000033;
+        }
+        .coffee-btn-top { background: #6f4e37; }
 
         .path-display {
-            flex-grow: 1; background: var(--path-bg); border: 1px solid var(--border); padding: 8px 12px;
-            font-size: 13px; color: var(--path-text); overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+            flex-grow: 1; background: var(--path-bg); border: 1px solid var(--border); 
+            padding: 8px 12px; font-size: 13px; color: var(--path-text);
+            overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
             border-radius: 8px; display: flex; align-items: center; height: 38px; box-sizing: border-box;
         }
 
         .btn-browse {
-            background: var(--primary); color: white; border: none; padding: 0 20px; cursor: pointer;
-            border-radius: 8px; font-weight: bold; font-size: 14px; height: 38px; box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            background: var(--primary); color: white; border: none; padding: 0 20px; 
+            cursor: pointer; border-radius: 8px; font-weight: bold; font-size: 14px; height: 38px;
+            box-shadow: 0 4px 0 #00000033; position: relative;
         }
+        .btn-browse:active { top: 2px; box-shadow: 0 2px 0 #00000033; }
 
         .input-field {
-            width: 100%; background: var(--input-bg); border: 1px solid var(--border); padding: 8px;
-            color: var(--text); font-family: 'Share Tech', sans-serif; border-radius: 8px; font-size: 14px; height: 36px; box-sizing: border-box;
+            width: 100%; background: var(--input-bg); border: 1px solid var(--border); 
+            padding: 8px; color: var(--text); font-family: 'Share Tech';
+            border-radius: 8px; font-size: 14px; height: 36px; box-sizing: border-box;
         }
 
-        /* --- Action Bars --- */
-        .action-bars { display: flex; gap: 10px; margin-top: 5px; margin-bottom: 10px; }
         .btn-main { 
-            flex: 1; border: none; padding: 12px 0; cursor: pointer; 
-            font-family: 'Share Tech', sans-serif; font-weight: bold; 
-            text-transform: uppercase; border-radius: 8px; font-size: 15px; position: relative;
+            flex: 1; border: none; padding: 14px 0; cursor: pointer; font-family: 'Share Tech'; 
+            font-weight: bold; text-transform: uppercase; border-radius: 8px; font-size: 14px; position: relative;
         }
-        .start { background: var(--primary); color: white; box-shadow: 0 4px 0 rgba(0,0,0,0.2); }
+        .start { background: var(--primary); color: white; box-shadow: 0 4px 0 #00000033; }
         .pause { background: #f59e0b; color: white; box-shadow: 0 4px 0 #b45309; }
         .stop { background: #ef4444; color: white; box-shadow: 0 4px 0 #b91c1c; }
         .zip-btn { background: var(--success); color: white; box-shadow: 0 4px 0 #15803d; }
         .btn-main:active:not(:disabled) { top: 2px; box-shadow: 0 2px 0 currentColor; }
         .btn-main:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; }
 
-        .log-panel {
-            background: var(--log-bg); border: 1px solid var(--border); flex-grow: 1; padding: 10px;
-            overflow-y: auto; font-size: 11px; color: var(--log-text); border-radius: 8px;
+        /* Area Modal Theme */
+        #themeMenu {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; border: 2px solid var(--border); border-radius: 12px;
+            width: 250px; z-index: 1000; box-shadow: 0 0 50px rgba(0,0,0,0.5);
         }
-        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
+        .theme-item { padding: 12px; border-bottom: 1px solid #eee; cursor: pointer; color: #333; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .theme-item:hover { background: #f5f5f5; }
 
-        /* Theme Modal */
-        #themeModal {
-            display: none; position: absolute; top: 50px; right: 25px; width: 200px;
-            background: var(--card-bg); border: 2px solid var(--primary); border-radius: 8px;
-            z-index: 100; box-shadow: 0 5px 20px rgba(0,0,0,0.3); padding: 10px;
-        }
-        .theme-opt {
-            padding: 8px; cursor: pointer; font-size: 12px; border-bottom: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .theme-opt:last-child { border: none; }
-        .theme-opt:hover { background: var(--primary); color: white; }
+        .log-panel { background: var(--log-bg); border: 1px solid var(--border); flex-grow: 1; padding: 10px; overflow-y: auto; font-size: 11px; color: var(--log-text); border-radius: 8px; }
+        .btn-mode { background: none; border: none; color: var(--primary); cursor: pointer; text-decoration: underline; font-size: 11px; font-family: 'Share Tech'; }
     </style>
 </head>
 <body class="theme-light">
@@ -125,25 +129,26 @@
 <div class="container">
     <div class="top-nav">
         <h1>REFORNAM</h1>
-        <div class="nav-actions">
-            <a href="https://lynk.id/isaproject/0581ez0729vx" target="_blank" class="btn-nav-icon coffee">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+        <div class="action-icons">
+            <a href="https://lynk.id/isaproject/0581ez0729vx" target="_blank" class="nav-btn coffee-btn-top">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
             </a>
-            <button class="btn-nav-icon" onclick="toggleThemeMenu()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <button class="nav-btn" onclick="openThemeMenu()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
             </button>
         </div>
     </div>
 
-    <div id="themeModal">
-        <div class="theme-opt" onclick="setTheme('light')">LIGHT CLEAN <span>⚪</span></div>
-        <div class="theme-opt" onclick="setTheme('luxury')">LUXURY GOLD <span>🟡</span></div>
-        <div class="theme-opt" onclick="setTheme('midnight')">MIDNIGHT BLUE <span>🔵</span></div>
-        <div class="theme-opt" onclick="setTheme('cyber')">CYBERPUNK <span>🟣</span></div>
-        <div class="theme-opt" onclick="setTheme('forest')">DEEP FOREST <span>🟢</span></div>
+    <div id="themeMenu">
+        <div class="theme-item" onclick="applyTheme('default')">LIGHT CLEAN (DEFAULT) <span>○</span></div>
+        <div class="theme-item" onclick="applyTheme('luxury-gold')">LUXURY GOLD <span>○</span></div>
+        <div class="theme-item" onclick="applyTheme('cyberpunk')">CYBERPUNK <span>○</span></div>
+        <div class="theme-item" onclick="applyTheme('midnight-blue')">MIDNIGHT BLUE <span>○</span></div>
+        <div class="theme-item" onclick="applyTheme('dracula')">DRACULA <span>○</span></div>
     </div>
 
     <div class="tab-container">
+        <div class="tab-line"></div>
         <div class="tab-buttons">
             <button class="btn-tab active" id="tabFormat" onclick="switchTab('format')">FORMAT</button>
             <button class="btn-tab" id="tabName" onclick="switchTab('name')">NAME</button>
@@ -151,60 +156,49 @@
     </div>
     
     <div id="tabContent">
-        <div style="margin-bottom:10px">
+        <div class="input-group">
             <label>Input Folder</label>
-            <div style="display:flex; gap:8px">
+            <div class="explorer-bar">
                 <div id="inputPath" class="path-display">Pilih folder sumber...</div>
                 <button class="btn-browse" onclick="document.getElementById('folderInput').click()">UPLOAD</button>
                 <input type="file" id="folderInput" webkitdirectory directory multiple style="display:none" onchange="handleFolderSelect(event)">
             </div>
         </div>
-        <div style="margin-bottom:10px">
-            <label>Output Folder (opsional)</label>
-            <div style="display:flex; gap:8px">
-                <div id="outputPath" class="path-display">Pilih folder tujuan...</div>
-                <button class="btn-browse" onclick="selectOutputFolder()">UPLOAD</button>
-            </div>
-        </div>
-        <div id="configGrid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:10px"></div>
+        <div class="config-grid" id="configGrid"></div>
     </div>
 
-    <div style="margin-bottom:10px">
+    <div class="input-group" style="margin-top: 10px;">
         <label>Custom Filename (ZIP)</label>
         <input type="text" id="zipName" class="input-field" placeholder="">
     </div>
 
-    <div class="action-bars">
+    <div class="action-bars" style="display: flex; gap: 10px; margin-bottom: 10px;">
         <button id="btnStart" class="btn-main start" onclick="startProcess()" disabled>START</button>
         <button id="btnPause" class="btn-main pause" onclick="pauseProcess()" disabled>PAUSE</button>
         <button id="btnStop" class="btn-main stop" onclick="stopProcess()" disabled>STOP</button>
         <button id="btnZipExport" class="btn-main zip-btn" onclick="exportToZip()" disabled>ZIP</button>
     </div>
 
-    <div class="log-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px">
-        <label style="font-size:13px; font-weight:bold; color:var(--primary)">Activity Log</label>
-        <div style="display:flex; gap:10px">
-            <button onclick="copyLogs()" style="background:none; border:none; color:var(--primary); cursor:pointer; text-decoration:underline; font-size:11px">COPY</button>
-            <button onclick="clearLogs()" style="background:none; border:none; color:var(--primary); cursor:pointer; text-decoration:underline; font-size:11px">CLEAR</button>
+    <div class="log-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+        <label style="font-size: 13px; color: var(--primary); font-weight: bold;">Activity Log</label>
+        <div style="display: flex; gap: 10px;">
+            <button onclick="copyLogs()" class="btn-mode">COPY LOGS</button>
+            <button onclick="clearLogs()" class="btn-mode">CLEAR LOGS</button>
         </div>
     </div>
     <div id="logPanel" class="log-panel"><div class="log-entry">System ready...</div></div>
 </div>
 
 <script>
-    let inputFiles = [], outputDirHandle = null, isPaused = false, isStopped = false, currentIndex = 0;
+    let inputFiles = [], isPaused = false, isStopped = false, currentIndex = 0;
     let currentTab = 'format', isManualA = false, isManualB = false;
-    const formats = ["--", ".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx"];
+    const formats = ["-- (opsional)", ".jpg", ".png", ".pdf", ".mp4", ".mp3", ".txt"];
 
-    function setTheme(t) {
-        document.body.className = 'theme-' + t;
-        document.getElementById('themeModal').style.display = 'none';
-        addLog(`Theme changed to: ${t.toUpperCase()}`);
-    }
-
-    function toggleThemeMenu() {
-        const m = document.getElementById('themeModal');
-        m.style.display = m.style.display === 'block' ? 'none' : 'block';
+    function openThemeMenu() { document.getElementById('themeMenu').style.display = 'block'; }
+    function applyTheme(theme) {
+        document.body.className = 'theme-' + theme;
+        document.getElementById('themeMenu').style.display = 'none';
+        addLog(`Theme applied: ${theme.toUpperCase()}`);
     }
 
     function renderConfig() {
@@ -212,80 +206,78 @@
         const zipField = document.getElementById('zipName');
         if (currentTab === 'name') {
             grid.innerHTML = `<div><label>Jumlah Angka</label><input type="number" id="numCount" class="input-field" placeholder="0" oninput="validateStar()"></div>
-                             <div><label>Jumlah Huruf</label><input type="number" id="charCount" class="input-field" placeholder="0" oninput="validateStar()"></div>`;
+                              <div><label>Jumlah Huruf</label><input type="number" id="charCount" class="input-field" placeholder="0" oninput="validateStar()"></div>`;
             zipField.placeholder = "REFORNAM_Name.zip";
         } else {
-            grid.innerHTML = `<div><label>Format Awal</label><select id="formatStart" class="input-field" onchange="validateStar()">${formats.map(f => `<option value="${f}">${f}</option>`).join('')}</select></div>
-                             <div><label>Format Tujuan</label><select id="formatEnd" class="input-field" onchange="validateStar()">${formats.map(f => `<option value="${f}">${f}</option>`).join('')}</select></div>`;
+            const btnA = `<button class="btn-mode" onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'List' : 'Manual'}</button>`;
+            const btnB = `<button class="btn-mode" onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'List' : 'Manual'}</button>`;
+            const inA = isManualA ? `<input type="text" id="formatStart" class="input-field" placeholder=".ext" oninput="validateStar()">` : `<select id="formatStart" class="input-field" onchange="validateStar()">${formats.map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
+            const inB = isManualB ? `<input type="text" id="formatEnd" class="input-field" placeholder=".ext" oninput="validateStar()">` : `<select id="formatEnd" class="input-field" onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
+            grid.innerHTML = `<div><div class="label-row"><label>Format Awal</label>${btnA}</div>${inA}</div>
+                              <div><div class="label-row"><label>Format Tujuan</label>${btnB}</div>${inB}</div>`;
             zipField.placeholder = "REFORNAM_Format.zip";
         }
         validateStar();
     }
 
-    function switchTab(t) { 
-        currentTab = t; 
-        document.getElementById('tabFormat').classList.toggle('active', t==='format'); 
-        document.getElementById('tabName').classList.toggle('active', t==='name'); 
-        renderConfig(); 
-        addLog(`Tab: ${t.toUpperCase()}`); 
-    }
+    function toggleMode(t, v) { if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); }
+    function switchTab(t) { currentTab = t; document.getElementById('tabFormat').classList.toggle('active', t==='format'); document.getElementById('tabName').classList.toggle('active', t==='name'); renderConfig(); addLog(`Switched to ${t.toUpperCase()}`); }
     
     function validateStar() {
         const btn = document.getElementById('btnStart');
         if (inputFiles.length === 0) { btn.disabled = true; return; }
         if (currentTab === 'name') btn.disabled = !(document.getElementById('numCount')?.value || document.getElementById('charCount')?.value);
-        else btn.disabled = !(document.getElementById('formatEnd')?.value && document.getElementById('formatEnd').value !== "--");
+        else { const b = document.getElementById('formatEnd')?.value; btn.disabled = (!b || b === "--"); }
     }
 
     function handleFolderSelect(e) { 
         inputFiles = Array.from(e.target.files); 
         if(inputFiles.length > 0) { 
-            document.getElementById('inputPath').innerText = inputFiles[0].webkitRelativePath.split('/')[0]; 
-            validateStar(); 
+            const folder = inputFiles[0].webkitRelativePath.split('/')[0];
+            document.getElementById('inputPath').innerText = folder; 
+            addLog(`Input detected: ${inputFiles.length} files`); validateStar(); 
         } 
     }
 
-    async function selectOutputFolder() { 
-        try { outputDirHandle = await window.showDirectoryPicker(); document.getElementById('outputPath').innerText = outputDirHandle.name; validateStar(); } catch (e) {} 
-    }
-
-    function addLog(m) { 
-        const p = document.getElementById('logPanel'); 
-        p.innerHTML += `<div class="log-entry"><span>[${new Date().toLocaleTimeString()}]</span> ${m}</div>`; 
-        p.scrollTop = p.scrollHeight; 
-    }
-
+    function addLog(m) { const p = document.getElementById('logPanel'); const t = new Date().toLocaleTimeString(); p.innerHTML += `<div class="log-entry"><span>[${t}]</span> ${m}</div>`; p.scrollTop = p.scrollHeight; }
     function clearLogs() { document.getElementById('logPanel').innerHTML = ''; }
-    function copyLogs() { navigator.clipboard.writeText(Array.from(document.querySelectorAll('.log-entry')).map(e=>e.innerText).join('\n')); alert("Copied!"); }
+    function copyLogs() { navigator.clipboard.writeText(Array.from(document.querySelectorAll('.log-entry')).map(e=>e.innerText).join('\n')).then(()=>alert("Logs copied!")); }
 
     async function startProcess() {
         isStopped = false; isPaused = false;
         document.getElementById('btnStart').disabled = true;
         document.getElementById('btnPause').disabled = false;
         document.getElementById('btnStop').disabled = false;
-        addLog("--- RUNNING ---");
+        addLog("--- PROCESS STARTED ---");
         for(let i=0; i<inputFiles.length; i++) {
             if(isStopped) break;
-            while(isPaused) await new Promise(r => setTimeout(r, 500));
-            addLog(`Renaming: ${inputFiles[i].name}...`);
-            await new Promise(r => setTimeout(r, 100));
+            while(isPaused) { await new Promise(r => setTimeout(r, 500)); }
+            addLog(`Renaming: ${inputFiles[i].name}`);
+            await new Promise(r => setTimeout(r, 100)); // Simulasi kecepatan
         }
-        addLog("--- FINISHED ---");
+        addLog("--- PROCESS COMPLETE ---");
         document.getElementById('btnZipExport').disabled = false;
     }
 
     function pauseProcess() { 
         isPaused = !isPaused; 
         document.getElementById('btnPause').innerText = isPaused ? "RESUME" : "PAUSE";
-        addLog(isPaused ? "Process Paused." : "Process Resumed.");
+        addLog(isPaused ? "[SYSTEM PAUSED]" : "[SYSTEM RESUMED]"); 
     }
+    
+    function stopProcess() { isStopped = true; addLog("[SYSTEM ABORTED BY USER]"); resetUI(); }
+    function resetUI() { document.getElementById('btnStart').disabled = false; document.getElementById('btnPause').disabled = true; document.getElementById('btnStop').disabled = true; }
 
-    function stopProcess() { 
-        isStopped = true; 
-        addLog("Process Stopped by User.");
-        document.getElementById('btnStart').disabled = false; 
-        document.getElementById('btnPause').disabled = true; 
-        document.getElementById('btnStop').disabled = true; 
+    async function exportToZip() {
+        const custom = document.getElementById('zipName').value.trim();
+        const def = currentTab === 'format' ? "REFORNAM_Format.zip" : "REFORNAM_Name.zip";
+        const finalName = custom ? (custom.endsWith('.zip') ? custom : custom + '.zip') : def;
+        addLog(`Preparing download: ${finalName}`);
+        const zip = new JSZip();
+        inputFiles.forEach(f => zip.file(f.name, f));
+        const blob = await zip.generateAsync({type:"blob", compression: "STORE"});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = finalName; a.click();
+        addLog("Download Triggered.");
     }
 
     renderConfig();
