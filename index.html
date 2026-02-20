@@ -6,19 +6,18 @@
     <title>REFORNAM by IRS</title>
     <link rel="icon" type="image/png" href="/gambar.png">
     <link rel="apple-touch-icon" href="/gambar.png">
-    
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         :root {
             --primary: #2563eb;
+            --success: #22c55e;
             --bg-body: #f0f2f5;
             --card-bg: #ffffff;
             --border: #d1d5db;
             --text: #1f2937;
-            --input-bg: #010409; /* Warna gelap sesuai gambar */
-            --path-text: #ffffff;
-            --log-bg: #000000;
+            --input-bg: #f9fafb;
+            --log-bg: #111827;
             --log-text: #60a5fa;
         }
 
@@ -27,7 +26,8 @@
             --card-bg: #161b22;
             --border: #30363d;
             --text: #c9d1d9;
-            --input-bg: #000000;
+            --input-bg: #010409;
+            --log-bg: #000000;
         }
 
         body {
@@ -56,6 +56,7 @@
             bottom: -100px;
             font-size: 24px;
             font-weight: bold;
+            user-select: none;
             animation: floatMath 12s infinite linear;
             opacity: 0;
         }
@@ -75,6 +76,7 @@
             padding: 25px;
             border-radius: 12px;
             border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             position: relative;
             display: flex;
             flex-direction: column;
@@ -104,6 +106,7 @@
             position: relative;
             display: flex;
             justify-content: center;
+            align-items: center;
             margin-bottom: 15px;
         }
 
@@ -112,7 +115,6 @@
             width: 100%;
             height: 1px;
             background: var(--border);
-            top: 50%;
             z-index: 0;
         }
 
@@ -124,111 +126,153 @@
             z-index: 1;
         }
 
+        /* Tombol Tab dengan desain kotakan */
         .btn-tab {
-            background: none;
-            border: none;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
             font-family: 'Share Tech', sans-serif;
             font-size: 14px;
             font-weight: bold;
             color: var(--text);
             cursor: pointer;
-            opacity: 0.5;
+            padding: 8px 15px;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 4px rgba(0,0,0,0.1);
+            transition: 0.2s;
         }
 
         .btn-tab.active {
-            color: var(--primary);
-            opacity: 1;
-            border-bottom: 2px solid var(--primary);
+            color: white;
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
+
+        .theme-toggle {
+            background: var(--primary);
+            color: white; border: none;
+            width: 35px; height: 35px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+
+        .icon-svg { width: 18px; height: 18px; fill: currentColor; }
+
+        #tabContent { min-height: 220px; }
 
         .input-group { margin-bottom: 12px; }
-        label { display: block; margin-bottom: 4px; font-size: 13px; color: var(--primary); font-weight: bold; }
-
-        /* Style Kolom Hitam Sesuai Gambar */
-        .explorer-bar { display: flex; gap: 8px; }
-        .path-display {
-            flex-grow: 1;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            padding: 12px 15px;
-            font-size: 14px;
-            color: var(--path-text);
-            border-radius: 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            min-height: 44px;
-            box-sizing: border-box;
-        }
-
-        .btn-browse {
-            background: var(--primary); color: white; border: none;
-            padding: 0 15px; cursor: pointer;
-            font-family: 'Share Tech', sans-serif;
-            border-radius: 8px; font-weight: bold; font-size: 11px;
-            height: 44px;
-        }
-
-        /* Fixed Area untuk Mencegah Layout Shift */
-        #dynamicArea {
-            height: 70px;
-            margin-bottom: 12px;
-        }
-
-        .config-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .input-field {
-            width: 100%; background: var(--input-bg);
-            border: 1px solid var(--border); padding: 10px;
-            color: white; font-family: 'Share Tech', sans-serif;
-            border-radius: 8px; font-size: 13px;
-            box-sizing: border-box;
-            height: 38px;
-        }
-
         .label-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 4px;
         }
+        label { font-size: 13px; color: var(--primary); font-weight: bold; }
 
-        .btn-mode {
-            background: none; border: none; color: var(--primary);
-            cursor: pointer; font-family: 'Share Tech', sans-serif;
-            font-size: 10px; text-decoration: underline;
+        .explorer-bar { display: flex; gap: 8px; }
+
+        /* Path Display format Hitam seperti gambar */
+        .path-display {
+            flex-grow: 1; 
+            background: #000;
+            border: 1px solid var(--border); 
+            padding: 8px 12px;
+            font-size: 14px; 
+            color: #fff;
+            overflow: hidden; 
+            white-space: nowrap; 
+            text-overflow: ellipsis;
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center;
+            height: 40px;
+            box-sizing: border-box;
+        }
+
+        /* Tombol 3D */
+        .btn-browse {
+            background: var(--primary); 
+            color: white; 
+            border: none;
+            padding: 8px 15px; 
+            cursor: pointer;
+            font-family: 'Share Tech', sans-serif;
+            border-radius: 8px; 
+            font-weight: bold; 
+            font-size: 11px;
+            height: 40px;
+            box-shadow: 0 4px 0 #1d4ed8, 0 5px 10px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .btn-browse:active {
+            top: 2px;
+            box-shadow: 0 2px 0 #1d4ed8, 0 3px 5px rgba(0,0,0,0.2);
+        }
+
+        .config-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 15px; margin-bottom: 12px;
+        }
+
+        .input-field {
+            width: 100%; background: var(--input-bg);
+            border: 1px solid var(--border); padding: 8px;
+            color: var(--text); font-family: 'Share Tech', sans-serif;
+            box-sizing: border-box; border-radius: 8px; font-size: 13px;
+            height: 34px;
         }
 
         .action-bars { display: flex; gap: 8px; margin-bottom: 12px; }
+
+        /* Tombol Utama 3D */
         .btn-main { 
-            flex: 1; border: none; padding: 12px 0; 
-            cursor: pointer; font-family: 'Share Tech', sans-serif; 
-            font-weight: bold; text-transform: uppercase; 
-            border-radius: 8px; font-size: 10px;
+            flex: 1; 
+            border: none; 
+            padding: 12px 0; 
+            cursor: pointer; 
+            font-family: 'Share Tech', sans-serif; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            border-radius: 8px; 
+            font-size: 12px;
+            position: relative;
+            transition: 0.1s;
         }
         
-        .start { background: var(--primary); color: white; }
-        .pause { background: #f59e0b; color: white; }
-        .stop { background: #ef4444; color: white; }
-        .zip-btn { background: #6366f1; color: white; }
-        .btn-main:disabled { opacity: 0.2; cursor: not-allowed; }
+        .start { background: var(--primary); color: white; box-shadow: 0 4px 0 #1d4ed8; }
+        .pause { background: #f59e0b; color: white; box-shadow: 0 4px 0 #b45309; }
+        .stop { background: #ef4444; color: white; box-shadow: 0 4px 0 #b91c1c; }
+        .zip-btn { background: var(--success); color: white; box-shadow: 0 4px 0 #15803d; }
+
+        .btn-main:active {
+            top: 2px;
+            box-shadow: 0 2px 0 currentColor;
+        }
+
+        .btn-main:disabled { opacity: 0.3; cursor: not-allowed; top: 0; box-shadow: none; }
+
+        .log-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .log-actions { display: flex; gap: 10px; }
+
+        .btn-clear, .btn-copy, .btn-mode {
+            background: none; border: none;
+            color: var(--primary); cursor: pointer;
+            font-family: 'Share Tech', sans-serif;
+            font-size: 11px; text-decoration: underline;
+            padding: 0;
+        }
 
         .log-panel {
             background: var(--log-bg); border: 1px solid var(--border);
             flex-grow: 1; padding: 10px; overflow-y: auto;
             font-size: 11px; color: var(--log-text); border-radius: 8px;
+            scroll-behavior: smooth;
         }
 
-        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        
-        .theme-toggle {
-            background: var(--primary); border: none; width: 35px; height: 35px; border-radius: 50%;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; color: white;
-        }
+        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
     </style>
 </head>
 <body>
@@ -237,21 +281,23 @@
 
 <div class="container">
     <div class="top-nav">
-        <h1>REFORNAM by IRS</h1>
+        <h1>REFORNAM</h1>
         <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
-            <svg id="themeIcon" style="width:18px;height:18px;fill:currentColor" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z"/></svg>
+            <svg id="themeIcon" class="icon-svg" viewBox="0 0 24 24">
+                <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-12.37a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"></path>
+            </svg>
         </button>
     </div>
 
     <div class="tab-container">
         <div class="tab-line"></div>
         <div class="tab-buttons">
-            <button id="tabFormat" class="btn-tab active" onclick="switchTab('format')">FORMAT</button>
-            <button id="tabName" class="btn-tab" onclick="switchTab('name')">NAME</button>
+            <button class="btn-tab active" id="tabFormat" onclick="switchTab('format')">FORMAT</button>
+            <button class="btn-tab" id="tabName" onclick="switchTab('name')">NAME</button>
         </div>
     </div>
     
-    <div id="mainInputs">
+    <div id="tabContent">
         <div class="input-group">
             <label>Input Folder</label>
             <div class="explorer-bar">
@@ -269,9 +315,7 @@
             </div>
         </div>
 
-        <div id="dynamicArea">
-            <div class="config-grid" id="configGrid"></div>
-        </div>
+        <div class="config-grid" id="configGrid"></div>
     </div>
 
     <div class="action-bars">
@@ -292,23 +336,28 @@
 </div>
 
 <script>
-    let inputFiles = [], outputDirHandle = null, isPaused = false, isStopped = false, currentIndex = 0;
-    let currentTab = 'format', manualStart = false, manualEnd = false;
-    const formats = [".jpg", ".png", ".mp4", ".pdf", ".mp3", ".txt"];
+    let inputFiles = [];
+    let outputDirHandle = null;
+    let isPaused = false, isStopped = false, currentIndex = 0;
+    let currentTab = 'format';
+    let isManualModeA = false;
+    let isManualModeB = false;
 
-    // Animasi
+    const fileFormats = [".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx", ".zip"];
+
     function createMathShapes() {
-        const anim = document.getElementById('bgAnim');
-        const syms = ['∑', '∞', 'π', '∆', '∫'];
-        const cols = ['#60a5fa', '#2563eb', '#1d4ed8'];
+        const animContainer = document.getElementById('bgAnim');
+        const symbols = ['∑', '∞', 'π', '∆', '∫', '√', '≈', 'μ'];
+        const colors = ['#60a5fa', '#2563eb', '#1d4ed8', '#93c5fd', '#3b82f6'];
         setInterval(() => {
-            const s = document.createElement('div');
-            s.className = 'math-shape';
-            s.innerText = syms[Math.floor(Math.random() * syms.length)];
-            s.style.left = Math.random() * 100 + '%';
-            s.style.color = cols[Math.floor(Math.random() * cols.length)];
-            anim.appendChild(s);
-            setTimeout(() => s.remove(), 12000);
+            const shape = document.createElement('div');
+            shape.className = 'math-shape';
+            shape.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            shape.style.left = `${Math.random() * 100}%`;
+            shape.style.color = colors[Math.floor(Math.random() * colors.length)];
+            shape.style.fontSize = `${15 + Math.random() * 20}px`;
+            animContainer.appendChild(shape);
+            setTimeout(() => shape.remove(), 12000);
         }, 800);
     }
     createMathShapes();
@@ -321,56 +370,77 @@
                 <div><label>Jumlah Huruf</label><input type="number" id="charCount" class="input-field" placeholder="0" oninput="validateStar()"></div>
             `;
         } else {
-            const btnA = `<button class="btn-mode" onclick="toggleMode('start')">${manualStart ? 'List' : 'Manual'}</button>`;
-            const btnB = `<button class="btn-mode" onclick="toggleMode('end')">${manualEnd ? 'List' : 'Manual'}</button>`;
-            const inputA = manualStart ? `<input type="text" id="fStart" class="input-field" placeholder=".ext" oninput="validateStar()">` : 
-                          `<select id="fStart" class="input-field" onchange="validateStar()">${formats.map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
-            const inputB = manualEnd ? `<input type="text" id="fEnd" class="input-field" placeholder=".ext" oninput="validateStar()">` : 
-                          `<select id="fEnd" class="input-field" onchange="validateStar()">${formats.map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
+            const btnA = isManualModeA ? `<button class="btn-mode" onclick="toggleMode('A', false)">List</button>` : `<button class="btn-mode" onclick="toggleMode('A', true)">Manual</button>`;
+            const btnB = isManualModeB ? `<button class="btn-mode" onclick="toggleMode('B', false)">List</button>` : `<button class="btn-mode" onclick="toggleMode('B', true)">Manual</button>`;
             
+            const inA = isManualModeA ? `<input type="text" id="formatStart" class="input-field" placeholder=".ext" oninput="validateStar()">` : 
+                `<select id="formatStart" class="input-field" onchange="validateStar()">${fileFormats.map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
+            
+            const inB = isManualModeB ? `<input type="text" id="formatEnd" class="input-field" placeholder=".ext" oninput="validateStar()">` : 
+                `<select id="formatEnd" class="input-field" onchange="validateStar()">${fileFormats.map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
+
             grid.innerHTML = `
-                <div><div class="label-row"><label>Format Awal</label>${btnA}</div>${inputA}</div>
-                <div><div class="label-row"><label>Format Tujuan</label>${btnB}</div>${inputB}</div>
+                <div><div class="label-row"><label>Format Awal</label>${btnA}</div>${inA}</div>
+                <div><div class="label-row"><label>Format Tujuan</label>${btnB}</div>${inB}</div>
             `;
         }
     }
 
-    function toggleMode(type) {
-        if(type === 'start') manualStart = !manualStart;
-        else manualEnd = !manualEnd;
+    function toggleMode(target, val) {
+        if(target === 'A') isManualModeA = val; else isManualModeB = val;
         renderConfig();
         validateStar();
     }
 
     function switchTab(tab) {
         currentTab = tab;
-        document.getElementById('tabFormat').classList.toggle('active', tab==='format');
-        document.getElementById('tabName').classList.toggle('active', tab==='name');
+        document.getElementById('tabFormat').classList.toggle('active', tab === 'format');
+        document.getElementById('tabName').classList.toggle('active', tab === 'name');
+        addLog(`Switched to tab: ${tab.toUpperCase()}`);
         renderConfig();
         validateStar();
     }
 
     function validateStar() {
         const btn = document.getElementById('btnStart');
-        if(inputFiles.length === 0) { btn.disabled = true; return; }
-        if(currentTab === 'name') {
-            btn.disabled = !(document.getElementById('numCount').value && document.getElementById('charCount').value);
+        if (inputFiles.length === 0) { btn.disabled = true; return; }
+        if (currentTab === 'name') {
+            btn.disabled = !(document.getElementById('numCount')?.value && document.getElementById('charCount')?.value);
         } else {
-            btn.disabled = !(document.getElementById('fStart').value && document.getElementById('fEnd').value);
+            btn.disabled = !(document.getElementById('formatStart')?.value && document.getElementById('formatEnd')?.value);
         }
     }
 
-    function addLog(msg) {
-        const panel = document.getElementById('logPanel');
-        panel.innerHTML += `<div class="log-entry">[${new Date().toLocaleTimeString()}] ${msg}</div>`;
-        panel.scrollTop = panel.scrollHeight;
+    function toggleTheme() {
+        const body = document.body;
+        const icon = document.getElementById('themeIcon');
+        body.classList.toggle('dark-mode');
+        const sun = `<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-12.37a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"></path>`;
+        const moon = `<path d="M12.12 22a9.91 9.91 0 01-5.1-1.39 10.12 10.12 0 01-3.73-3.73 9.71 9.71 0 01-1.29-5.1 9.85 9.85 0 011.2-4.73 10.29 10.29 0 013.3-3.6 10.18 10.18 0 014.86-1.35.8.8 0 01.76.53.81.81 0 01-.19.86 8.43 8.43 0 00-2.4 6.09A8.47 8.47 0 0015.86 18a8.38 8.38 0 005.15-1.72.8.8 0 011.07 0 .8.8 0 01.21.85A10.17 10.17 0 0112.12 22z"></path>`;
+        icon.innerHTML = body.classList.contains('dark-mode') ? moon : sun;
     }
 
-    function handleFolderSelect(e) {
-        inputFiles = Array.from(e.target.files);
+    function addLog(msg) {
+        const logPanel = document.getElementById('logPanel');
+        const time = new Date().toLocaleTimeString();
+        logPanel.innerHTML += `<div class="log-entry"><span>[${time}]</span> ${msg}</div>`;
+        logPanel.scrollTop = logPanel.scrollHeight;
+    }
+
+    function clearLogs() { document.getElementById('logPanel').innerHTML = `<div class="log-entry">Logs cleared...</div>`; }
+    function copyLogs() {
+        const logs = Array.from(document.querySelectorAll('.log-entry')).map(e => e.innerText).join('\n');
+        navigator.clipboard.writeText(logs).then(() => alert("Logs copied!"));
+    }
+
+    function handleFolderSelect(event) {
+        inputFiles = Array.from(event.target.files);
         if(inputFiles.length > 0) {
-            document.getElementById('inputPath').innerText = inputFiles[0].webkitRelativePath.split('/')[0];
-            addLog(`${inputFiles.length} file diunggah.`);
+            // Tampilan path mendalam seperti gambar G:\...
+            const fullPath = inputFiles[0].webkitRelativePath;
+            const root = fullPath.split('/')[0];
+            document.getElementById('inputPath').innerText = `G:\\VIDEO IRS\\${root}`;
+            addLog(`Input: ${inputFiles.length} file terdeteksi di ${root}`);
             validateStar();
         }
     }
@@ -378,16 +448,18 @@
     async function selectOutputFolder() {
         try {
             outputDirHandle = await window.showDirectoryPicker();
-            document.getElementById('outputPath').innerText = outputDirHandle.name;
-            addLog("Output folder siap.");
-        } catch(e) { addLog("Akses folder ditolak."); }
+            document.getElementById('outputPath').innerText = `G:\\VIDEO IRS\\${outputDirHandle.name}`;
+            addLog(`Output folder set to: ${outputDirHandle.name}`);
+        } catch (e) { addLog("Akses folder ditolak."); }
     }
 
-    function generateName(n, c) {
-        const set = "0123456789abcdefghijklmnopqrstuvwxyz";
+    function generateMixName(numLen, charLen) {
+        const nums = "0123456789", chars = "abcdefghijklmnopqrstuvwxyz";
         let res = "";
-        for(let i=0; i<(n+c); i++) res += set[Math.floor(Math.random()*set.length)];
-        return (res.match(/.{1,5}/g) || [res]).join('-');
+        for(let i=0; i<numLen; i++) res += nums[Math.floor(Math.random()*10)];
+        for(let i=0; i<charLen; i++) res += chars[Math.floor(Math.random()*26)];
+        let shuf = res.split('').sort(() => 0.5 - Math.random()).join('');
+        return (shuf.match(/.{1,5}/g) || [shuf]).join('-');
     }
 
     async function startProcess() {
@@ -395,81 +467,65 @@
         document.getElementById('btnStart').disabled = true;
         document.getElementById('btnPause').disabled = false;
         document.getElementById('btnStop').disabled = false;
-        addLog("PROSES DIMULAI...");
+        addLog("--- PROSES DIMULAI ---");
 
-        for(; currentIndex < inputFiles.length; currentIndex++) {
-            if(isStopped) break;
-            while(isPaused) { await new Promise(r => setTimeout(r, 500)); }
+        for (; currentIndex < inputFiles.length; currentIndex++) {
+            if (isStopped) break;
+            while (isPaused) { await new Promise(r => setTimeout(r, 500)); if (isStopped) break; }
 
             const file = inputFiles[currentIndex];
-            let name = file.name;
-            let ext = name.substring(name.lastIndexOf('.'));
+            let newName = "";
+            let ext = file.name.substring(file.name.lastIndexOf('.'));
 
-            if(currentTab === 'name') {
-                name = generateName(parseInt(document.getElementById('numCount').value), parseInt(document.getElementById('charCount').value)) + ext;
+            if (currentTab === 'name') {
+                newName = generateMixName(parseInt(document.getElementById('numCount').value), parseInt(document.getElementById('charCount').value)) + ext;
             } else {
-                const s = document.getElementById('fStart').value;
-                const e = document.getElementById('fEnd').value;
-                if(ext.toLowerCase() === s.toLowerCase()) name = name.replace(ext, e);
+                const sExt = document.getElementById('formatStart').value;
+                const eExt = document.getElementById('formatEnd').value;
+                newName = (ext.toLowerCase() === sExt.toLowerCase()) ? file.name.replace(ext, eExt) : file.name;
             }
 
-            if(outputDirHandle) {
+            if (outputDirHandle) {
                 try {
-                    const h = await outputDirHandle.getFileHandle(name, {create:true});
-                    const w = await h.createWritable();
-                    await w.write(file);
-                    await w.close();
-                    addLog(`Save: ${name}`);
-                } catch(e) { addLog(`Gagal: ${file.name}`); }
-            } else {
-                addLog(`Staged: ${name}`);
-            }
+                    const handle = await outputDirHandle.getFileHandle(newName, { create: true });
+                    const wr = await handle.createWritable();
+                    await wr.write(file);
+                    await wr.close();
+                    addLog(`Done: ${newName}`);
+                } catch (e) { addLog(`Fail: ${file.name}`); }
+            } else { addLog(`Buffered: ${newName}`); }
         }
-        addLog("PROSES SELESAI.");
+        addLog("--- PROSES SELESAI ---");
         document.getElementById('btnZipExport').disabled = false;
-        resetUI();
-    }
-
-    async function exportToZip() {
-        addLog("Membuat ZIP...");
-        const zip = new JSZip();
-        for(const f of inputFiles) {
-            let name = f.name;
-            let ext = name.substring(name.lastIndexOf('.'));
-            if(currentTab === 'name') {
-                name = generateName(parseInt(document.getElementById('numCount').value), parseInt(document.getElementById('charCount').value)) + ext;
-            } else {
-                const s = document.getElementById('fStart').value, e = document.getElementById('fEnd').value;
-                if(ext.toLowerCase() === s.toLowerCase()) name = name.replace(ext, e);
-            }
-            zip.file(name, f);
-        }
-        const blob = await zip.generateAsync({type:"blob"});
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = "REFORNAM_IRS.zip";
-        a.click();
-        addLog("ZIP berhasil didownload.");
+        resetButtons();
     }
 
     function pauseProcess() { isPaused = !isPaused; document.getElementById('btnPause').innerText = isPaused ? "RESUME" : "PAUSE"; }
-    function stopProcess() { isStopped = true; resetUI(); }
-    function resetUI() { 
-        document.getElementById('btnStart').disabled = false;
-        document.getElementById('btnPause').disabled = true;
-        document.getElementById('btnStop').disabled = true;
-        currentIndex = 0;
-    }
+    function stopProcess() { isStopped = true; resetButtons(); addLog("Process Stopped."); }
+    function resetButtons() { document.getElementById('btnStart').disabled = false; document.getElementById('btnPause').disabled = true; document.getElementById('btnStop').disabled = true; currentIndex = 0; }
 
-    function toggleTheme() {
-        document.body.classList.toggle('dark-mode');
-        addLog("Tema diubah.");
-    }
-    
-    function clearLogs() { document.getElementById('logPanel').innerHTML = ""; }
-    function copyLogs() {
-        navigator.clipboard.writeText(document.getElementById('logPanel').innerText);
-        alert("Log disalin.");
+    async function exportToZip() {
+        addLog("Menyiapkan unduhan ZIP...");
+        const zip = new JSZip();
+        const n = currentTab === 'name' ? parseInt(document.getElementById('numCount').value) : 0;
+        const c = currentTab === 'name' ? parseInt(document.getElementById('charCount').value) : 0;
+        const sExt = currentTab === 'format' ? document.getElementById('formatStart').value : "";
+        const eExt = currentTab === 'format' ? document.getElementById('formatEnd').value : "";
+
+        for (const file of inputFiles) {
+            let ext = file.name.substring(file.name.lastIndexOf('.'));
+            let rName = currentTab === 'name' ? generateMixName(n, c) + ext : ((ext.toLowerCase() === sExt.toLowerCase()) ? file.name.replace(ext, eExt) : file.name);
+            zip.file(rName, file);
+        }
+
+        // Level kompresi 0 untuk kecepatan unduhan (mencegah lag)
+        const blob = await zip.generateAsync({ type: "blob", compression: "STORE" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "REFORNAM_Output_IRS.zip";
+        a.click();
+        addLog("ZIP berhasil didownload.");
     }
 
     renderConfig();
