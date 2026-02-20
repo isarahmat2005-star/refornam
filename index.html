@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         :root {
-            --primary: #2563eb; /* Default Light Blue */
+            --primary: #2563eb;
             --success: #22c55e;
             --bg-body: #f0f2f5;
             --card-bg: #ffffff;
@@ -24,11 +24,14 @@
             --grid-color: rgba(37, 99, 235, 0.1);
         }
 
-        /* Daftar Tema Sesuai Pilihan */
-        .theme-luxury-gold { --primary: #d4af37; --grid-color: rgba(212, 175, 55, 0.1); }
-        .theme-cyberpunk { --primary: #fcee0a; --bg-body: #000; --card-bg: #111; --text: #fcee0a; --border: #fcee0a; --grid-color: rgba(252, 238, 10, 0.1); }
-        .theme-midnight-blue { --primary: #1e3a8a; --bg-body: #0f172a; --card-bg: #1e293b; --text: #f1f5f9; --border: #334155; }
-        .theme-dracula { --primary: #bd93f9; --bg-body: #282a36; --card-bg: #44475a; --text: #f8f8f2; --border: #6272a4; }
+        /* Definisi Tema Pilihan */
+        body.light-clean { --primary: #2563eb; --bg-body: #f0f2f5; --card-bg: #ffffff; --text: #1f2937; --input-bg: #ffffff; --border: #d1d5db; --grid-color: rgba(37, 99, 235, 0.1); }
+        body.dark-pro { --primary: #3b82f6; --bg-body: #0f172a; --card-bg: #1e293b; --text: #f1f5f9; --input-bg: #0f172a; --border: #334155; --grid-color: rgba(255,255,255,0.03); }
+        body.midnight-blue { --primary: #1e40af; --bg-body: #020617; --card-bg: #0f172a; --text: #cbd5e1; --input-bg: #020617; --border: #1e293b; --grid-color: rgba(30,64,175,0.2); }
+        body.cyberpunk { --primary: #f0ab00; --bg-body: #1a1a1a; --card-bg: #2d2d2d; --text: #00ff41; --input-bg: #111; --border: #f0ab00; --grid-color: rgba(240,171,0,0.1); }
+        body.deep-forest { --primary: #15803d; --bg-body: #052e16; --card-bg: #064e3b; --text: #ecfdf5; --input-bg: #022c22; --border: #065f46; --grid-color: rgba(21,128,61,0.2); }
+        body.sunset-vibes { --primary: #e11d48; --bg-body: #4c0519; --card-bg: #881337; --text: #fff1f2; --input-bg: #4c0519; --border: #9f1239; --grid-color: rgba(225,29,72,0.2); }
+        body.dracula { --primary: #bd93f9; --bg-body: #282a36; --card-bg: #44475a; --text: #f8f8f2; --input-bg: #282a36; --border: #6272a4; --grid-color: rgba(189,147,249,0.1); }
 
         body {
             font-family: 'Share Tech', sans-serif;
@@ -47,104 +50,113 @@
 
         .container {
             background-color: var(--card-bg);
-            width: 100%;
-            max-width: 600px;
-            height: 600px;
-            padding: 25px;
-            border-radius: 12px;
-            border: 2px solid var(--border);
+            width: 100%; max-width: 600px; height: 600px;
+            padding: 25px; border-radius: 12px; border: 2px solid var(--border);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
-            position: relative;
+            display: flex; flex-direction: column; box-sizing: border-box;
+            position: relative; z-index: 5;
         }
 
         .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .action-icons { display: flex; gap: 10px; align-items: center; }
-        h1 { color: var(--primary); text-transform: uppercase; margin: 0; letter-spacing: 2px; font-size: 20px; }
+        .nav-actions { display: flex; gap: 10px; align-items: center; position: relative; }
 
-        .btn-tab {
-            background: var(--input-bg); border: 1px solid var(--border); font-family: 'Share Tech';
-            font-size: 14px; font-weight: bold; color: var(--text);
-            cursor: pointer; padding: 10px 20px; border-radius: 6px;
-            box-shadow: 0 3px 0 var(--border); transition: 0.1s;
-        }
-        .btn-tab.active { color: white; background: var(--primary); border-color: var(--primary); box-shadow: 0 3px 0 #00000033; transform: translateY(-2px); }
+        h1 { color: var(--primary); text-transform: uppercase; margin: 0; letter-spacing: 2px; font-size: 20px; }
 
         .nav-btn {
             background: var(--primary); color: white; border: none;
             width: 35px; height: 35px; border-radius: 50%;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 3px 0 #00000033;
+            box-shadow: 0 3px 0 #00000033; transition: 0.1s;
         }
-        .coffee-btn-top { background: #6f4e37; }
+        .nav-btn:active { transform: translateY(2px); box-shadow: none; }
+        .coffee-btn { background: #6f4e37; }
+
+        /* Popover Tema */
+        .theme-menu {
+            position: absolute; top: 45px; right: 0; background: var(--card-bg);
+            border: 1px solid var(--border); border-radius: 8px; width: 180px;
+            display: none; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 100;
+        }
+        .theme-option {
+            padding: 10px; cursor: pointer; font-size: 12px; border-bottom: 1px solid var(--border);
+            transition: 0.2s; text-transform: uppercase; font-weight: bold;
+        }
+        .theme-option:hover { background: var(--primary); color: white; }
+
+        .btn-tab {
+            background: var(--input-bg); border: 1px solid var(--border);
+            font-family: 'Share Tech', sans-serif; font-size: 14px; font-weight: bold;
+            color: var(--text); cursor: pointer; padding: 10px 20px; border-radius: 6px;
+            box-shadow: 0 3px 0 var(--border); transition: 0.1s;
+        }
+        .btn-tab.active { color: white; background: var(--primary); border-color: var(--primary); box-shadow: 0 3px 0 #00000044; transform: translateY(-2px); }
 
         .path-display {
-            flex-grow: 1; background: var(--path-bg); border: 1px solid var(--border); 
-            padding: 8px 12px; font-size: 13px; color: var(--path-text);
+            flex-grow: 1; background: var(--input-bg); border: 1px solid var(--border);
+            padding: 8px 12px; font-size: 13px; color: var(--text);
             overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
             border-radius: 8px; display: flex; align-items: center; height: 38px; box-sizing: border-box;
         }
 
         .btn-browse {
-            background: var(--primary); color: white; border: none; padding: 0 20px; 
+            background: var(--primary); color: white; border: none; padding: 0 20px;
             cursor: pointer; border-radius: 8px; font-weight: bold; font-size: 14px; height: 38px;
             box-shadow: 0 4px 0 #00000033; position: relative;
         }
-        .btn-browse:active { top: 2px; box-shadow: 0 2px 0 #00000033; }
+        .btn-browse:active { top: 2px; box-shadow: none; }
 
         .input-field {
-            width: 100%; background: var(--input-bg); border: 1px solid var(--border); 
-            padding: 8px; color: var(--text); font-family: 'Share Tech';
+            width: 100%; background: var(--input-bg); border: 1px solid var(--border);
+            padding: 8px; color: var(--text); font-family: 'Share Tech', sans-serif;
             border-radius: 8px; font-size: 14px; height: 36px; box-sizing: border-box;
         }
 
         .btn-main { 
-            flex: 1; border: none; padding: 14px 0; cursor: pointer; font-family: 'Share Tech'; 
-            font-weight: bold; text-transform: uppercase; border-radius: 8px; font-size: 14px; position: relative;
+            flex: 1; border: none; padding: 12px 0; cursor: pointer; 
+            font-family: 'Share Tech', sans-serif; font-weight: bold; 
+            text-transform: uppercase; border-radius: 8px; font-size: 14px; position: relative;
         }
         .start { background: var(--primary); color: white; box-shadow: 0 4px 0 #00000033; }
         .pause { background: #f59e0b; color: white; box-shadow: 0 4px 0 #b45309; }
         .stop { background: #ef4444; color: white; box-shadow: 0 4px 0 #b91c1c; }
         .zip-btn { background: var(--success); color: white; box-shadow: 0 4px 0 #15803d; }
-        .btn-main:active:not(:disabled) { top: 2px; box-shadow: 0 2px 0 currentColor; }
+        .btn-main:active:not(:disabled) { top: 2px; box-shadow: none; }
         .btn-main:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; }
 
-        /* Area Modal Theme */
-        #themeMenu {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: white; border: 2px solid var(--border); border-radius: 12px;
-            width: 250px; z-index: 1000; box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        .log-panel {
+            background: var(--log-bg); border: 1px solid var(--border);
+            flex-grow: 1; padding: 10px; overflow-y: auto;
+            font-size: 11px; color: var(--log-text); border-radius: 8px;
         }
-        .theme-item { padding: 12px; border-bottom: 1px solid #eee; cursor: pointer; color: #333; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-        .theme-item:hover { background: #f5f5f5; }
-
-        .log-panel { background: var(--log-bg); border: 1px solid var(--border); flex-grow: 1; padding: 10px; overflow-y: auto; font-size: 11px; color: var(--log-text); border-radius: 8px; }
+        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
         .btn-mode { background: none; border: none; color: var(--primary); cursor: pointer; text-decoration: underline; font-size: 11px; font-family: 'Share Tech'; }
     </style>
 </head>
-<body class="theme-light">
+<body class="light-clean">
 
 <div class="container">
     <div class="top-nav">
         <h1>REFORNAM</h1>
-        <div class="action-icons">
-            <a href="https://lynk.id/isaproject/0581ez0729vx" target="_blank" class="nav-btn coffee-btn-top">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+        <div class="nav-actions">
+            <a href="https://lynk.id/isaproject/0581ez0729vx" target="_blank" class="nav-btn coffee" title="Support Me">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6f4e37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                    <line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line>
+                </svg>
             </a>
-            <button class="nav-btn" onclick="openThemeMenu()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+            <button class="nav-btn" onclick="toggleThemeMenu()">
+                <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="white"></svg>
             </button>
+            <div class="theme-menu" id="themeMenu">
+                <div class="theme-option" onclick="setTheme('light-clean')">Light Clean</div>
+                <div class="theme-option" onclick="setTheme('dark-pro')">Dark Pro</div>
+                <div class="theme-option" onclick="setTheme('midnight-blue')">Midnight Blue</div>
+                <div class="theme-option" onclick="setTheme('cyberpunk')">Cyberpunk</div>
+                <div class="theme-option" onclick="setTheme('deep-forest')">Deep Forest</div>
+                <div class="theme-option" onclick="setTheme('sunset-vibes')">Sunset Vibes</div>
+                <div class="theme-option" onclick="setTheme('dracula')">Dracula</div>
+            </div>
         </div>
-    </div>
-
-    <div id="themeMenu">
-        <div class="theme-item" onclick="applyTheme('default')">LIGHT CLEAN (DEFAULT) <span>○</span></div>
-        <div class="theme-item" onclick="applyTheme('luxury-gold')">LUXURY GOLD <span>○</span></div>
-        <div class="theme-item" onclick="applyTheme('cyberpunk')">CYBERPUNK <span>○</span></div>
-        <div class="theme-item" onclick="applyTheme('midnight-blue')">MIDNIGHT BLUE <span>○</span></div>
-        <div class="theme-item" onclick="applyTheme('dracula')">DRACULA <span>○</span></div>
     </div>
 
     <div class="tab-container">
@@ -164,58 +176,73 @@
                 <input type="file" id="folderInput" webkitdirectory directory multiple style="display:none" onchange="handleFolderSelect(event)">
             </div>
         </div>
+        <div class="input-group">
+            <label>Output Folder (opsional)</label>
+            <div class="explorer-bar">
+                <div id="outputPath" class="path-display">Pilih folder tujuan...</div>
+                <button class="btn-browse" onclick="selectOutputFolder()">UPLOAD</button>
+            </div>
+        </div>
         <div class="config-grid" id="configGrid"></div>
     </div>
 
-    <div class="input-group" style="margin-top: 10px;">
-        <label>Custom Filename (ZIP)</label>
-        <input type="text" id="zipName" class="input-field" placeholder="">
+    <div style="margin-bottom: 10px;">
+        <label style="font-size: 12px; color: var(--primary); font-weight: bold;">Custom Filename (ZIP)</label>
+        <input type="text" id="zipFileName" class="input-field" placeholder="">
     </div>
 
-    <div class="action-bars" style="display: flex; gap: 10px; margin-bottom: 10px;">
+    <div class="action-bars" style="display: flex; gap: 8px; margin-bottom: 10px;">
         <button id="btnStart" class="btn-main start" onclick="startProcess()" disabled>START</button>
         <button id="btnPause" class="btn-main pause" onclick="pauseProcess()" disabled>PAUSE</button>
         <button id="btnStop" class="btn-main stop" onclick="stopProcess()" disabled>STOP</button>
         <button id="btnZipExport" class="btn-main zip-btn" onclick="exportToZip()" disabled>ZIP</button>
     </div>
 
-    <div class="log-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-        <label style="font-size: 13px; color: var(--primary); font-weight: bold;">Activity Log</label>
-        <div style="display: flex; gap: 10px;">
-            <button onclick="copyLogs()" class="btn-mode">COPY LOGS</button>
-            <button onclick="clearLogs()" class="btn-mode">CLEAR LOGS</button>
+    <div class="log-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+        <label style="font-size: 12px; color: var(--primary); font-weight: bold;">Activity Log</label>
+        <div style="display: flex; gap: 8px;">
+            <button onclick="copyLogs()" class="btn-mode">COPY</button>
+            <button onclick="clearLogs()" class="btn-mode">CLEAR</button>
         </div>
     </div>
     <div id="logPanel" class="log-panel"><div class="log-entry">System ready...</div></div>
 </div>
 
 <script>
-    let inputFiles = [], isPaused = false, isStopped = false, currentIndex = 0;
+    let inputFiles = [], outputDirHandle = null, isPaused = false, isStopped = false, currentIndex = 0;
     let currentTab = 'format', isManualA = false, isManualB = false;
-    const formats = ["-- (opsional)", ".jpg", ".png", ".pdf", ".mp4", ".mp3", ".txt"];
+    const formats = ["--", ".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx"];
 
-    function openThemeMenu() { document.getElementById('themeMenu').style.display = 'block'; }
-    function applyTheme(theme) {
-        document.body.className = 'theme-' + theme;
+    const sunIco = `<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-12.37a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"></path>`;
+    const moonIco = `<path d="M12.12 22a9.91 9.91 0 01-5.1-1.39 10.12 10.12 0 01-3.73-3.73 9.71 9.71 0 01-1.29-5.1 9.85 9.85 0 011.2-4.73 10.29 10.29 0 013.3-3.6 10.18 10.18 0 014.86-1.35.8.8 0 01.76.53.81.81 0 01-.19.86 8.43 8.43 0 00-2.4 6.09A8.47 8.47 0 0015.86 18a8.38 8.38 0 005.15-1.72.8.8 0 011.07 0 .8.8 0 01.21.85A10.17 10.17 0 0112.12 22z"></path>`;
+
+    function setTheme(theme) {
+        document.body.className = theme;
+        document.getElementById('themeIcon').innerHTML = theme.includes('light') ? sunIco : moonIco;
         document.getElementById('themeMenu').style.display = 'none';
-        addLog(`Theme applied: ${theme.toUpperCase()}`);
+        addLog(`Theme changed to: ${theme}`);
+    }
+
+    function toggleThemeMenu() {
+        const menu = document.getElementById('themeMenu');
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
     function renderConfig() {
         const grid = document.getElementById('configGrid');
-        const zipField = document.getElementById('zipName');
+        const zipField = document.getElementById('zipFileName');
         if (currentTab === 'name') {
+            zipField.placeholder = "REFORNAM_Name.zip";
             grid.innerHTML = `<div><label>Jumlah Angka</label><input type="number" id="numCount" class="input-field" placeholder="0" oninput="validateStar()"></div>
                               <div><label>Jumlah Huruf</label><input type="number" id="charCount" class="input-field" placeholder="0" oninput="validateStar()"></div>`;
-            zipField.placeholder = "REFORNAM_Name.zip";
         } else {
+            zipField.placeholder = "REFORNAM_Format.zip";
             const btnA = `<button class="btn-mode" onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'List' : 'Manual'}</button>`;
             const btnB = `<button class="btn-mode" onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'List' : 'Manual'}</button>`;
-            const inA = isManualA ? `<input type="text" id="formatStart" class="input-field" placeholder=".ext" oninput="validateStar()">` : `<select id="formatStart" class="input-field" onchange="validateStar()">${formats.map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
-            const inB = isManualB ? `<input type="text" id="formatEnd" class="input-field" placeholder=".ext" oninput="validateStar()">` : `<select id="formatEnd" class="input-field" onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
-            grid.innerHTML = `<div><div class="label-row"><label>Format Awal</label>${btnA}</div>${inA}</div>
-                              <div><div class="label-row"><label>Format Tujuan</label>${btnB}</div>${inB}</div>`;
-            zipField.placeholder = "REFORNAM_Format.zip";
+            const inA = isManualA ? `<input type="text" id="formatStart" class="input-field" placeholder=".ext" oninput="validateStar()">` : `<select id="formatStart" class="input-field" onchange="validateStar()">${formats.map(f => `<option value="${f}">${f === "--" ? "-- (opsional)" : f}</option>`).join('')}</select>`;
+            const inB = isManualB ? `<input type="text" id="formatEnd" class="input-field" placeholder=".ext" oninput="validateStar()">` : `<select id="formatEnd" class="input-field" onchange="validateStar()">${formats.map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
+            grid.innerHTML = `<div><div style="display:flex; justify-content:space-between;"><label>Format Awal</label>${btnA}</div>${inA}</div>
+                              <div><div style="display:flex; justify-content:space-between;"><label>Format Tujuan</label>${btnB}</div>${inB}</div>`;
         }
         validateStar();
     }
@@ -226,17 +253,18 @@
     function validateStar() {
         const btn = document.getElementById('btnStart');
         if (inputFiles.length === 0) { btn.disabled = true; return; }
-        if (currentTab === 'name') btn.disabled = !(document.getElementById('numCount')?.value || document.getElementById('charCount')?.value);
+        if (currentTab === 'name') { btn.disabled = !(document.getElementById('numCount')?.value || document.getElementById('charCount')?.value); }
         else { const b = document.getElementById('formatEnd')?.value; btn.disabled = (!b || b === "--"); }
     }
 
     function handleFolderSelect(e) { 
         inputFiles = Array.from(e.target.files); 
-        if(inputFiles.length > 0) { 
-            const folder = inputFiles[0].webkitRelativePath.split('/')[0];
-            document.getElementById('inputPath').innerText = folder; 
-            addLog(`Input detected: ${inputFiles.length} files`); validateStar(); 
-        } 
+        if(inputFiles.length > 0) { document.getElementById('inputPath').innerText = inputFiles[0].webkitRelativePath.split('/')[0]; addLog(`Input: ${inputFiles.length} files detected`); validateStar(); } 
+    }
+
+    async function selectOutputFolder() { 
+        try { outputDirHandle = await window.showDirectoryPicker(); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Output folder set."); validateStar(); } 
+        catch (e) { addLog("Folder selection canceled."); } 
     }
 
     function addLog(m) { const p = document.getElementById('logPanel'); const t = new Date().toLocaleTimeString(); p.innerHTML += `<div class="log-entry"><span>[${t}]</span> ${m}</div>`; p.scrollTop = p.scrollHeight; }
@@ -249,37 +277,64 @@
         document.getElementById('btnPause').disabled = false;
         document.getElementById('btnStop').disabled = false;
         addLog("--- PROCESS STARTED ---");
-        for(let i=0; i<inputFiles.length; i++) {
+        for(currentIndex=0; currentIndex<inputFiles.length; currentIndex++) {
             if(isStopped) break;
-            while(isPaused) { await new Promise(r => setTimeout(r, 500)); }
-            addLog(`Renaming: ${inputFiles[i].name}`);
-            await new Promise(r => setTimeout(r, 100)); // Simulasi kecepatan
+            while(isPaused) await new Promise(r => setTimeout(r, 500));
+            const file = inputFiles[currentIndex];
+            let name = file.name;
+            const ext = file.name.substring(file.name.lastIndexOf('.'));
+
+            if(currentTab === 'name') {
+                const n = parseInt(document.getElementById('numCount').value || 0), c = parseInt(document.getElementById('charCount').value || 0);
+                const nums = "0123456789", chars = "abcdefghijklmnopqrstuvwxyz";
+                let res = "";
+                for(let k=0; k<n; k++) res += nums[Math.floor(Math.random()*10)];
+                for(let k=0; k<c; k++) res += chars[Math.floor(Math.random()*26)];
+                let shuf = res.split('').sort(() => 0.5 - Math.random()).join('');
+                name = (shuf.match(/.{1,5}/g) || [shuf]).join('-') + ext;
+            } else {
+                const sExt = document.getElementById('formatStart').value, eExt = document.getElementById('formatEnd').value;
+                if(sExt.includes("--") || file.name.toLowerCase().endsWith(sExt.toLowerCase())) name = file.name.substring(0, file.name.lastIndexOf('.')) + eExt;
+            }
+
+            if(outputDirHandle) {
+                try { const h = await outputDirHandle.getFileHandle(name, {create:true}); const w = await h.createWritable(); await w.write(file); await w.close(); } catch(e){}
+            }
+            addLog(`Processed: ${name}`);
         }
         addLog("--- PROCESS COMPLETE ---");
         document.getElementById('btnZipExport').disabled = false;
+        resetUI();
     }
 
     function pauseProcess() { 
         isPaused = !isPaused; 
-        document.getElementById('btnPause').innerText = isPaused ? "RESUME" : "PAUSE";
-        addLog(isPaused ? "[SYSTEM PAUSED]" : "[SYSTEM RESUMED]"); 
+        document.getElementById('btnPause').innerText = isPaused ? "RESUME" : "PAUSE"; 
+        addLog(isPaused ? "Process Paused." : "Process Resumed."); 
     }
     
-    function stopProcess() { isStopped = true; addLog("[SYSTEM ABORTED BY USER]"); resetUI(); }
-    function resetUI() { document.getElementById('btnStart').disabled = false; document.getElementById('btnPause').disabled = true; document.getElementById('btnStop').disabled = true; }
-
-    async function exportToZip() {
-        const custom = document.getElementById('zipName').value.trim();
-        const def = currentTab === 'format' ? "REFORNAM_Format.zip" : "REFORNAM_Name.zip";
-        const finalName = custom ? (custom.endsWith('.zip') ? custom : custom + '.zip') : def;
-        addLog(`Preparing download: ${finalName}`);
-        const zip = new JSZip();
-        inputFiles.forEach(f => zip.file(f.name, f));
-        const blob = await zip.generateAsync({type:"blob", compression: "STORE"});
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = finalName; a.click();
-        addLog("Download Triggered.");
+    function stopProcess() { isStopped = true; addLog("Process Stopped."); resetUI(); }
+    
+    function resetUI() { 
+        document.getElementById('btnStart').disabled = false; 
+        document.getElementById('btnPause').disabled = true; 
+        document.getElementById('btnStop').disabled = true; 
+        document.getElementById('btnPause').innerText = "PAUSE";
     }
 
+    async function exportToZip() {
+        const customName = document.getElementById('zipFileName').value.trim();
+        const defaultName = currentTab === 'format' ? "REFORNAM_Format.zip" : "REFORNAM_Name.zip";
+        const finalName = customName ? (customName.endsWith('.zip') ? customName : customName + '.zip') : defaultName;
+        addLog(`Bundling ZIP: ${finalName}`);
+        const zip = new JSZip();
+        for(let f of inputFiles) zip.file(f.name, f);
+        const b = await zip.generateAsync({type:"blob", compression:"STORE"});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = finalName; a.click();
+        addLog("ZIP Exported.");
+    }
+
+    document.getElementById('themeIcon').innerHTML = sunIco;
     renderConfig();
 </script>
 </body>
