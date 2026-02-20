@@ -27,14 +27,15 @@
         body.luxury-gold { --primary: #d4af37; --bg-body: #1a1a1a; --card-bg: #2d2d2d; --text: #d4af37; --input-bg: #3d3d3d; --border: #d4af37; }
         body.dark-pro { --primary: #3b82f6; --bg-body: #050505; --card-bg: #121212; --text: #e0e0e0; --input-bg: #1e1e1e; --border: #333; }
         body.midnight-navy { --primary: #1e3a8a; --bg-body: #020617; --card-bg: #0f172a; --text: #cbd5e1; --input-bg: #020617; --border: #1e3a8a; }
+        body.ocean-breeze { --primary: #0891b2; --bg-body: #ecfeff; --card-bg: #ffffff; --text: #164e63; --input-bg: #f0f9ff; --border: #0891b2; }
         body.cyberpunk { --primary: #ff00ff; --bg-body: #0d0221; --card-bg: #0f082d; --text: #00ff41; --input-bg: #1a1a1a; --border: #00ff41; }
         body.deep-forest { --primary: #15803d; --bg-body: #052e16; --card-bg: #064e3b; --text: #ecfdf5; --input-bg: #022c22; --border: #065f46; }
         body.deep-ocean { --primary: #0369a1; --bg-body: #082f49; --card-bg: #0c4a6e; --text: #e0f2fe; --input-bg: #082f49; --border: #0369a1; }
         body.sunset-vibes { --primary: #be123c; --bg-body: #4c0519; --card-bg: #881337; --text: #fff1f2; --input-bg: #4c0519; --border: #be123c; }
-        body.ultra-minimal { --primary: #111; --bg-body: #fff; --card-bg: #fff; --text: #111; --input-bg: #f5f5f5; --border: #eee; }
+        body.warm-coffee { --primary: #6f4e37; --bg-body: #fdf5e6; --card-bg: #faf0e6; --text: #4b3621; --input-bg: #fff; --border: #6f4e37; }
         body.retro-paper { --primary: #854d0e; --bg-body: #fef3c7; --card-bg: #fffbeb; --text: #451a03; --input-bg: #fef3c7; --border: #d97706; }
         body.dracula { --primary: #bd93f9; --bg-body: #282a36; --card-bg: #44475a; --text: #f8f8f2; --input-bg: #282a36; --border: #6272a4; }
-        body.warm-coffee { --primary: #6f4e37; --bg-body: #fdf5e6; --card-bg: #faf0e6; --text: #4b3621; --input-bg: #fff; --border: #6f4e37; }
+        body.ultra-minimal { --primary: #111; --bg-body: #fff; --card-bg: #fff; --text: #111; --input-bg: #f5f5f5; --border: #eee; }
 
         body {
             font-family: 'Share Tech', sans-serif;
@@ -70,7 +71,7 @@
         .theme-menu {
             position: absolute; top: 45px; right: 0; background: var(--card-bg);
             border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            display: none; flex-direction: column; z-index: 100; width: 200px; max-height: 300px; overflow-y: auto;
+            display: none; flex-direction: column; z-index: 100; width: 200px; max-height: 280px; overflow-y: auto;
         }
         .theme-opt {
             padding: 10px 15px; cursor: pointer; font-size: 11px; border-bottom: 1px solid var(--border);
@@ -149,7 +150,7 @@
                     <svg id="themeIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
                 </button>
                 <div id="themeMenu" class="theme-menu">
-                    <div class="theme-opt" onclick="setTheme('light-clean')">LIGHT CLEAN (DEFAULT)</div>
+                    <div class="theme-opt" onclick="setTheme('light-clean')">LIGHT CLEAN</div>
                     <div class="theme-opt" onclick="setTheme('luxury-gold')">LUXURY GOLD</div>
                     <div class="theme-opt" onclick="setTheme('dark-pro')">DARK PRO</div>
                     <div class="theme-opt" onclick="setTheme('midnight-navy')">MIDNIGHT NAVY</div>
@@ -246,7 +247,7 @@
         validateStar();
     }
 
-    function toggleMode(t, v) { if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); }
+    function toggleMode(t, v) { if(isProcessing) return; if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); }
     function switchTab(t) { if(isProcessing) return; currentTab = t; document.getElementById('tabFormat').className = 'btn-tab ' + (t==='format'?'active':''); document.getElementById('tabName').className = 'btn-tab ' + (t==='name'?'active':''); renderConfig(); addLog(`Switched to tab: ${t.toUpperCase()}`); }
     
     function validateStar() {
@@ -306,22 +307,18 @@
                     const handle = await outputDirHandle.getFileHandle(name, { create: true });
                     const wr = await handle.createWritable();
                     await wr.write(file); await wr.close();
-                    addLog(`Success: ${name}`);
+                    addLog(`Saved: ${name}`);
                 } catch(e) { addLog(`Error: ${e.message}`); }
             } else { addLog(`Buffered: ${name}`); }
         }
         addLog("--- PROCESS COMPLETE ---");
-        if(currentTab === 'format') formatZipReady = true; else nameZipReady = true;
+        if(currentTab === 'format') { formatZipReady = true; nameZipReady = false; } else { nameZipReady = true; formatZipReady = false; }
         setLockUI(false);
         renderConfig();
         resetUIButtons();
     }
 
-    function pauseProcess() { 
-        isPaused = !isPaused; 
-        document.getElementById('btnPause').innerText = isPaused ? "RESUME" : "PAUSE"; 
-        addLog(isPaused ? "System PAUSED" : "System RESUMED"); 
-    }
+    function pauseProcess() { isPaused = !isPaused; document.getElementById('btnPause').innerText = isPaused ? "RESUME" : "PAUSE"; addLog(isPaused ? "System PAUSED" : "System RESUMED"); }
     function stopProcess() { isStopped = true; addLog("System STOPPED by user"); setLockUI(false); resetUIButtons(); renderConfig(); }
     function resetUIButtons() { document.getElementById('btnPause').disabled = true; document.getElementById('btnStop').disabled = true; document.getElementById('btnPause').innerText = "PAUSE"; }
 
@@ -333,7 +330,7 @@
         
         const zip = new JSZip();
         inputFiles.forEach(f => {
-            const transformedName = generateNewName(f);
+            const transformedName = generateNewName(f); // Mengambil nama/format hasil perubahan
             zip.file(transformedName, f);
         });
         
