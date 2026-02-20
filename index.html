@@ -23,15 +23,18 @@
         }
 
         /* Variasi Tema Lengkap */
-        body.light-clean { --primary: #2563eb; --bg-body: #f0f2f5; --card-bg: #ffffff; --text: #1f2937; --input-bg: #ffffff; --border: #d1d5db; --grid-color: rgba(37, 99, 235, 0.1); }
-        body.luxury-gold { --primary: #d4af37; --bg-body: #1a1a1a; --card-bg: #2d2d2d; --text: #d4af37; --input-bg: #3d3d3d; --border: #d4af37; --grid-color: rgba(212,175,55,0.1); }
-        body.dark-pro { --primary: #3b82f6; --bg-body: #050505; --card-bg: #121212; --text: #e0e0e0; --input-bg: #1e1e1e; --border: #333; --grid-color: rgba(255,255,255,0.03); }
-        body.midnight-navy { --primary: #1e3a8a; --bg-body: #020617; --card-bg: #0f172a; --text: #cbd5e1; --input-bg: #020617; --border: #1e3a8a; --grid-color: rgba(30,58,138,0.2); }
-        body.cyberpunk { --primary: #ff00ff; --bg-body: #0d0221; --card-bg: #0f082d; --text: #00ff41; --input-bg: #1a1a1a; --border: #00ff41; --grid-color: rgba(0,255,65,0.1); }
-        body.deep-forest { --primary: #15803d; --bg-body: #052e16; --card-bg: #064e3b; --text: #ecfdf5; --input-bg: #022c22; --border: #065f46; --grid-color: rgba(21,128,61,0.1); }
-        body.ocean-breeze { --primary: #0891b2; --bg-body: #ecfeff; --card-bg: #ffffff; --text: #164e63; --input-bg: #f0f9ff; --border: #0891b2; --grid-color: rgba(8,145,178,0.1); }
-        body.warm-coffee { --primary: #6f4e37; --bg-body: #fdf5e6; --card-bg: #faf0e6; --text: #4b3621; --input-bg: #fff; --border: #6f4e37; --grid-color: rgba(111,78,55,0.1); }
-        body.dracula { --primary: #bd93f9; --bg-body: #282a36; --card-bg: #44475a; --text: #f8f8f2; --input-bg: #282a36; --border: #6272a4; --grid-color: rgba(189,147,249,0.1); }
+        body.light-clean { --primary: #2563eb; --bg-body: #f0f2f5; --card-bg: #ffffff; --text: #1f2937; --input-bg: #ffffff; --border: #d1d5db; }
+        body.luxury-gold { --primary: #d4af37; --bg-body: #1a1a1a; --card-bg: #2d2d2d; --text: #d4af37; --input-bg: #3d3d3d; --border: #d4af37; }
+        body.dark-pro { --primary: #3b82f6; --bg-body: #050505; --card-bg: #121212; --text: #e0e0e0; --input-bg: #1e1e1e; --border: #333; }
+        body.midnight-navy { --primary: #1e3a8a; --bg-body: #020617; --card-bg: #0f172a; --text: #cbd5e1; --input-bg: #020617; --border: #1e3a8a; }
+        body.cyberpunk { --primary: #ff00ff; --bg-body: #0d0221; --card-bg: #0f082d; --text: #00ff41; --input-bg: #1a1a1a; --border: #00ff41; }
+        body.deep-forest { --primary: #15803d; --bg-body: #052e16; --card-bg: #064e3b; --text: #ecfdf5; --input-bg: #022c22; --border: #065f46; }
+        body.deep-ocean { --primary: #0369a1; --bg-body: #082f49; --card-bg: #0c4a6e; --text: #e0f2fe; --input-bg: #082f49; --border: #0369a1; }
+        body.sunset-vibes { --primary: #be123c; --bg-body: #4c0519; --card-bg: #881337; --text: #fff1f2; --input-bg: #4c0519; --border: #be123c; }
+        body.ultra-minimal { --primary: #111; --bg-body: #fff; --card-bg: #fff; --text: #111; --input-bg: #f5f5f5; --border: #eee; }
+        body.retro-paper { --primary: #854d0e; --bg-body: #fef3c7; --card-bg: #fffbeb; --text: #451a03; --input-bg: #fef3c7; --border: #d97706; }
+        body.dracula { --primary: #bd93f9; --bg-body: #282a36; --card-bg: #44475a; --text: #f8f8f2; --input-bg: #282a36; --border: #6272a4; }
+        body.warm-coffee { --primary: #6f4e37; --bg-body: #fdf5e6; --card-bg: #faf0e6; --text: #4b3621; --input-bg: #fff; --border: #6f4e37; }
 
         body {
             font-family: 'Share Tech', sans-serif;
@@ -67,12 +70,11 @@
         .theme-menu {
             position: absolute; top: 45px; right: 0; background: var(--card-bg);
             border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            display: none; flex-direction: column; z-index: 100; width: 200px;
-            max-height: 250px; overflow-y: auto;
+            display: none; flex-direction: column; z-index: 100; width: 200px; max-height: 300px; overflow-y: auto;
         }
         .theme-opt {
             padding: 10px 15px; cursor: pointer; font-size: 11px; border-bottom: 1px solid var(--border);
-            background: var(--card-bg); color: var(--text); font-weight: bold;
+            background: var(--card-bg); color: var(--text); font-weight: bold; text-transform: uppercase;
         }
         .theme-opt:hover { background: var(--primary); color: white; }
 
@@ -154,9 +156,12 @@
                     <div class="theme-opt" onclick="setTheme('ocean-breeze')">OCEAN BREEZE</div>
                     <div class="theme-opt" onclick="setTheme('cyberpunk')">CYBERPUNK</div>
                     <div class="theme-opt" onclick="setTheme('deep-forest')">DEEP FOREST</div>
+                    <div class="theme-opt" onclick="setTheme('deep-ocean')">DEEP OCEAN</div>
                     <div class="theme-opt" onclick="setTheme('sunset-vibes')">SUNSET VIBES</div>
                     <div class="theme-opt" onclick="setTheme('warm-coffee')">WARM COFFEE</div>
+                    <div class="theme-opt" onclick="setTheme('retro-paper')">RETRO PAPER</div>
                     <div class="theme-opt" onclick="setTheme('dracula')">DRACULA</div>
+                    <div class="theme-opt" onclick="setTheme('ultra-minimal')">ULTRA MINIMAL</div>
                 </div>
             </div>
         </div>
@@ -214,7 +219,7 @@
 <script>
     let inputFiles = [], outputDirHandle = null, isPaused = false, isStopped = false, currentIndex = 0, isProcessing = false;
     let currentTab = 'format', isManualA = false, isManualB = false;
-    let formatZipReady = false, nameZipReady = false; // Status ZIP per tab
+    let formatZipReady = false, nameZipReady = false; 
     const formats = ["--", ".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx"];
 
     function toggleThemeMenu() { const m = document.getElementById('themeMenu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
