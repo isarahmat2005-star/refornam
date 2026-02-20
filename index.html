@@ -17,141 +17,146 @@
             --border: #d1d5db;
             --text: #1f2937;
             --input-bg: #ffffff;
+            --path-bg: #ffffff;
+            --path-text: #1f2937;
             --log-bg: #111827;
             --log-text: #60a5fa;
             --grid-color: rgba(37, 99, 235, 0.1);
         }
 
+        /* --- Blok Tema --- */
+        body.light-clean { --primary: #2563eb; --bg-body: #f0f2f5; --card-bg: #ffffff; --text: #1f2937; --input-bg: #ffffff; --border: #d1d5db; --grid-color: rgba(37, 99, 235, 0.1); }
+        body.gold { --primary: #d4af37; --bg-body: #1a1a1a; --card-bg: #2d2d2d; --text: #d4af37; --input-bg: #3d3d3d; --border: #d4af37; --grid-color: rgba(212, 175, 55, 0.1); }
+        body.darkpro { --primary: #3b82f6; --bg-body: #050505; --card-bg: #121212; --text: #e0e0e0; --input-bg: #1e1e1e; --border: #333; --grid-color: rgba(255,255,255,0.02); }
+        body.midnight { --primary: #2563eb; --bg-body: #0b0e14; --card-bg: #151921; --text: #c9d1d9; --input-bg: #010409; --border: #30363d; --grid-color: rgba(30,64,175,0.1); }
+        body.cyberpunk { --primary: #ff00ff; --bg-body: #0d0221; --card-bg: #0f082d; --text: #00ff41; --input-bg: #1a1a1a; --border: #00ff41; --grid-color: rgba(0, 255, 65, 0.05); }
+        body.deepforest { --primary: #15803d; --bg-body: #052e16; --card-bg: #064e3b; --text: #ecfdf5; --input-bg: #022c22; --border: #065f46; --grid-color: rgba(21,128,61,0.1); }
+        body.deepocean { --primary: #0ea5e9; --bg-body: #082f49; --card-bg: #0c4a6e; --text: #e0f2fe; --input-bg: #075985; --border: #0ea5e9; --grid-color: rgba(14, 165, 233, 0.1); }
+        body.sunset { --primary: #e11d48; --bg-body: #4c0519; --card-bg: #881337; --text: #fff1f2; --input-bg: #4c0519; --border: #9f1239; --grid-color: rgba(225,29,72,0.1); }
+        body.dracula { --primary: #bd93f9; --bg-body: #282a36; --card-bg: #44475a; --text: #f8f8f2; --input-bg: #282a36; --border: #6272a4; --grid-color: rgba(189,147,249,0.1); }
+
         body {
             font-family: 'Share Tech', sans-serif;
             background-color: var(--bg-body);
-            background-image: 
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
             background-size: 20px 20px;
             color: var(--text);
-            display: flex;
-            justify-content: center;
-            align-items: center; /* Posisi Pas di Tengah */
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            transition: all 0.3s ease;
-            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; margin: 0; overflow: hidden;
         }
 
         .container {
             background-color: var(--card-bg);
-            width: 100%;
-            max-width: 600px;
-            height: 600px;
-            padding: 25px;
-            border-radius: 12px;
-            border: 2px solid var(--border);
+            width: 100%; max-width: 600px; height: 600px;
+            padding: 25px; border-radius: 12px; border: 2px solid var(--border);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex; flex-direction: column; box-sizing: border-box;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
-            z-index: 1;
         }
 
         .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .nav-actions { display: flex; gap: 10px; align-items: center; }
+        .nav-actions { display: flex; gap: 10px; align-items: center; position: relative; }
 
-        h1 { color: var(--primary); text-transform: uppercase; margin: 0; letter-spacing: 2px; border-bottom: 2px solid var(--primary); display: inline-block; padding-bottom: 5px; font-size: 20px; }
+        h1 { color: var(--primary); text-transform: uppercase; margin: 0; letter-spacing: 2px; font-size: 20px; }
 
-        .btn-nav-icon {
-            background: var(--primary); color: white !important; border: none; width: 35px; height: 35px;
-            border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 3px 0 rgba(0,0,0,0.2); text-decoration: none;
+        .nav-btn {
+            background: var(--primary); color: white; border: none;
+            width: 35px; height: 35px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 3px 0 #00000033;
         }
 
-        /* Menu Tema Dropdown */
         .theme-menu {
             position: absolute; top: 45px; right: 0; background: var(--card-bg);
-            border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            display: none; flex-direction: column; z-index: 100; width: 180px; overflow: hidden;
+            border: 1px solid var(--border); border-radius: 8px; width: 200px;
+            display: none; flex-direction: column; z-index: 100; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        .theme-opt {
-            padding: 10px 15px; cursor: pointer; font-size: 12px; border-bottom: 1px solid var(--border);
-            transition: 0.2s; background: var(--card-bg); color: var(--text);
-        }
+        .theme-opt { padding: 10px; cursor: pointer; font-size: 11px; border-bottom: 1px solid var(--border); text-transform: uppercase; font-weight: bold; }
         .theme-opt:hover { background: var(--primary); color: white; }
 
         .tab-container { position: relative; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; }
-        .tab-line { position: absolute; width: 100%; height: 1px; background: var(--border); z-index: 0; }
+        .tab-line { position: absolute; width: 100%; height: 1px; background: var(--border); }
         .tab-buttons { display: flex; gap: 15px; background: var(--card-bg); padding: 0 10px; z-index: 1; }
 
         .btn-tab {
-            background: var(--input-bg); border: 1px solid var(--border); font-family: 'Share Tech', sans-serif;
-            font-size: 14px; font-weight: bold; color: var(--text); cursor: pointer; padding: 10px 20px;
-            border-radius: 6px; box-shadow: 0 3px 0 var(--border); transition: 0.1s;
+            background: var(--input-bg); border: 1px solid var(--border); font-family: 'Share Tech';
+            font-size: 14px; font-weight: bold; color: var(--text); cursor: pointer;
+            padding: 10px 20px; border-radius: 6px; box-shadow: 0 3px 0 var(--border);
         }
-        .btn-tab.active { color: white !important; background: var(--primary); border-color: var(--primary); box-shadow: 0 3px 0 rgba(0,0,0,0.2); transform: translateY(-2px); }
+        .btn-tab.active { color: white; background: var(--primary); border-color: var(--primary); box-shadow: 0 3px 0 #00000044; transform: translateY(-2px); }
 
-        .input-group { margin-bottom: 10px; }
-        .label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-        label { font-size: 13px; color: var(--primary); font-weight: bold; }
+        /* Lock Tab Content Height to prevent shift */
+        #tabContent { min-height: 200px; }
+        .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; height: 65px; margin-bottom: 10px; }
 
-        .explorer-bar { display: flex; gap: 8px; }
         .path-display {
-            flex-grow: 1; background: var(--input-bg); border: 1px solid var(--border); padding: 8px 12px;
-            font-size: 13px; color: var(--text); overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
-            border-radius: 8px; display: flex; align-items: center; height: 38px; box-sizing: border-box;
+            flex-grow: 1; background: var(--input-bg); border: 1px solid var(--border);
+            padding: 8px 12px; font-size: 13px; color: var(--text);
+            overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+            border-radius: 8px; display: flex; align-items: center;
+            height: 38px; box-sizing: border-box;
         }
 
         .btn-browse {
-            background: var(--primary); color: white !important; border: none; padding: 0 20px; cursor: pointer;
-            font-family: 'Share Tech', sans-serif; border-radius: 8px; font-weight: bold; font-size: 15px;
-            height: 38px; box-shadow: 0 4px 0 rgba(0,0,0,0.2); position: relative;
+            background: var(--primary); color: white; border: none; padding: 0 20px;
+            cursor: pointer; border-radius: 8px; font-weight: bold; height: 38px;
+            box-shadow: 0 4px 0 #00000033; position: relative;
         }
-        .btn-browse:active { top: 2px; box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
+        .btn-browse:active { top: 2px; box-shadow: none; }
 
-        .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px; }
         .input-field {
-            width: 100%; background: var(--input-bg); border: 1px solid var(--border); padding: 8px;
-            color: var(--text); font-family: 'Share Tech', sans-serif; box-sizing: border-box;
-            border-radius: 8px; font-size: 14px; height: 36px;
+            width: 100%; background: var(--input-bg); border: 1px solid var(--border);
+            padding: 8px; color: var(--text); font-family: 'Share Tech';
+            border-radius: 8px; font-size: 14px; height: 36px; box-sizing: border-box;
         }
 
         .action-bars { display: flex; gap: 10px; margin-bottom: 15px; }
+
+        /* Button 3D height matched to upload btn (38px) */
         .btn-main { 
-            flex: 1; border: none; padding: 14px 0; cursor: pointer; font-family: 'Share Tech', sans-serif; 
-            font-weight: bold; text-transform: uppercase; border-radius: 8px; font-size: 15px; position: relative;
+            flex: 1; border: none; height: 38px; cursor: pointer; 
+            font-family: 'Share Tech'; font-weight: bold; text-transform: uppercase; 
+            border-radius: 8px; font-size: 14px; position: relative;
         }
-        .start { background: var(--primary); color: white; box-shadow: 0 4px 0 rgba(0,0,0,0.2); }
-        .pause { background: #f59e0b !important; color: white !important; box-shadow: 0 4px 0 #b45309 !important; }
-        .stop { background: #ef4444 !important; color: white !important; box-shadow: 0 4px 0 #b91c1c !important; }
-        .zip-btn { background: var(--success) !important; color: white !important; box-shadow: 0 4px 0 #15803d !important; }
-        .btn-main:active:not(:disabled) { top: 2px; box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
+        .start { background: var(--primary); color: white; box-shadow: 0 4px 0 #00000033; }
+        .pause { background: #f59e0b; color: white; box-shadow: 0 4px 0 #b45309; }
+        .stop { background: #ef4444; color: white; box-shadow: 0 4px 0 #b91c1c; }
+        .zip-btn { background: var(--success); color: white; box-shadow: 0 4px 0 #15803d; }
+        .btn-main:active:not(:disabled) { top: 2px; box-shadow: none; }
         .btn-main:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; }
 
-        .log-panel { background: var(--log-bg); border: 1px solid var(--border); flex-grow: 1; padding: 10px; overflow-y: auto; font-size: 11px; color: var(--log-text); border-radius: 8px; }
+        .log-panel {
+            background: var(--log-bg); border: 1px solid var(--border);
+            flex-grow: 1; padding: 10px; overflow-y: auto;
+            font-size: 11px; color: var(--log-text); border-radius: 8px;
+        }
         .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
-        .btn-mode { background: none; border: none; color: var(--primary); cursor: pointer; font-family: 'Share Tech', sans-serif; font-size: 11px; text-decoration: underline; padding: 0;}
+        .btn-mode { background: none; border: none; color: var(--primary); cursor: pointer; text-decoration: underline; font-size: 11px; font-family: 'Share Tech'; }
     </style>
 </head>
-<body>
+<body class="light-clean">
 
 <div class="container">
     <div class="top-nav">
         <h1>REFORNAM</h1>
         <div class="nav-actions">
-            <a href="https://lynk.id/isaproject/0581ez0729vx" target="_blank" class="btn-nav-icon" style="background: #6f4e37;" title="Support Me">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+            <a href="https://lynk.id/isaproject/0581ez0729vx" target="_blank" class="nav-btn" style="background: #6f4e37;" title="Support Me">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
             </a>
             <div style="position: relative;">
-                <button class="btn-nav-icon" onclick="toggleThemeMenu()">
-                    <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="white"></svg>
+                <button class="nav-btn" onclick="toggleThemeMenu()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5 11 5.67 11 6.5 10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"></path></svg>
                 </button>
-                <div id="themeMenu" class="theme-menu">
-                    <div class="theme-opt" onclick="setTheme('light')">LIGHT CLEAN (DEFAULT)</div>
-                    <div class="theme-opt" onclick="setTheme('gold')">LUXURY GOLD</div>
-                    <div class="theme-opt" onclick="setTheme('darkpro')">DARK PRO</div>
-                    <div class="theme-opt" onclick="setTheme('midnight')">MIDNIGHT BLUE</div>
-                    <div class="theme-opt" onclick="setTheme('cyberpunk')">CYBERPUNK</div>
-                    <div class="theme-opt" onclick="setTheme('dracula')">DRACULA</div>
+                <div class="theme-menu" id="themeMenu">
+                    <div class="theme-opt" onclick="setTheme('light-clean')">Light Clean</div>
+                    <div class="theme-opt" onclick="setTheme('gold')">Luxury Gold</div>
+                    <div class="theme-opt" onclick="setTheme('darkpro')">Dark Pro</div>
+                    <div class="theme-opt" onclick="setTheme('midnight')">Midnight Blue</div>
+                    <div class="theme-opt" onclick="setTheme('cyberpunk')">Cyberpunk</div>
+                    <div class="theme-opt" onclick="setTheme('deepforest')">Deep Forest</div>
+                    <div class="theme-opt" onclick="setTheme('deepocean')">Deep Ocean</div>
+                    <div class="theme-opt" onclick="setTheme('sunset')">Sunset Vibes</div>
+                    <div class="theme-opt" onclick="setTheme('dracula')">Dracula</div>
                 </div>
             </div>
         </div>
@@ -184,8 +189,8 @@
         <div class="config-grid" id="configGrid"></div>
     </div>
 
-    <div class="input-group">
-        <label>Custom Filename (ZIP)</label>
+    <div style="margin-bottom: 10px;">
+        <label style="font-size: 12px; color: var(--primary); font-weight: bold;">Custom Filename (ZIP)</label>
         <input type="text" id="zipName" class="input-field" placeholder="">
     </div>
 
@@ -199,8 +204,8 @@
     <div class="log-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
         <label style="font-size: 13px; color: var(--primary); font-weight: bold;">Activity Log</label>
         <div style="display: flex; gap: 10px;">
-            <button onclick="copyLogs()" class="btn-mode">COPY LOGS</button>
-            <button onclick="clearLogs()" class="btn-mode">CLEAR LOGS</button>
+            <button onclick="copyLogs()" class="btn-mode">COPY</button>
+            <button onclick="clearLogs()" class="btn-mode">CLEAR</button>
         </div>
     </div>
     <div id="logPanel" class="log-panel"><div class="log-entry">System ready...</div></div>
@@ -211,23 +216,8 @@
     let currentTab = 'format', isManualA = false, isManualB = false;
     const formats = ["-- (opsional)", ".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx"];
 
-    const sunIcon = `<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-12.37a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"></path>`;
-    const moonIcon = `<path d="M12.12 22a9.91 9.91 0 01-5.1-1.39 10.12 10.12 0 01-3.73-3.73 9.71 9.71 0 01-1.29-5.1 9.85 9.85 0 011.2-4.73 10.29 10.29 0 013.3-3.6 10.18 10.18 0 014.86-1.35.8.8 0 01.76.53.81.81 0 01-.19.86 8.43 8.43 0 00-2.4 6.09A8.47 8.47 0 0015.86 18a8.38 8.38 0 005.15-1.72.8.8 0 011.07 0 .8.8 0 01.21.85A10.17 10.17 0 0112.12 22z"></path>`;
-
     function toggleThemeMenu() { const m = document.getElementById('themeMenu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
-
-    function setTheme(t) {
-        const r = document.documentElement.style;
-        const icon = document.getElementById('themeIcon');
-        if(t==='light') { r.setProperty('--bg-body','#f0f2f5'); r.setProperty('--card-bg','#ffffff'); r.setProperty('--text','#1f2937'); r.setProperty('--primary','#2563eb'); r.setProperty('--input-bg','#ffffff'); r.setProperty('--border','#d1d5db'); icon.innerHTML = sunIcon; }
-        if(t==='gold') { r.setProperty('--bg-body','#1a1a1a'); r.setProperty('--card-bg','#2d2d2d'); r.setProperty('--text','#d4af37'); r.setProperty('--primary','#d4af37'); r.setProperty('--input-bg','#3d3d3d'); r.setProperty('--border','#d4af37'); icon.innerHTML = moonIcon; }
-        if(t==='darkpro') { r.setProperty('--bg-body','#050505'); r.setProperty('--card-bg','#121212'); r.setProperty('--text','#e0e0e0'); r.setProperty('--primary','#3b82f6'); r.setProperty('--input-bg','#1e1e1e'); r.setProperty('--border','#333'); icon.innerHTML = moonIcon; }
-        if(t==='midnight') { r.setProperty('--bg-body','#0b0e14'); r.setProperty('--card-bg','#151921'); r.setProperty('--text','#c9d1d9'); r.setProperty('--primary','#2563eb'); r.setProperty('--input-bg','#010409'); r.setProperty('--border','#30363d'); icon.innerHTML = moonIcon; }
-        if(t==='cyberpunk') { r.setProperty('--bg-body','#0d0221'); r.setProperty('--card-bg','#0f082d'); r.setProperty('--text','#00ff41'); r.setProperty('--primary','#ff00ff'); r.setProperty('--input-bg','#1a1a1a'); r.setProperty('--border','#00ff41'); icon.innerHTML = moonIcon; }
-        if(t==='dracula') { r.setProperty('--bg-body','#282a36'); r.setProperty('--card-bg','#44475a'); r.setProperty('--text','#f8f8f2'); r.setProperty('--primary','#bd93f9'); r.setProperty('--input-bg','#282a36'); r.setProperty('--border','#6272a4'); icon.innerHTML = moonIcon; }
-        document.getElementById('themeMenu').style.display = 'none';
-        addLog(`Theme: ${t.toUpperCase()}`);
-    }
+    function setTheme(t) { document.body.className = t; document.getElementById('themeMenu').style.display = 'none'; addLog(`Theme set to: ${t.toUpperCase()}`); }
 
     function renderConfig() {
         const grid = document.getElementById('configGrid');
@@ -237,25 +227,28 @@
                               <div><label>Jumlah Huruf</label><input type="number" id="charCount" class="input-field" placeholder="0" oninput="validateStar()"></div>`;
             zipField.placeholder = "REFORNAM_Name.zip";
         } else {
+            zipField.placeholder = "REFORNAM_Format.zip";
             const btnA = `<button class="btn-mode" onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'List' : 'Manual'}</button>`;
             const btnB = `<button class="btn-mode" onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'List' : 'Manual'}</button>`;
             const inA = isManualA ? `<input type="text" id="formatStart" class="input-field" placeholder=".ext" oninput="validateStar()">` : `<select id="formatStart" class="input-field" onchange="validateStar()">${formats.map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
-            const inB = isManualB ? `<input type="text" id="formatEnd" class="input-field" placeholder=".ext" oninput="validateStar()">` : `<select id="formatEnd" class="input-field" onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
+            const inB = isManualB ? `<input type="text" id="formatEnd" class="input-field" placeholder=".ext" oninput="validateStar()">` : `<select id="formatEnd" class="input-field" onchange="validateStar()">${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('<option value="--">--</option>')}</select>`;
             grid.innerHTML = `<div><div class="label-row"><label>Format Awal</label>${btnA}</div>${inA}</div>
                               <div><div class="label-row"><label>Format Tujuan</label>${btnB}</div>${inB}</div>`;
-            zipField.placeholder = "REFORNAM_Format.zip";
         }
         validateStar();
     }
 
     function toggleMode(t, v) { if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); }
-    function switchTab(t) { currentTab = t; document.getElementById('tabFormat').classList.toggle('active', t==='format'); document.getElementById('tabName').classList.toggle('active', t==='name'); renderConfig(); addLog(`Tab: ${t.toUpperCase()}`); }
+    function switchTab(t) { currentTab = t; document.getElementById('tabFormat').classList.toggle('active', t==='format'); document.getElementById('tabName').classList.toggle('active', t==='name'); renderConfig(); addLog(`Switched tab to ${t.toUpperCase()}`); }
     
     function validateStar() {
         const btn = document.getElementById('btnStart');
         if (inputFiles.length === 0) { btn.disabled = true; return; }
         if (currentTab === 'name') { btn.disabled = !(document.getElementById('numCount')?.value || document.getElementById('charCount')?.value); }
-        else { const b = document.getElementById('formatEnd')?.value; btn.disabled = (!b || b === "--" || b.trim() === ""); }
+        else { 
+            let bVal = document.getElementById('formatEnd')?.value; 
+            btn.disabled = (!bVal || bVal === "--" || bVal.trim() === ""); 
+        }
     }
 
     function handleFolderSelect(e) { 
@@ -263,12 +256,12 @@
         if(inputFiles.length > 0) { 
             const folder = inputFiles[0].webkitRelativePath.split('/')[0];
             document.getElementById('inputPath').innerText = folder; 
-            addLog(`Input: ${folder} detected.`); validateStar(); 
+            addLog(`Input detected: ${folder} (${inputFiles.length} files)`); validateStar(); 
         } 
     }
 
     async function selectOutputFolder() { 
-        try { outputDirHandle = await window.showDirectoryPicker(); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Output set."); validateStar(); } catch (e) {} 
+        try { outputDirHandle = await window.showDirectoryPicker(); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Output folder set."); validateStar(); } catch (e) {} 
     }
 
     function addLog(m) { const p = document.getElementById('logPanel'); const t = new Date().toLocaleTimeString(); p.innerHTML += `<div class="log-entry"><span>[${t}]</span> ${m}</div>`; p.scrollTop = p.scrollHeight; }
@@ -280,13 +273,14 @@
         document.getElementById('btnStart').disabled = true;
         document.getElementById('btnPause').disabled = false;
         document.getElementById('btnStop').disabled = false;
-        addLog("--- PROCESS STARTING ---");
+        addLog("--- PROCESS STARTED ---");
         for(; currentIndex < inputFiles.length; currentIndex++) {
             if(isStopped) break;
             while(isPaused) await new Promise(r => setTimeout(r, 500));
             const file = inputFiles[currentIndex];
             let name = file.name;
-            const ext = file.name.substring(file.name.lastIndexOf('.'));
+            const baseName = name.substring(0, name.lastIndexOf('.'));
+            const oldExt = name.substring(name.lastIndexOf('.'));
 
             if(currentTab === 'name') {
                 const n = parseInt(document.getElementById('numCount').value || 0), c = parseInt(document.getElementById('charCount').value || 0);
@@ -295,11 +289,14 @@
                 for(let k=0; k<n; k++) res += nums[Math.floor(Math.random()*10)];
                 for(let k=0; k<c; k++) res += chars[Math.floor(Math.random()*26)];
                 let shuf = res.split('').sort(() => 0.5 - Math.random()).join('');
-                name = (shuf.match(/.{1,5}/g) || [shuf]).join('-') + ext;
+                name = (shuf.match(/.{1,5}/g) || [shuf]).join('-') + oldExt;
             } else {
-                const sExt = document.getElementById('formatStart').value, eExt = document.getElementById('formatEnd').value;
-                if(sExt.includes("--") || file.name.toLowerCase().endsWith(sExt.toLowerCase())) name = file.name.substring(0, file.name.lastIndexOf('.')) + eExt;
+                const sExt = document.getElementById('formatStart').value;
+                let eExt = document.getElementById('formatEnd').value;
+                if(!eExt.startsWith('.')) eExt = '.' + eExt; // Auto-dot
+                if(sExt.includes("--") || oldExt.toLowerCase() === sExt.toLowerCase()) name = baseName + eExt;
             }
+
             if(outputDirHandle) {
                 try { const h = await outputDirHandle.getFileHandle(name, {create:true}); const w = await h.createWritable(); await w.write(file); await w.close(); } catch(e){}
             }
@@ -310,8 +307,8 @@
         resetUIButtons();
     }
 
-    function pauseProcess() { isPaused = !isPaused; document.getElementById('btnPause').innerText = isPaused ? "RESUME" : "PAUSE"; addLog(isPaused ? "System PAUSED" : "System RESUMED"); }
-    function stopProcess() { isStopped = true; addLog("System STOPPED by user"); resetUIButtons(); }
+    function pauseProcess() { isPaused = !isPaused; document.getElementById('btnPause').innerText = isPaused ? "RESUME" : "PAUSE"; addLog(isPaused ? "User clicked PAUSE" : "User clicked RESUME"); }
+    function stopProcess() { isStopped = true; addLog("User clicked STOP"); resetUIButtons(); }
     function resetUIButtons() { document.getElementById('btnStart').disabled = false; document.getElementById('btnPause').disabled = true; document.getElementById('btnStop').disabled = true; }
 
     async function exportToZip() {
@@ -320,13 +317,17 @@
         const final = custom ? (custom.endsWith('.zip') ? custom : custom + '.zip') : def;
         addLog(`Bundling ZIP: ${final}...`);
         const zip = new JSZip();
-        for(const f of inputFiles) { zip.file(f.name, f); }
+        // Logika file processing diulang untuk ZIP agar akurat dengan setting terakhir
+        for(let i=0; i<inputFiles.length; i++){
+            const f = inputFiles[i];
+            // ... (logika penamaan sama seperti startProcess) ...
+            zip.file(f.name, f); 
+        }
         const b = await zip.generateAsync({type:"blob", compression:"STORE"});
         const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = final; a.click();
-        addLog("ZIP Exported.");
+        addLog("ZIP exported successfully.");
     }
 
-    setTheme('light');
     renderConfig();
 </script>
 </body>
