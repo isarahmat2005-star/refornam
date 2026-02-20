@@ -22,7 +22,7 @@
             --grid-color: rgba(37, 99, 235, 0.1);
         }
 
-        /* Variasi Tema Lengkap */
+        /* Variasi Tema Lengkap Sesuai Gambar */
         body.light-clean { --primary: #2563eb; --bg-body: #f0f2f5; --card-bg: #ffffff; --text: #1f2937; --input-bg: #ffffff; --border: #d1d5db; }
         body.luxury-gold { --primary: #d4af37; --bg-body: #1a1a1a; --card-bg: #2d2d2d; --text: #d4af37; --input-bg: #3d3d3d; --border: #d4af37; }
         body.dark-pro { --primary: #3b82f6; --bg-body: #050505; --card-bg: #121212; --text: #e0e0e0; --input-bg: #1e1e1e; --border: #333; }
@@ -30,12 +30,8 @@
         body.ocean-breeze { --primary: #0891b2; --bg-body: #ecfeff; --card-bg: #ffffff; --text: #164e63; --input-bg: #f0f9ff; --border: #0891b2; }
         body.cyberpunk { --primary: #ff00ff; --bg-body: #0d0221; --card-bg: #0f082d; --text: #00ff41; --input-bg: #1a1a1a; --border: #00ff41; }
         body.deep-forest { --primary: #15803d; --bg-body: #052e16; --card-bg: #064e3b; --text: #ecfdf5; --input-bg: #022c22; --border: #065f46; }
-        body.deep-ocean { --primary: #0369a1; --bg-body: #082f49; --card-bg: #0c4a6e; --text: #e0f2fe; --input-bg: #082f49; --border: #0369a1; }
-        body.sunset-vibes { --primary: #be123c; --bg-body: #4c0519; --card-bg: #881337; --text: #fff1f2; --input-bg: #4c0519; --border: #be123c; }
         body.warm-coffee { --primary: #6f4e37; --bg-body: #fdf5e6; --card-bg: #faf0e6; --text: #4b3621; --input-bg: #fff; --border: #6f4e37; }
-        body.retro-paper { --primary: #854d0e; --bg-body: #fef3c7; --card-bg: #fffbeb; --text: #451a03; --input-bg: #fef3c7; --border: #d97706; }
         body.dracula { --primary: #bd93f9; --bg-body: #282a36; --card-bg: #44475a; --text: #f8f8f2; --input-bg: #282a36; --border: #6272a4; }
-        body.ultra-minimal { --primary: #111; --bg-body: #fff; --card-bg: #fff; --text: #111; --input-bg: #f5f5f5; --border: #eee; }
 
         body {
             font-family: 'Share Tech', sans-serif;
@@ -150,19 +146,16 @@
                     <svg id="themeIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
                 </button>
                 <div id="themeMenu" class="theme-menu">
-                    <div class="theme-opt" onclick="setTheme('light-clean')">LIGHT CLEAN</div>
+                    <div class="theme-opt" onclick="setTheme('light-clean')">LIGHT CLEAN (DEFAULT)</div>
                     <div class="theme-opt" onclick="setTheme('luxury-gold')">LUXURY GOLD</div>
                     <div class="theme-opt" onclick="setTheme('dark-pro')">DARK PRO</div>
                     <div class="theme-opt" onclick="setTheme('midnight-navy')">MIDNIGHT NAVY</div>
                     <div class="theme-opt" onclick="setTheme('ocean-breeze')">OCEAN BREEZE</div>
                     <div class="theme-opt" onclick="setTheme('cyberpunk')">CYBERPUNK</div>
                     <div class="theme-opt" onclick="setTheme('deep-forest')">DEEP FOREST</div>
-                    <div class="theme-opt" onclick="setTheme('deep-ocean')">DEEP OCEAN</div>
-                    <div class="theme-opt" onclick="setTheme('sunset-vibes')">SUNSET VIBES</div>
                     <div class="theme-opt" onclick="setTheme('warm-coffee')">WARM COFFEE</div>
                     <div class="theme-opt" onclick="setTheme('retro-paper')">RETRO PAPER</div>
                     <div class="theme-opt" onclick="setTheme('dracula')">DRACULA</div>
-                    <div class="theme-opt" onclick="setTheme('ultra-minimal')">ULTRA MINIMAL</div>
                 </div>
             </div>
         </div>
@@ -220,7 +213,7 @@
 <script>
     let inputFiles = [], outputDirHandle = null, isPaused = false, isStopped = false, currentIndex = 0, isProcessing = false;
     let currentTab = 'format', isManualA = false, isManualB = false;
-    let formatZipReady = false, nameZipReady = false; 
+    let processedData = []; // MEMORY MAP UNTUK ZIP
     const formats = ["--", ".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx"];
 
     function toggleThemeMenu() { const m = document.getElementById('themeMenu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
@@ -230,25 +223,23 @@
         const grid = document.getElementById('configGrid');
         const zipField = document.getElementById('zipName');
         const d = isProcessing ? 'disabled' : '';
-        
         if (currentTab === 'name') {
             grid.innerHTML = `<div><label>Jumlah Angka</label><input type="number" id="numCount" class="input-field lock-target" ${d} placeholder="0" oninput="validateStar()"></div>
                               <div><label>Jumlah Huruf</label><input type="number" id="charCount" class="input-field lock-target" ${d} placeholder="0" oninput="validateStar()"></div>`;
             zipField.placeholder = "REFORNAM_Name.zip";
-            document.getElementById('btnZipExport').disabled = !nameZipReady;
         } else {
             grid.innerHTML = `<div><div class="label-row"><label>Format Awal</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'List' : 'Manual'}</button></div>
                               ${isManualA ? `<input type="text" id="formatStart" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : `<select id="formatStart" class="input-field lock-target" ${d} onchange="validateStar()">${formats.map(f => `<option value="${f}">${f === "--" ? "-- (opsional)" : f}</option>`).join('')}</select>`}</div>
                               <div><div class="label-row"><label>Format Tujuan</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'List' : 'Manual'}</button></div>
                               ${isManualB ? `<input type="text" id="formatEnd" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : `<select id="formatEnd" class="input-field lock-target" ${d} onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`}</div>`;
             zipField.placeholder = "REFORNAM_Format.zip";
-            document.getElementById('btnZipExport').disabled = !formatZipReady;
         }
+        document.getElementById('btnZipExport').disabled = true; // Nonaktifkan ZIP saat pindah/render ulang
         validateStar();
     }
 
     function toggleMode(t, v) { if(isProcessing) return; if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); }
-    function switchTab(t) { if(isProcessing) return; currentTab = t; document.getElementById('tabFormat').className = 'btn-tab ' + (t==='format'?'active':''); document.getElementById('tabName').className = 'btn-tab ' + (t==='name'?'active':''); renderConfig(); addLog(`Switched to tab: ${t.toUpperCase()}`); }
+    function switchTab(t) { if(isProcessing) return; currentTab = t; document.getElementById('tabFormat').className = 'btn-tab ' + (t==='format'?'active':''); document.getElementById('tabName').className = 'btn-tab ' + (t==='name'?'active':''); renderConfig(); addLog(`Switched: ${t.toUpperCase()}`); }
     
     function validateStar() {
         const btn = document.getElementById('btnStart');
@@ -257,17 +248,14 @@
         else { let b = document.getElementById('formatEnd')?.value; btn.disabled = (!b || b === "--" || b.trim() === ""); }
     }
 
-    function handleFolderSelect(e) { inputFiles = Array.from(e.target.files); if(inputFiles.length > 0) { document.getElementById('inputPath').innerText = inputFiles[0].webkitRelativePath.split('/')[0]; addLog(`Input linked: ${inputFiles.length} files`); validateStar(); } }
-    async function selectOutputFolder() { try { outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Output folder linked."); validateStar(); } catch (e) {} }
+    function handleFolderSelect(e) { inputFiles = Array.from(e.target.files); if(inputFiles.length > 0) { document.getElementById('inputPath').innerText = inputFiles[0].webkitRelativePath.split('/')[0]; addLog(`Files detected: ${inputFiles.length}`); validateStar(); } }
+    async function selectOutputFolder() { try { outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Folder Linked."); validateStar(); } catch (e) {} }
 
     function addLog(m) { const p = document.getElementById('logPanel'); const t = new Date().toLocaleTimeString(); p.innerHTML += `<div class="log-entry"><span>[${t}]</span> ${m}</div>`; p.scrollTop = p.scrollHeight; }
     function clearLogs() { document.getElementById('logPanel').innerHTML = ''; }
     function copyLogs() { navigator.clipboard.writeText(Array.from(document.querySelectorAll('.log-entry')).map(e=>e.innerText).join('\n')).then(()=>alert("Logs copied!")); }
 
-    function setLockUI(isLocked) {
-        isProcessing = isLocked;
-        document.querySelectorAll('.lock-target').forEach(el => el.disabled = isLocked);
-    }
+    function setLockUI(isLocked) { isProcessing = isLocked; document.querySelectorAll('.lock-target').forEach(el => el.disabled = isLocked); }
 
     function generateNewName(file) {
         const ext = file.name.substring(file.name.lastIndexOf('.'));
@@ -289,10 +277,8 @@
     }
 
     async function startProcess() {
-        isStopped = false; isPaused = false; currentIndex = 0;
-        setLockUI(true);
-        document.getElementById('btnPause').disabled = false;
-        document.getElementById('btnStop').disabled = false;
+        isStopped = false; isPaused = false; currentIndex = 0; processedData = []; 
+        setLockUI(true); document.getElementById('btnPause').disabled = false; document.getElementById('btnStop').disabled = false;
         addLog("--- PROCESS STARTED ---");
         
         for(; currentIndex < inputFiles.length; currentIndex++) {
@@ -301,6 +287,7 @@
             
             const file = inputFiles[currentIndex];
             const name = generateNewName(file);
+            processedData.push({ file: file, newName: name }); // Simpan ke Memory Map
 
             if(outputDirHandle) {
                 try {
@@ -312,14 +299,12 @@
             } else { addLog(`Buffered: ${name}`); }
         }
         addLog("--- PROCESS COMPLETE ---");
-        if(currentTab === 'format') { formatZipReady = true; nameZipReady = false; } else { nameZipReady = true; formatZipReady = false; }
-        setLockUI(false);
-        renderConfig();
+        setLockUI(false); document.getElementById('btnZipExport').disabled = false;
         resetUIButtons();
     }
 
     function pauseProcess() { isPaused = !isPaused; document.getElementById('btnPause').innerText = isPaused ? "RESUME" : "PAUSE"; addLog(isPaused ? "System PAUSED" : "System RESUMED"); }
-    function stopProcess() { isStopped = true; addLog("System STOPPED by user"); setLockUI(false); resetUIButtons(); renderConfig(); }
+    function stopProcess() { isStopped = true; addLog("System STOPPED"); setLockUI(false); resetUIButtons(); }
     function resetUIButtons() { document.getElementById('btnPause').disabled = true; document.getElementById('btnStop').disabled = true; document.getElementById('btnPause').innerText = "PAUSE"; }
 
     async function exportToZip() {
@@ -329,9 +314,8 @@
         addLog(`Bundling ZIP: ${final}...`);
         
         const zip = new JSZip();
-        inputFiles.forEach(f => {
-            const transformedName = generateNewName(f); // Mengambil nama/format hasil perubahan
-            zip.file(transformedName, f);
+        processedData.forEach(item => {
+            zip.file(item.newName, item.file); // Mengambil file asli dengan nama baru yang sudah divalidasi
         });
         
         const b = await zip.generateAsync({type:"blob", compression:"STORE"});
