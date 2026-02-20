@@ -23,12 +23,16 @@
         }
 
         /* Variasi Tema */
-        body.gold { --primary: #d4af37; --bg-body: #1a1a1a; --card-bg: #2d2d2d; --text: #d4af37; --input-bg: #3d3d3d; --border: #d4af37; --grid-color: rgba(212,175,55,0.1); }
-        body.darkpro { --primary: #3b82f6; --bg-body: #050505; --card-bg: #121212; --text: #e0e0e0; --input-bg: #1e1e1e; --border: #333; --grid-color: rgba(255,255,255,0.03); }
-        body.midnight { --primary: #2563eb; --bg-body: #0b0e14; --card-bg: #151921; --text: #c9d1d9; --input-bg: #010409; --border: #30363d; --grid-color: rgba(37,99,235,0.1); }
+        body.light-clean { --primary: #2563eb; --bg-body: #f0f2f5; --card-bg: #ffffff; --text: #1f2937; --input-bg: #ffffff; --border: #d1d5db; --grid-color: rgba(37, 99, 235, 0.1); }
+        body.luxury-gold { --primary: #d4af37; --bg-body: #1a1a1a; --card-bg: #2d2d2d; --text: #d4af37; --input-bg: #3d3d3d; --border: #d4af37; --grid-color: rgba(212,175,55,0.1); }
+        body.dark-pro { --primary: #3b82f6; --bg-body: #050505; --card-bg: #121212; --text: #e0e0e0; --input-bg: #1e1e1e; --border: #333; --grid-color: rgba(255,255,255,0.03); }
+        body.midnight-navy { --primary: #1e3a8a; --bg-body: #020617; --card-bg: #0f172a; --text: #cbd5e1; --input-bg: #020617; --border: #1e3a8a; --grid-color: rgba(30,58,138,0.2); }
         body.cyberpunk { --primary: #ff00ff; --bg-body: #0d0221; --card-bg: #0f082d; --text: #00ff41; --input-bg: #1a1a1a; --border: #00ff41; --grid-color: rgba(0,255,65,0.1); }
-        body.forest { --primary: #15803d; --bg-body: #052e16; --card-bg: #064e3b; --text: #ecfdf5; --input-bg: #022c22; --border: #065f46; --grid-color: rgba(21,128,61,0.1); }
-        body.coffee { --primary: #6f4e37; --bg-body: #fdf5e6; --card-bg: #faf0e6; --text: #4b3621; --input-bg: #fff; --border: #6f4e37; --grid-color: rgba(111,78,55,0.1); }
+        body.deep-forest { --primary: #15803d; --bg-body: #052e16; --card-bg: #064e3b; --text: #ecfdf5; --input-bg: #022c22; --border: #065f46; --grid-color: rgba(21,128,61,0.1); }
+        body.deep-ocean { --primary: #0369a1; --bg-body: #082f49; --card-bg: #0c4a6e; --text: #e0f2fe; --input-bg: #082f49; --border: #0369a1; --grid-color: rgba(3,105,161,0.2); }
+        body.sunset-vibes { --primary: #be123c; --bg-body: #4c0519; --card-bg: #881337; --text: #fff1f2; --input-bg: #4c0519; --border: #be123c; --grid-color: rgba(190,18,60,0.2); }
+        body.warm-coffee { --primary: #6f4e37; --bg-body: #fdf5e6; --card-bg: #faf0e6; --text: #4b3621; --input-bg: #fff; --border: #6f4e37; --grid-color: rgba(111,78,55,0.1); }
+        body.dracula { --primary: #bd93f9; --bg-body: #282a36; --card-bg: #44475a; --text: #f8f8f2; --input-bg: #282a36; --border: #6272a4; --grid-color: rgba(189,147,249,0.1); }
 
         body {
             font-family: 'Share Tech', sans-serif;
@@ -36,14 +40,9 @@
             background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
             background-size: 20px 20px;
             color: var(--text);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            transition: all 0.3s ease;
-            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; margin: 0; padding: 0;
+            transition: all 0.3s ease; overflow: hidden;
         }
 
         .container {
@@ -63,17 +62,17 @@
         .btn-nav-icon {
             background: var(--primary); color: white !important; border: none; width: 35px; height: 35px;
             border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 3px 0 rgba(0,0,0,0.2); text-decoration: none;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.2); text-decoration: none; position: relative;
         }
 
         .theme-menu {
             position: absolute; top: 45px; right: 0; background: var(--card-bg);
             border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            display: none; flex-direction: column; z-index: 100; width: 200px;
+            display: none; flex-direction: column; z-index: 100; width: 180px; height: 300px; overflow-y: auto;
         }
         .theme-opt {
             padding: 10px 15px; cursor: pointer; font-size: 11px; border-bottom: 1px solid var(--border);
-            background: var(--card-bg); color: var(--text); font-weight: bold;
+            background: var(--card-bg); color: var(--text); font-weight: bold; text-transform: uppercase;
         }
         .theme-opt:hover { background: var(--primary); color: white; }
 
@@ -88,7 +87,7 @@
         }
         .btn-tab.active { color: white !important; background: var(--primary); border-color: var(--primary); box-shadow: 0 3px 0 rgba(0,0,0,0.2); transform: translateY(-2px); }
 
-        #tabContent { min-height: 200px; }
+        #tabContent { min-height: 190px; }
 
         .input-group { margin-bottom: 10px; }
         .label-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
@@ -106,16 +105,14 @@
             font-family: 'Share Tech', sans-serif; border-radius: 8px; font-weight: bold; font-size: 15px;
             height: 38px; box-shadow: 0 4px 0 rgba(0,0,0,0.2); position: relative;
         }
-        .btn-browse:active:not(:disabled) { top: 2px; box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
-        .btn-browse:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; }
+        .btn-browse:active { top: 2px; box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
 
-        .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px; height: 60px; overflow: hidden;}
+        .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px; height: 60px; }
         .input-field {
             width: 100%; background: var(--input-bg); border: 1px solid var(--border); padding: 8px;
             color: var(--text); font-family: 'Share Tech', sans-serif; box-sizing: border-box;
             border-radius: 8px; font-size: 14px; height: 36px;
         }
-        .input-field:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .action-bars { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn-main { 
@@ -127,37 +124,38 @@
         .pause { background: #f59e0b !important; color: white !important; box-shadow: 0 4px 0 #b45309 !important; }
         .stop { background: #ef4444 !important; color: white !important; box-shadow: 0 4px 0 #b91c1c !important; }
         .zip-btn { background: var(--success) !important; color: white !important; box-shadow: 0 4px 0 #15803d !important; }
-        
         .btn-main:active:not(:disabled) { top: 2px; box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
-        .btn-main:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; top: 0; }
+        .btn-main:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; top: 0 !important; }
 
         .log-panel { background: var(--log-bg); border: 1px solid var(--border); flex-grow: 1; padding: 10px; overflow-y: auto; font-size: 11px; color: var(--log-text); border-radius: 8px; }
         .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
         .btn-mode { background: none; border: none; color: var(--primary); cursor: pointer; font-family: 'Share Tech', sans-serif; font-size: 11px; text-decoration: underline; padding: 0;}
-        .btn-mode:disabled { opacity: 0.5; text-decoration: none; cursor: not-allowed; }
     </style>
 </head>
-<body>
+<body class="light-clean">
 
 <div class="container">
     <div class="top-nav">
         <h1>REFORNAM</h1>
         <div class="nav-actions">
-            <a href="https://lynk.id/isaproject/0581ez0729vx" target="_blank" class="btn-nav-icon" style="background: #6f4e37;" title="Support Me">
+            <a href="https://lynk.id/isaproject/0581ez0729vx" target="_blank" class="btn-nav-icon coffee-link" style="background: #6f4e37;" title="Support Me">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
             </a>
             <div style="position: relative;">
-                <button class="btn-nav-icon" onclick="toggleThemeMenu()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                <button class="btn-nav-icon theme-btn" onclick="toggleThemeMenu()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
                 </button>
                 <div id="themeMenu" class="theme-menu">
-                    <div class="theme-opt" onclick="setTheme('light')">LIGHT CLEAN (DEFAULT)</div>
-                    <div class="theme-opt" onclick="setTheme('gold')">LUXURY GOLD</div>
-                    <div class="theme-opt" onclick="setTheme('darkpro')">DARK PRO</div>
-                    <div class="theme-opt" onclick="setTheme('midnight')">MIDNIGHT BLUE</div>
+                    <div class="theme-opt" onclick="setTheme('light-clean')">LIGHT CLEAN (DEFAULT)</div>
+                    <div class="theme-opt" onclick="setTheme('luxury-gold')">LUXURY GOLD</div>
+                    <div class="theme-opt" onclick="setTheme('dark-pro')">DARK PRO</div>
+                    <div class="theme-opt" onclick="setTheme('midnight-navy')">MIDNIGHT NAVY</div>
                     <div class="theme-opt" onclick="setTheme('cyberpunk')">CYBERPUNK</div>
-                    <div class="theme-opt" onclick="setTheme('forest')">DEEP FOREST</div>
-                    <div class="theme-opt" onclick="setTheme('coffee')">WARM COFFEE</div>
+                    <div class="theme-opt" onclick="setTheme('deep-forest')">DEEP FOREST</div>
+                    <div class="theme-opt" onclick="setTheme('deep-ocean')">DEEP OCEAN</div>
+                    <div class="theme-opt" onclick="setTheme('sunset-vibes')">SUNSET VIBES</div>
+                    <div class="theme-opt" onclick="setTheme('warm-coffee')">WARM COFFEE</div>
+                    <div class="theme-opt" onclick="setTheme('dracula')">DRACULA</div>
                 </div>
             </div>
         </div>
@@ -176,7 +174,7 @@
             <label>Input Folder</label>
             <div class="explorer-bar">
                 <div id="inputPath" class="path-display">Pilih folder sumber...</div>
-                <button id="btnIn" class="btn-browse" onclick="document.getElementById('folderInput').click()">UPLOAD</button>
+                <button class="btn-browse lock-target" onclick="document.getElementById('folderInput').click()">UPLOAD</button>
                 <input type="file" id="folderInput" webkitdirectory directory multiple style="display:none" onchange="handleFolderSelect(event)">
             </div>
         </div>
@@ -184,7 +182,7 @@
             <label>Output Folder (opsional)</label>
             <div class="explorer-bar">
                 <div id="outputPath" class="path-display">Pilih folder tujuan...</div>
-                <button id="btnOut" class="btn-browse" onclick="selectOutputFolder()">UPLOAD</button>
+                <button class="btn-browse lock-target" onclick="selectOutputFolder()">UPLOAD</button>
             </div>
         </div>
         <div class="config-grid" id="configGrid"></div>
@@ -192,14 +190,14 @@
 
     <div class="input-group">
         <label>Custom Filename (ZIP)</label>
-        <input type="text" id="zipName" class="input-field" placeholder="">
+        <input type="text" id="zipName" class="input-field lock-target" placeholder="">
     </div>
 
     <div class="action-bars">
-        <button id="btnStart" class="btn-main start" onclick="startProcess()" disabled>START</button>
+        <button id="btnStart" class="btn-main start lock-target" onclick="startProcess()" disabled>START</button>
         <button id="btnPause" class="btn-main pause" onclick="pauseProcess()" disabled>PAUSE</button>
         <button id="btnStop" class="btn-main stop" onclick="stopProcess()" disabled>STOP</button>
-        <button id="btnZipExport" class="btn-main zip-btn" onclick="exportToZip()" disabled>ZIP</button>
+        <button id="btnZipExport" class="btn-main zip-btn lock-target" onclick="exportToZip()" disabled>ZIP</button>
     </div>
 
     <div class="log-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
@@ -213,38 +211,35 @@
 </div>
 
 <script>
-    let inputFiles = [], outputDirHandle = null, isPaused = false, isStopped = false, currentIndex = 0;
+    let inputFiles = [], outputDirHandle = null, isPaused = false, isStopped = false, currentIndex = 0, isProcessing = false;
     let currentTab = 'format', isManualA = false, isManualB = false;
-    let isProcessing = false;
-    const formats = ["-- (opsional)", ".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx"];
+    const formats = ["--", ".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx"];
 
     function toggleThemeMenu() { const m = document.getElementById('themeMenu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
-    function setTheme(t) { document.body.className = t; document.getElementById('themeMenu').style.display = 'none'; addLog(`Theme changed to: ${t.toUpperCase()}`); }
+    function setTheme(t) { document.body.className = t; document.getElementById('themeMenu').style.display = 'none'; addLog(`Theme set: ${t.replace('-',' ')}`); }
 
     function renderConfig() {
         const grid = document.getElementById('configGrid');
         const zipField = document.getElementById('zipName');
         const disabledAttr = isProcessing ? 'disabled' : '';
-        
         if (currentTab === 'name') {
-            grid.innerHTML = `<div><label>Jumlah Angka</label><input type="number" id="numCount" class="input-field" placeholder="0" oninput="validateStar()" ${disabledAttr}></div>
-                              <div><label>Jumlah Huruf</label><input type="number" id="charCount" class="input-field" placeholder="0" oninput="validateStar()" ${disabledAttr}></div>`;
+            grid.innerHTML = `<div><label>Jumlah Angka</label><input type="number" id="numCount" class="input-field lock-target" ${disabledAttr} placeholder="0" oninput="validateStar()"></div>
+                              <div><label>Jumlah Huruf</label><input type="number" id="charCount" class="input-field lock-target" ${disabledAttr} placeholder="0" oninput="validateStar()"></div>`;
             zipField.placeholder = "REFORNAM_Name.zip";
         } else {
             zipField.placeholder = "REFORNAM_Format.zip";
-            const btnA = `<button class="btn-mode" onclick="toggleMode('A', ${!isManualA})" ${disabledAttr}>${isManualA ? 'List' : 'Manual'}</button>`;
-            const btnB = `<button class="btn-mode" onclick="toggleMode('B', ${!isManualB})" ${disabledAttr}>${isManualB ? 'List' : 'Manual'}</button>`;
-            const inA = isManualA ? `<input type="text" id="formatStart" class="input-field" placeholder=".ext" oninput="validateStar()" ${disabledAttr}>` : `<select id="formatStart" class="input-field" onchange="validateStar()" ${disabledAttr}>${formats.map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
-            const inB = isManualB ? `<input type="text" id="formatEnd" class="input-field" placeholder=".ext" oninput="validateStar()" ${disabledAttr}>` : `<select id="formatEnd" class="input-field" onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
+            const btnA = `<button class="btn-mode lock-target" ${disabledAttr} onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'List' : 'Manual'}</button>`;
+            const btnB = `<button class="btn-mode lock-target" ${disabledAttr} onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'List' : 'Manual'}</button>`;
+            const inA = isManualA ? `<input type="text" id="formatStart" class="input-field lock-target" ${disabledAttr} placeholder=".ext" oninput="validateStar()">` : `<select id="formatStart" class="input-field lock-target" ${disabledAttr} onchange="validateStar()">${formats.map(f => `<option value="${f}">${f === "--" ? "-- (opsional)" : f}</option>`).join('')}</select>`;
+            const inB = isManualB ? `<input type="text" id="formatEnd" class="input-field lock-target" ${disabledAttr} placeholder=".ext" oninput="validateStar()">` : `<select id="formatEnd" class="input-field lock-target" ${disabledAttr} onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`;
             grid.innerHTML = `<div><div class="label-row"><label>Format Awal</label>${btnA}</div>${inA}</div>
                               <div><div class="label-row"><label>Format Tujuan</label>${btnB}</div>${inB}</div>`;
         }
-        zipField.disabled = isProcessing;
         validateStar();
     }
 
-    function toggleMode(t, v) { if(!isProcessing) { if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); } }
-    function switchTab(t) { if(!isProcessing) { currentTab = t; document.getElementById('tabFormat').classList.toggle('active', t==='format'); document.getElementById('tabName').classList.toggle('active', t==='name'); renderConfig(); addLog(`Switched to tab: ${t.toUpperCase()}`); } }
+    function toggleMode(t, v) { if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); }
+    function switchTab(t) { if(isProcessing) return; currentTab = t; document.getElementById('tabFormat').className = 'btn-tab ' + (t==='format'?'active':''); document.getElementById('tabName').className = 'btn-tab ' + (t==='name'?'active':''); renderConfig(); addLog(`Switched to tab: ${t.toUpperCase()}`); }
     
     function validateStar() {
         const btn = document.getElementById('btnStart');
@@ -253,52 +248,24 @@
         else { let b = document.getElementById('formatEnd')?.value; btn.disabled = (!b || b === "--" || b.trim() === ""); }
     }
 
-    function handleFolderSelect(e) { 
-        if(!isProcessing) {
-            inputFiles = Array.from(e.target.files); 
-            if(inputFiles.length > 0) { 
-                const folder = inputFiles[0].webkitRelativePath.split('/')[0];
-                document.getElementById('inputPath').innerText = folder; 
-                addLog(`Input detected: ${folder} (${inputFiles.length} files)`); validateStar(); 
-            } 
-        }
-    }
-
-    async function selectOutputFolder() { 
-        if(!isProcessing) {
-            try { outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Output folder set."); validateStar(); } 
-            catch (e) { addLog("Folder selection canceled."); } 
-        }
-    }
+    function handleFolderSelect(e) { inputFiles = Array.from(e.target.files); if(inputFiles.length > 0) { document.getElementById('inputPath').innerText = inputFiles[0].webkitRelativePath.split('/')[0]; addLog(`Input detected: ${inputFiles.length} files`); validateStar(); } }
+    async function selectOutputFolder() { try { outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Output folder linked."); validateStar(); } catch (e) {} }
 
     function addLog(m) { const p = document.getElementById('logPanel'); const t = new Date().toLocaleTimeString(); p.innerHTML += `<div class="log-entry"><span>[${t}]</span> ${m}</div>`; p.scrollTop = p.scrollHeight; }
     function clearLogs() { document.getElementById('logPanel').innerHTML = ''; }
     function copyLogs() { navigator.clipboard.writeText(Array.from(document.querySelectorAll('.log-entry')).map(e=>e.innerText).join('\n')).then(()=>alert("Logs copied!")); }
 
-    function generateNewName(file) {
-        const originalExt = file.name.substring(file.name.lastIndexOf('.'));
-        if(currentTab === 'name') {
-            const n = parseInt(document.getElementById('numCount').value || 0), c = parseInt(document.getElementById('charCount').value || 0);
-            const nums = "0123456789", chars = "abcdefghijklmnopqrstuvwxyz";
-            let res = "";
-            for(let k=0; k<n; k++) res += nums[Math.floor(Math.random()*10)];
-            for(let k=0; k<c; k++) res += chars[Math.floor(Math.random()*26)];
-            let shuf = res.split('').sort(() => 0.5 - Math.random()).join('');
-            return (shuf.match(/.{1,5}/g) || [shuf]).join('-') + originalExt;
-        } else {
-            const sExt = document.getElementById('formatStart').value;
-            let eExt = document.getElementById('formatEnd').value;
-            if(!eExt.startsWith('.')) eExt = '.' + eExt;
-            if(sExt.includes("--") || file.name.toLowerCase().endsWith(sExt.toLowerCase())) {
-                return file.name.substring(0, file.name.lastIndexOf('.')) + eExt;
-            }
-            return file.name;
-        }
+    function setLockUI(isLocked) {
+        isProcessing = isLocked;
+        document.querySelectorAll('.lock-target').forEach(el => el.disabled = isLocked);
+        document.querySelectorAll('.btn-tab').forEach(el => { if(isLocked) el.style.cursor = 'not-allowed'; else el.style.cursor = 'pointer'; });
     }
 
     async function startProcess() {
-        isProcessing = true; isStopped = false; isPaused = false; currentIndex = 0;
-        updateUIState();
+        isStopped = false; isPaused = false; currentIndex = 0;
+        setLockUI(true);
+        document.getElementById('btnPause').disabled = false;
+        document.getElementById('btnStop').disabled = false;
         addLog("--- PROCESS STARTED ---");
         
         for(; currentIndex < inputFiles.length; currentIndex++) {
@@ -306,24 +273,39 @@
             while(isPaused) await new Promise(r => setTimeout(r, 500));
             
             const file = inputFiles[currentIndex];
-            const name = generateNewName(file);
+            let originalExt = file.name.substring(file.name.lastIndexOf('.'));
+            let name = file.name;
+
+            if(currentTab === 'name') {
+                const n = parseInt(document.getElementById('numCount').value || 0), c = parseInt(document.getElementById('charCount').value || 0);
+                const nums = "0123456789", chars = "abcdefghijklmnopqrstuvwxyz";
+                let res = "";
+                for(let k=0; k<n; k++) res += nums[Math.floor(Math.random()*10)];
+                for(let k=0; k<c; k++) res += chars[Math.floor(Math.random()*26)];
+                let shuf = res.split('').sort(() => 0.5 - Math.random()).join('');
+                name = (shuf.match(/.{1,5}/g) || [shuf]).join('-') + originalExt;
+            } else {
+                const sExt = document.getElementById('formatStart').value;
+                let eExt = document.getElementById('formatEnd').value;
+                if(!eExt.startsWith('.')) eExt = '.' + eExt;
+                if(sExt.includes("--") || file.name.toLowerCase().endsWith(sExt.toLowerCase())) {
+                    name = file.name.substring(0, file.name.lastIndexOf('.')) + eExt;
+                }
+            }
 
             if(outputDirHandle) {
                 try {
-                    const fileHandle = await outputDirHandle.getFileHandle(name, { create: true });
-                    const writable = await fileHandle.createWritable();
-                    await writable.write(file);
-                    await writable.close();
-                    addLog(`Saved: ${name}`);
-                } catch (e) { addLog(`Error saving ${file.name}`); }
-            } else {
-                addLog(`Staged for ZIP: ${name}`);
-            }
+                    const handle = await outputDirHandle.getFileHandle(name, { create: true });
+                    const wr = await handle.createWritable();
+                    await wr.write(file); await wr.close();
+                    addLog(`Saved to Folder: ${name}`);
+                } catch(e) { addLog(`Error: ${e.message}`); }
+            } else { addLog(`Processed: ${name}`); }
         }
-        addLog(isStopped ? "--- PROCESS STOPPED ---" : "--- PROCESS COMPLETE ---");
-        isProcessing = false;
+        addLog("--- PROCESS COMPLETE ---");
+        setLockUI(false);
         document.getElementById('btnZipExport').disabled = false;
-        updateUIState();
+        resetUIButtons();
     }
 
     function pauseProcess() { 
@@ -331,21 +313,8 @@
         document.getElementById('btnPause').innerText = isPaused ? "RESUME" : "PAUSE"; 
         addLog(isPaused ? "System PAUSED" : "System RESUMED"); 
     }
-    
-    function stopProcess() { isStopped = true; addLog("User pressed STOP"); }
-    
-    function updateUIState() {
-        const disabled = isProcessing;
-        document.getElementById('btnStart').disabled = disabled || inputFiles.length === 0;
-        document.getElementById('btnPause').disabled = !disabled;
-        document.getElementById('btnStop').disabled = !disabled;
-        document.getElementById('btnIn').disabled = disabled;
-        document.getElementById('btnOut').disabled = disabled;
-        document.getElementById('tabFormat').disabled = disabled;
-        document.getElementById('tabName').disabled = disabled;
-        if(!disabled) document.getElementById('btnPause').innerText = "PAUSE";
-        renderConfig();
-    }
+    function stopProcess() { isStopped = true; addLog("System STOPPED by user"); setLockUI(false); resetUIButtons(); }
+    function resetUIButtons() { document.getElementById('btnPause').disabled = true; document.getElementById('btnStop').disabled = true; document.getElementById('btnPause').innerText = "PAUSE"; }
 
     async function exportToZip() {
         const custom = document.getElementById('zipName').value.trim();
@@ -353,7 +322,7 @@
         const final = custom ? (custom.endsWith('.zip') ? custom : custom + '.zip') : def;
         addLog(`Bundling ZIP: ${final}...`);
         const zip = new JSZip();
-        for(const f of inputFiles) { const name = generateNewName(f); zip.file(name, f); }
+        for(const f of inputFiles) zip.file(f.name, f);
         const b = await zip.generateAsync({type:"blob", compression:"STORE"});
         const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = final; a.click();
         addLog("ZIP Exported Successfully.");
