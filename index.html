@@ -31,31 +31,32 @@
             min-height: 100dvh;
         }
 
-        /* Kartu Judul Dengan Latar Belakang & Jarak Rapat */
+        /* Kartu Judul: Teks Lebih Besar, Tengah Presisi, Jarak Lebih Rapat */
         .title-card {
-            background-color: var(--card-bg); /* Memastikan latar belakang tetap ada */
+            background-color: var(--card-bg); 
             width: 100%; 
             max-width: 600px;
-            padding: 15px; 
+            padding: 10px 15px; /* Padding atas-bawah dikurangi agar kotak lebih ramping */
             border-radius: 12px; 
             border: 2px solid var(--border);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             text-align: center; 
-            margin-bottom: 8px; /* Jarak rapat ke kartu bawah */
+            margin-bottom: 5px; /* JARAK DI SINI: Diubah ke 5px agar sangat rapat */
             box-sizing: border-box;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: center; /* Memastikan teks horizontal di tengah */
+            align-items: center;    /* Memastikan teks vertikal di tengah */
+            z-index: 6;
         }
 
         .title-card h1 {
             margin: 0; 
             color: var(--primary); 
-            font-size: 38px; /* Ukuran besar */
-            font-weight: 900; /* Tebal kapital */
-            letter-spacing: 6px; 
+            font-size: 44px; /* UKURAN TEKS: Dibesarkan lagi dari 38px ke 44px */
+            font-weight: 900; 
+            letter-spacing: 8px; /* Jarak antar huruf ditambah agar lebih gagah */
             text-transform: uppercase;
-            border: none; /* Garis bawah dihapus */
+            border: none; 
             line-height: 1;
         }
         
