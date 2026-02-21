@@ -22,6 +22,44 @@
             --grid-color: rgba(37, 99, 235, 0.1);
         }
 
+        body {
+            display: flex;
+            flex-direction: column; /* Menyusun kartu judul dan container secara vertikal */
+            gap: 15px; /* Jarak antara kartu judul dan container utama */
+            justify-content: center;
+            align-items: center;
+            min-height: 100dvh;
+        }
+
+        .title-card {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 600px;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .title-card h1 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 32px;
+            font-weight: 900; /* Tebal maksimal */
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
         /* Variasi Tema Lengkap */
         body.light-clean { --primary: #2563eb; --bg-body: #f0f2f5; --card-bg: #ffffff; --text: #1f2937; --input-bg: #ffffff; --border: #d1d5db; }
         body.luxury-gold { --primary: #d4af37; --bg-body: #1a1a1a; --card-bg: #2d2d2d; --text: #d4af37; --input-bg: #3d3d3d; --border: #d4af37; }
@@ -170,25 +208,25 @@
         .btn-mode { background: none; border: none; color: var(--primary); cursor: pointer; font-family: 'Share Tech', sans-serif; font-size: 11px; text-decoration: underline; padding: 0;}
     </style>
 </head>
-<body class="light-clean">
+<div class="title-card">
+        <h1>REFORNAM</h1>
+    </div>
 
-<div class="container">
-    <div class="header-container" style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px;">
-        <div id="datetime" style="text-align: right; line-height: 1;">
-            <div id="clock" style="font-size: 24px; font-weight: bold; color: var(--text);">00:00:00</div>
-            <div id="date" style="font-size: 14px; color: var(--text); opacity: 0.7; margin-top: 5px;">00/00/0000</div>
-        </div>
+    <div class="container">
+        <div class="top-nav">
+            <div id="datetime" style="text-align: left; line-height: 1.2;">
+                <div id="clock" style="font-size: 22px; font-weight: bold; color: var(--text);">00:00:00</div>
+                <div id="date" style="font-size: 13px; color: var(--text); opacity: 0.8; font-weight: bold;">00/00/0000</div>
+            </div>
 
-        <h1 style="position: absolute; left: 50%; transform: translateX(-50%); top: 25px; margin: 0; font-size: 28px; font-weight: 900; letter-spacing: 3px; border: none; text-align: center;">REFORNAM</h1>
-
-        <div class="nav-actions">
-            <a href="https://lynk.id/isaproject/0581ez0729vx" target="_blank" class="btn-nav-icon lock-target" style="background: #6f4e37;" title="Support Me">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
-            </a>
-            <div style="position: relative;">
-                <button class="btn-nav-icon lock-target" onclick="toggleThemeMenu()">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
-                </button>
+            <div class="nav-actions">
+                <a href="https://lynk.id/isaproject/0581ez0729vx" target="_blank" class="btn-nav-icon lock-target" style="background: #6f4e37;" title="Support Me">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+                </a>
+                <div style="position: relative;">
+                    <button class="btn-nav-icon lock-target" onclick="toggleThemeMenu()">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                    </button>
                 <div id="themeMenu" class="theme-menu">
                     <div class="theme-opt" onclick="setTheme('light-clean')">LIGHT CLEAN</div>
                     <div class="theme-opt" onclick="setTheme('luxury-gold')">LUXURY GOLD</div>
@@ -397,21 +435,20 @@
         const now = new Date();
         
         // Format Waktu jam:menit:detik
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        const h = String(now.getHours()).padStart(2, '0');
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const s = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('clock').textContent = `${h}:${m}:${s}`;
         
         // Format Tanggal hari/bulan/tahun
-        const day = String(now.getDate()).padStart(2, '0');
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const year = now.getFullYear();
-        document.getElementById('date').textContent = `${day}/${month}/${year}`;
+        const dd = String(now.getDate()).padStart(2, '0');
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const yyyy = now.getFullYear();
+        document.getElementById('date').textContent = `${dd}/${mm}/${yyyy}`;
     }
 
-    // Jalankan jam setiap detik
     setInterval(updateClock, 1000);
-    updateClock(); // Jalankan sekali saat startup
+    updateClock();
     
     renderConfig();
 </script>
