@@ -378,7 +378,14 @@
     let currentTab = 'format', isManualA = false, isManualB = false;
     let nameMode = 1; // 1: Campur, 2: KataAwal_Angka
     let processedData = []; 
-    const formats = ["--", ".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx"];
+    const formats = [
+    "--", 
+    ".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".bmp", ".ico", // Gambar
+    ".mp4", ".mov", ".avi", ".mkv", ".webm", ".flv", // Video
+    ".pdf", ".docx", ".doc", ".txt", ".rtf", ".csv", ".xlsx", ".pptx", // Dokumen
+    ".mp3", ".wav", ".ogg", ".m4a", ".flac", // Audio
+    ".zip", ".rar", ".7z", ".tar" // Archive
+];
 
     function toggleThemeMenu() { const m = document.getElementById('themeMenu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
     function setTheme(t) { document.body.className = t; document.getElementById('themeMenu').style.display = 'none'; addLog(`Theme set: ${t.toUpperCase()}`); }
