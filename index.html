@@ -29,47 +29,61 @@
             background-size: 20px 20px;
             color: var(--text);
             display: flex;
-            flex-direction: column; 
             justify-content: center;
-            align-items: center;
+            align-items: center; /* Kunci utama tetap di tengah layar */
             min-height: 100dvh;
             margin: 0;
             padding: 15px;
             box-sizing: border-box;
             transition: all 0.3s ease;
             overflow-x: hidden;
-            /* JARAK ANTAR KARTU: Ubah gap ke 5px atau 0 agar sangat rapat */
-            gap: 3px; 
         }
 
-        /* Kartu Judul: Teks 44px, Center Presisi */
+        /* Pembungkus agar kedua kartu dempet dan tetap di tengah */
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            gap: 5px; /* JARAK ANTAR KARTU: Atur di sini, 5px sudah sangat dekat */
+        }
+
         .title-card {
             background-color: var(--card-bg);
-            width: 100%; 
-            max-width: 600px;
-            padding: 12px 0; 
-            border-radius: 12px; 
+            width: 100%;
+            padding: 15px 0;
+            border-radius: 12px;
             border: 2px solid var(--border);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            box-sizing: border-box;
             display: flex;
-            justify-content: center; 
-            align-items: center;    
-            z-index: 6;
-            margin-bottom: 0; /* Hapus margin bottom karena sudah dikontrol oleh gap */
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
         }
 
         .title-card h1 {
-            margin: 0; 
-            padding: 0;
-            color: var(--primary); 
-            font-size: 44px; 
-            font-weight: 900; 
-            letter-spacing: 8px; 
+            margin: 0;
+            color: var(--primary);
+            font-size: 44px; /* Sesuai permintaan: diperbesar */
+            font-weight: 900;
+            letter-spacing: 8px;
             text-transform: uppercase;
-            border: none; 
-            line-height: 1; 
-            text-align: center;
+            border: none;
+            line-height: 1;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            width: 100%;
+            height: 615px;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
         }
         
         .top-nav {
@@ -230,9 +244,11 @@
 </head>
 <body class="light-clean">
 
-    <div class="title-card">
-        <h1>REFORNAM</h1>
-    </div>
+    <div class="main-wrapper">
+        
+        <div class="title-card">
+            <h1>REFORNAM</h1>
+        </div>
 
     <div class="container">
         <div class="top-nav">
