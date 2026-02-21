@@ -244,6 +244,24 @@
         .log-panel { background: var(--log-bg); border: 1px solid var(--border); height: 110px; flex-shrink: 0; padding: 10px; overflow-y: scroll; font-size: 11px; color: var(--log-text); border-radius: 8px; }
         .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
         .btn-mode { background: none; border: none; color: var(--primary); cursor: pointer; font-family: 'Share Tech', sans-serif; font-size: 11px; text-decoration: underline; padding: 0;}
+
+        /* Gaya Tombol Cara Persegi */
+        .mode-wrapper { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+        .mode-label { font-size: 11px; color: var(--primary); font-weight: bold; text-transform: uppercase; }
+        .mode-selector { position: relative; }
+        .btn-square {
+            width: 38px; height: 38px; background: var(--primary); color: white; border: none;
+            border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2); transition: 0.1s;
+        }
+        .btn-square:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
+        .mode-menu {
+            position: absolute; top: 45px; left: 0; background: var(--card-bg);
+            border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none; flex-direction: column; z-index: 110; min-width: 50px;
+        }
+        .mode-opt { padding: 10px 15px; cursor: pointer; font-weight: bold; text-align: center; color: var(--text); border-bottom: 1px solid var(--border); }
+        .mode-opt:hover { background: var(--primary); color: white; }
     </style>
 </head>
 <body class="light-clean">
@@ -358,72 +376,114 @@
 <script>
     let inputFiles = [], outputDirHandle = null, isPaused = false, isStopped = false, currentIndex = 0, isProcessing = false;
     let currentTab = 'format', isManualA = false, isManualB = false;
+    let nameMode = 1;
     let processedData = []; 
     const formats = ["--", ".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx"];
 
     function toggleThemeMenu() { const m = document.getElementById('themeMenu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
     function setTheme(t) { document.body.className = t; document.getElementById('themeMenu').style.display = 'none'; addLog(`Theme set: ${t.toUpperCase()}`); }
 
+    let nameMode = 1; // Default Cara 1
+
+    function toggleModeMenu() {
+        const m = document.getElementById('modeMenu');
+        m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function setNameMode(m) {
+        nameMode = m;
+        document.getElementById('currentModeDisplay').innerText = m;
+        document.getElementById('modeMenu').style.display = 'none';
+        renderConfig();
+        addLog(`Switched to Cara: ${m}`);
+    }
+
     function renderConfig() {
         const grid = document.getElementById('configGrid');
         const zipField = document.getElementById('zipName');
         const d = isProcessing ? 'disabled' : '';
+
         if (currentTab === 'name') {
-            grid.innerHTML = `<div><label>Jumlah Angka</label><input type="number" id="numCount" class="input-field lock-target" ${d} placeholder="0" oninput="validateStar()"></div>
-                              <div><label>Jumlah Huruf</label><input type="number" id="charCount" class="input-field lock-target" ${d} placeholder="0" oninput="validateStar()"></div>`;
+            // Label dinamis berdasarkan cara yang dipilih
+            const labelA = nameMode === 1 ? "Jumlah Angka" : "Kata Awal";
+            const labelB = nameMode === 1 ? "Jumlah Huruf" : "Jumlah Angka";
+            const typeA = nameMode === 1 ? "number" : "text";
+
+            grid.style.display = "flex";
+            grid.style.gap = "10px";
+            grid.style.alignItems = "flex-end";
+            
+            grid.innerHTML = `
+                <div class="mode-wrapper">
+                    <span class="mode-label">Cara</span>
+                    <div class="mode-selector">
+                        <button class="btn-square lock-target" onclick="toggleModeMenu()" id="currentModeDisplay" ${d}>${nameMode}</button>
+                        <div id="modeMenu" class="mode-menu">
+                            <div class="mode-opt" onclick="setNameMode(1)">1</div>
+                            <div class="mode-opt" onclick="setNameMode(2)">2</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex-grow: 1;">
+                    <label>${labelA}</label>
+                    <input type="${typeA}" id="numCount" class="input-field lock-target" ${d} placeholder="0" oninput="validateStar()">
+                </div>
+                <div style="flex-grow: 1;">
+                    <label>${labelB}</label>
+                    <input type="number" id="charCount" class="input-field lock-target" ${d} placeholder="0" oninput="validateStar()">
+                </div>`;
             zipField.placeholder = "REFORNAM_Name.zip";
         } else {
-            grid.innerHTML = `<div><div class="label-row"><label>Format Awal</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'List' : 'Manual'}</button></div>
+            // Bagian Format Awal/Tujuan tetap sama
+            grid.style.display = "grid";
+            grid.innerHTML = `<div><div class="label-row"><label>Format Awal</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'Manual' : 'List'}</button></div>
                               ${isManualA ? `<input type="text" id="formatStart" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : `<select id="formatStart" class="input-field lock-target" ${d} onchange="validateStar()">${formats.map(f => `<option value="${f}">${f === "--" ? "-- (opsional)" : f}</option>`).join('')}</select>`}</div>
-                              <div><div class="label-row"><label>Format Tujuan</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'List' : 'Manual'}</button></div>
+                              <div><div class="label-row"><label>Format Tujuan</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'Manual' : 'List'}</button></div>
                               ${isManualB ? `<input type="text" id="formatEnd" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : `<select id="formatEnd" class="input-field lock-target" ${d} onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`}</div>`;
             zipField.placeholder = "REFORNAM_Format.zip";
         }
-        document.getElementById('btnZipExport').disabled = true; 
         validateStar();
     }
 
-    function toggleMode(t, v) { if(isProcessing) return; if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); }
-    function switchTab(t) { if(isProcessing) return; currentTab = t; document.getElementById('tabFormat').className = 'btn-tab ' + (t==='format'?'active':''); document.getElementById('tabName').className = 'btn-tab ' + (t==='name'?'active':''); renderConfig(); addLog(`Switched tab: ${t.toUpperCase()}`); }
-    
-    function validateStar() {
-        const btn = document.getElementById('btnStart');
-        if (inputFiles.length === 0 || isProcessing) { btn.disabled = true; return; }
-        if (currentTab === 'name') btn.disabled = !(document.getElementById('numCount')?.value || document.getElementById('charCount')?.value);
-        else { let b = document.getElementById('formatEnd')?.value; btn.disabled = (!b || b === "--" || b.trim() === ""); }
+    // Fungsi pembantu untuk membuat tanda hubung acak (3-5 karakter)
+    function applyHyphens(charPool) {
+        let result = "";
+        let i = 0;
+        while (i < charPool.length) {
+            let chunkLen = Math.floor(Math.random() * (6 - 3)) + 3;
+            let chunk = charPool.slice(i, i + chunkLen).join('');
+            result += chunk;
+            i += chunkLen;
+            if (i < charPool.length) result += "-";
+        }
+        return result;
     }
-
-    function handleFolderSelect(e) { inputFiles = Array.from(e.target.files); if(inputFiles.length > 0) { document.getElementById('inputPath').innerText = inputFiles[0].webkitRelativePath.split('/')[0]; addLog(`Files detected: ${inputFiles.length}`); validateStar(); } }
-    async function selectOutputFolder() { try { outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Folder Linked."); validateStar(); } catch (e) {} }
-
-    function addLog(m) { const p = document.getElementById('logPanel'); const t = new Date().toLocaleTimeString(); p.innerHTML += `<div class="log-entry"><span>[${t}]</span> ${m}</div>`; p.scrollTop = p.scrollHeight; }
-    function clearLogs() { document.getElementById('logPanel').innerHTML = ''; }
-    function copyLogs() { navigator.clipboard.writeText(Array.from(document.querySelectorAll('.log-entry')).map(e=>e.innerText).join('\n')).then(()=>alert("Logs copied!")); }
-
-    function setLockUI(isLocked) { isProcessing = isLocked; document.querySelectorAll('.lock-target').forEach(el => el.disabled = isLocked); }
 
     function generateNewName(file) {
         const ext = file.name.substring(file.name.lastIndexOf('.'));
         if(currentTab === 'name') {
-            const n = parseInt(document.getElementById('numCount').value || 0), c = parseInt(document.getElementById('charCount').value || 0);
-            const nums = "0123456789", chars = "abcdefghijklmnopqrstuvwxyz";
-            let pool = [];
-            for(let i=0; i<n; i++) pool.push(nums[Math.floor(Math.random()*10)]);
-            for(let i=0; i<c; i++) pool.push(chars[Math.floor(Math.random()*26)]);
-            pool = pool.sort(() => Math.random() - 0.5);
-            
-            // Logika Jarak 3-5 untuk tanda hubung
-            let result = "";
-            let i = 0;
-            while (i < pool.length) {
-                let chunkLen = Math.floor(Math.random() * (6 - 3)) + 3; // Random 3 to 5
-                let chunk = pool.slice(i, i + chunkLen).join('');
-                result += chunk;
-                i += chunkLen;
-                if (i < pool.length) result += "-";
+            const valA = document.getElementById('numCount').value; // Kata Awal (Mode 2) atau Jml Angka (Mode 1)
+            const valB = parseInt(document.getElementById('charCount').value || 0); // Jml Angka (Mode 2) atau Jml Huruf (Mode 1)
+
+            if (nameMode === 1) {
+                // CARA 1: Acak Angka & Huruf dengan Tanda Hubung
+                const n = parseInt(valA || 0);
+                const nums = "0123456789", chars = "abcdefghijklmnopqrstuvwxyz";
+                let pool = [];
+                for(let i=0; i<n; i++) pool.push(nums[Math.floor(Math.random()*10)]);
+                for(let i=0; i<valB; i++) pool.push(chars[Math.floor(Math.random()*26)]);
+                pool = pool.sort(() => Math.random() - 0.5);
+                return applyHyphens(pool) + ext;
+            } else {
+                // CARA 2: KataAwal_Angka-Angka
+                const nums = "0123456789";
+                let pool = [];
+                for(let i=0; i<valB; i++) pool.push(nums[Math.floor(Math.random()*10)]);
+                const formattedNumbers = applyHyphens(pool);
+                return valA + "_" + formattedNumbers + ext;
             }
-            return result + ext;
         } else {
+            // Logika Tab Format (Tetap sama)
             const sExt = document.getElementById('formatStart').value;
             let eExt = document.getElementById('formatEnd').value;
             if(!eExt.startsWith('.') && eExt !== "--") eExt = '.' + eExt;
