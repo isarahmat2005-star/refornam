@@ -245,7 +245,7 @@
         .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
         .btn-mode { background: none; border: none; color: var(--primary); cursor: pointer; font-family: 'Share Tech', sans-serif; font-size: 11px; text-decoration: underline; padding: 0;}
 
-        /* Gaya Tombol Cara Persegi */
+        /* Gaya Tombol Cara Persegi agar muncul benar */
         .mode-wrapper { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
         .mode-label { font-size: 11px; color: var(--primary); font-weight: bold; text-transform: uppercase; }
         .mode-selector { position: relative; }
@@ -374,15 +374,14 @@
 </div>
 
 <script>
-    <script>
-    // 1. Deklarasi Variabel Global (Hanya sekali di sini)
+    // 1. DEKLARASI VARIABEL (Hanya sekali di sini agar tidak error)
     let inputFiles = [], outputDirHandle = null, isPaused = false, isStopped = false, currentIndex = 0, isProcessing = false;
     let currentTab = 'format', isManualA = false, isManualB = false;
-    let nameMode = 1; // Cara Default
+    let nameMode = 1; // Variabel pengontrol Cara 1 atau 2
     let processedData = []; 
     const formats = ["--", ".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx"];
 
-    // 2. Fungsi UI & Tema
+    // 2. FUNGSI TEMA & UI
     function toggleThemeMenu() { 
         const m = document.getElementById('themeMenu'); 
         m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; 
@@ -407,7 +406,18 @@
         addLog(`Switched to Cara: ${m}`);
     }
 
-    // 3. Konfigurasi Tampilan Input
+    function toggleMode(t, v) { if(isProcessing) return; if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); }
+    
+    function switchTab(t) { 
+        if(isProcessing) return; 
+        currentTab = t; 
+        document.getElementById('tabFormat').className = 'btn-tab ' + (t==='format'?'active':''); 
+        document.getElementById('tabName').className = 'btn-tab ' + (t==='name'?'active':''); 
+        renderConfig(); 
+        addLog(`Switched tab: ${t.toUpperCase()}`); 
+    }
+
+    // 3. RENDER KONFIGURASI INPUT
     function renderConfig() {
         const grid = document.getElementById('configGrid');
         const zipField = document.getElementById('zipName');
@@ -453,7 +463,7 @@
         validateStar();
     }
 
-    // 4. Logika Penamaan
+    // 4. LOGIKA GENERATE NAMA
     function applyHyphens(charPool) {
         let result = "";
         let i = 0;
@@ -497,10 +507,7 @@
         }
     }
 
-    // 5. Proses Sistem (Start, Pause, Stop, ZIP, Log, dll)
-    function toggleMode(t, v) { if(isProcessing) return; if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); }
-    function switchTab(t) { if(isProcessing) return; currentTab = t; document.getElementById('tabFormat').className = 'btn-tab ' + (t==='format'?'active':''); document.getElementById('tabName').className = 'btn-tab ' + (t==='name'?'active':''); renderConfig(); addLog(`Switched tab: ${t.toUpperCase()}`); }
-    
+    // 5. SISTEM PROSES & LOGS
     function validateStar() {
         const btn = document.getElementById('btnStart');
         if (inputFiles.length === 0 || isProcessing) { btn.disabled = true; return; }
@@ -509,7 +516,15 @@
     }
 
     function handleFolderSelect(e) { inputFiles = Array.from(e.target.files); if(inputFiles.length > 0) { document.getElementById('inputPath').innerText = inputFiles[0].webkitRelativePath.split('/')[0]; addLog(`Files detected: ${inputFiles.length}`); validateStar(); } }
-    async function selectOutputFolder() { try { outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Folder Linked."); validateStar(); } catch (e) {} }
+    
+    async function selectOutputFolder() { 
+        try { 
+            outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); 
+            document.getElementById('outputPath').innerText = outputDirHandle.name; 
+            addLog("Folder Linked."); 
+            validateStar(); 
+        } catch (e) { addLog("Folder selection cancelled."); } 
+    }
 
     function addLog(m) { const p = document.getElementById('logPanel'); const t = new Date().toLocaleTimeString(); p.innerHTML += `<div class="log-entry"><span>[${t}]</span> ${m}</div>`; p.scrollTop = p.scrollHeight; }
     function clearLogs() { document.getElementById('logPanel').innerHTML = ''; }
@@ -521,12 +536,14 @@
         isStopped = false; isPaused = false; currentIndex = 0; processedData = []; 
         setLockUI(true); document.getElementById('btnPause').disabled = false; document.getElementById('btnStop').disabled = false;
         addLog("--- PROCESS STARTED ---");
+        
         for(; currentIndex < inputFiles.length; currentIndex++) {
             if(isStopped) break;
             while(isPaused) await new Promise(r => setTimeout(r, 500));
             const file = inputFiles[currentIndex];
             const name = generateNewName(file);
             processedData.push({ file: file, newName: name }); 
+
             if(outputDirHandle) {
                 try {
                     const h = await outputDirHandle.getFileHandle(name, { create: true });
@@ -568,6 +585,7 @@
         document.getElementById('date').textContent = `${dd}/${mm}/${yyyy}`;
     }
 
+    // Jalankan awal
     setInterval(updateClock, 1000);
     updateClock();
     renderConfig();
