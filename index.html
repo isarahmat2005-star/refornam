@@ -223,10 +223,18 @@
         /* Container utama untuk input dinamis */
         #configGrid {
             width: 100%;
-            margin-bottom: 15px; /* Jarak ke Custom Filename */
+            margin-bottom: 20px; /* Jarak aman ke baris Custom Filename di bawahnya */
+            min-height: 65px;    /* Kunci tinggi agar tidak meloncat saat ganti tab */
         }
 
-        /* Grid khusus NAME (3 kolom: Cara, Input 1, Input 2) */
+        /* Container tiap input agar label dan kotak input menyatu */
+        .input-unit {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        /* Grid khusus NAME (3 kolom rapi) */
         .grid-name-layout {
             display: grid;
             grid-template-columns: 85px 1fr 1fr;
@@ -234,14 +242,13 @@
             align-items: flex-end;
         }
 
-        /* Grid khusus FORMAT (2 kolom: Awal, Tujuan) */
+        /* Grid khusus FORMAT (2 kolom rapi) */
         .grid-format-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
             align-items: flex-end;
         }
-
         /* Pastikan label selalu di atas kotak dan tidak tertimpa */
         .input-unit label {
             display: block;
@@ -311,21 +318,18 @@
 
         /* Input field agar seragam tinggi dan rapi */
         .input-field, .select-field {
-            height: 42px;
+            height: 42px; /* Lebih tinggi agar lebih nyaman di klik/sentuh */
             padding: 0 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
+            border-radius: 10px; /* Sudut lebih membulat halus */
+            border: 1.5px solid var(--border);
             background: var(--input-bg);
-            color: var(--text);
-            font-family: 'Share Tech', sans-serif;
-            width: 100%;
-            box-sizing: border-box;
+            transition: all 0.2s ease;
         }
 
-        .input-field:focus, .select-field:focus {
+        .input-field:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); /* Efek cahaya modern saat diklik */
             outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         label { 
