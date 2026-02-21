@@ -231,7 +231,17 @@
         .input-field {
             width: 100%; background: var(--input-bg); border: 1px solid var(--border); padding: 8px;
             color: var(--text); font-family: 'Share Tech', sans-serif; box-sizing: border-box;
-            border-radius: 8px; font-size: 14px; height: 36px;
+            border-radius: 8px; font-size: 14px; height: 36px; transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary) !important; /* Border berubah jadi warna tema saat diklik */
+            box-shadow: 0 0 8px var(--primary); /* Memberikan efek cahaya sesuai warna tema */
+        }
+
+        select.input-field:focus {
+           background-color: var(--card-bg);
         }
 
         .action-bars { display: flex; gap: 10px; margin-bottom: 15px; }
