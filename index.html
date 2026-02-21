@@ -31,17 +31,17 @@
             min-height: 100dvh;
         }
 
-        ./* Kartu Judul Tanpa Garis & Teks Lebih Besar */
+        ./* Kartu Judul Dengan Latar Belakang & Jarak Rapat */
         .title-card {
-            background-color: var(--card-bg);
+            background-color: var(--card-bg); /* Memastikan latar belakang tetap ada */
             width: 100%; 
             max-width: 600px;
-            padding: 12px; /* Padding dikurangi agar lebih rapat */
+            padding: 15px; 
             border-radius: 12px; 
             border: 2px solid var(--border);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             text-align: center; 
-            margin-bottom: 8px; /* Jarak ke kartu bawah didekatkan (dari 15px ke 8px) */
+            margin-bottom: 8px; /* Jarak rapat ke kartu bawah */
             box-sizing: border-box;
             display: flex;
             justify-content: center;
@@ -51,15 +51,14 @@
         .title-card h1 {
             margin: 0; 
             color: var(--primary); 
-            font-size: 38px; /* Ukuran dibesarkan sedikit (dari 32px ke 38px) */
-            font-weight: 900;
+            font-size: 38px; /* Ukuran besar */
+            font-weight: 900; /* Tebal kapital */
             letter-spacing: 6px; 
             text-transform: uppercase;
-            border: none; /* Menghilangkan garis bawah jika masih ada */
+            border: none; /* Garis bawah dihapus */
             line-height: 1;
         }
-        }
-
+        
         .top-nav {
             display: flex;
             justify-content: space-between;
@@ -216,7 +215,9 @@
         .btn-mode { background: none; border: none; color: var(--primary); cursor: pointer; font-family: 'Share Tech', sans-serif; font-size: 11px; text-decoration: underline; padding: 0;}
     </style>
 </head>
-<div class="title-card">
+<body class="light-clean">
+
+    <div class="title-card">
         <h1>REFORNAM</h1>
     </div>
 
