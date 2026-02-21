@@ -31,23 +31,33 @@
             min-height: 100dvh;
         }
 
+        ./* Kartu Judul Tanpa Garis & Teks Lebih Besar */
         .title-card {
             background-color: var(--card-bg);
-            width: 100%;
+            width: 100%; 
             max-width: 600px;
-            padding: 12px;
+            padding: 12px; /* Padding dikurangi agar lebih rapat */
+            border-radius: 12px; 
+            border: 2px solid var(--border);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            text-align: center; 
+            margin-bottom: 8px; /* Jarak ke kartu bawah didekatkan (dari 15px ke 8px) */
             box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .title-card h1 {
-            margin: 0;
-            color: var(--primary);
-            font-size: 38px;
-            font-weight: 900; /* Tebal maksimal */
-            letter-spacing: 5px;
+            margin: 0; 
+            color: var(--primary); 
+            font-size: 38px; /* Ukuran dibesarkan sedikit (dari 32px ke 38px) */
+            font-weight: 900;
+            letter-spacing: 6px; 
             text-transform: uppercase;
+            border: none; /* Menghilangkan garis bawah jika masih ada */
+            line-height: 1;
+        }
         }
 
         .top-nav {
@@ -207,7 +217,7 @@
     </style>
 </head>
 <div class="title-card">
-        <h1>ReForName</h1>
+        <h1>REFORNAM</h1>
     </div>
 
     <div class="container">
