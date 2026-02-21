@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>REFORNAM by IRS</title>
     <link rel="icon" type="image/png" href="/gambar.png">
     <link rel="apple-touch-icon" href="/gambar.png">
@@ -61,18 +61,34 @@
             background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
             background-size: 20px 20px;
             color: var(--text);
-            display: flex; justify-content: center; align-items: center;
-            height: 100vh; margin: 0; padding: 0;
-            transition: all 0.3s ease; overflow: hidden;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; /* Menarik container ke tengah vertikal */
+            min-height: 100dvh; /* Menggunakan Dynamic VH agar pas di HP */
+            margin: 0; 
+            padding: 10px; /* Jarak aman agar tidak nempel pinggir HP */
+            box-sizing: border-box;
+            transition: all 0.3s ease; 
+            overflow: hidden;
         }
 
         .container {
             background-color: var(--card-bg);
-            width: 100%; max-width: 600px; height: 615px;
-            padding: 25px; border-radius: 12px; border: 2px solid var(--border);
+            width: 100%; 
+            max-width: 600px; 
+            height: 615px; /* Tetap persegi sesuai permintaan sebelumnya */
+            padding: 25px; 
+            border-radius: 12px; 
+            border: 2px solid var(--border);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            display: flex; flex-direction: column; box-sizing: border-box;
-            position: relative; z-index: 5;
+            display: flex; 
+            flex-direction: column; 
+            box-sizing: border-box;
+            position: relative; 
+            z-index: 5;
+            /* Mencegah pergerakan pada mobile */
+            margin-top: auto;
+            margin-bottom: auto;
         }
 
         .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
