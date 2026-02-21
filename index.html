@@ -220,43 +220,13 @@
         }
         .btn-browse:active:not(:disabled) { top: 2px; box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
 
-        /* Container utama untuk input dinamis */
-        #configGrid {
-            width: 100%;
-            margin-bottom: 20px; /* Jarak aman ke baris Custom Filename di bawahnya */
-            min-height: 65px;    /* Kunci tinggi agar tidak meloncat saat ganti tab */
+        .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px; height: 60px; overflow: hidden;}
+        .input-field {
+            width: 100%; background: var(--input-bg); border: 1px solid var(--border); padding: 8px;
+            color: var(--text); font-family: 'Share Tech', sans-serif; box-sizing: border-box;
+            border-radius: 8px; font-size: 14px; height: 36px;
         }
 
-        /* Container tiap input agar label dan kotak input menyatu */
-        .input-unit {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        /* Grid khusus NAME (3 kolom rapi) */
-        .grid-name-layout {
-            display: grid;
-            grid-template-columns: 85px 1fr 1fr;
-            gap: 15px;
-            align-items: flex-end;
-        }
-
-        /* Grid khusus FORMAT (2 kolom rapi) */
-        .grid-format-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            align-items: flex-end;
-        }
-        /* Pastikan label selalu di atas kotak dan tidak tertimpa */
-        .input-unit label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 12px;
-            font-weight: bold;
-            color: var(--primary);
-        }
         .action-bars { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn-main { 
             flex: 1; border: none; padding: 0; cursor: pointer; font-family: 'Share Tech', sans-serif; 
@@ -274,75 +244,6 @@
         .log-panel { background: var(--log-bg); border: 1px solid var(--border); height: 110px; flex-shrink: 0; padding: 10px; overflow-y: scroll; font-size: 11px; color: var(--log-text); border-radius: 8px; }
         .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
         .btn-mode { background: none; border: none; color: var(--primary); cursor: pointer; font-family: 'Share Tech', sans-serif; font-size: 11px; text-decoration: underline; padding: 0;}
-
-        /* Menyamakan jarak antar grup input agar konsisten */
-        /* Perbaikan Jarak & Layout Modern */
-        .input-group { 
-            margin-bottom: 20px; 
-            width: 100%; 
-        }
-
-        /* Container untuk baris input dinamis */
-        .config-area {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        /* Grid khusus untuk tab Name (3 Kolom) */
-        .grid-name {
-            display: grid;
-            grid-template-columns: 80px 1fr 1fr;
-            gap: 15px;
-            width: 100%;
-            align-items: flex-end;
-        }
-
-        /* Grid khusus untuk tab Format (2 Kolom) */
-        .grid-format {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            width: 100%;
-            align-items: flex-end;
-        }
-
-        /* Memastikan label tidak tertabrak */
-        .config-area label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 12px;
-            color: var(--primary);
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        /* Input field agar seragam tinggi dan rapi */
-        .input-field, .select-field {
-            height: 42px; /* Lebih tinggi agar lebih nyaman di klik/sentuh */
-            padding: 0 12px;
-            border-radius: 10px; /* Sudut lebih membulat halus */
-            border: 1.5px solid var(--border);
-            background: var(--input-bg);
-            transition: all 0.2s ease;
-        }
-
-        .input-field:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); /* Efek cahaya modern saat diklik */
-            outline: none;
-        }
-
-        label { 
-            font-size: 12px; 
-            color: var(--primary); 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-            display: block;
-        }
-        .mode-opt { padding: 10px 15px; cursor: pointer; font-weight: bold; text-align: center; color: var(--text); border-bottom: 1px solid var(--border); }
-        .mode-opt:hover { background: var(--primary); color: white; }
     </style>
 </head>
 <body class="light-clean">
@@ -455,155 +356,36 @@
 </div>
 
 <script>
-    // 1. DEKLARASI VARIABEL (Hanya sekali di sini agar tidak error)
     let inputFiles = [], outputDirHandle = null, isPaused = false, isStopped = false, currentIndex = 0, isProcessing = false;
     let currentTab = 'format', isManualA = false, isManualB = false;
-    let nameMode = 1; // Variabel pengontrol Cara 1 atau 2
     let processedData = []; 
     const formats = ["--", ".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx"];
 
-    // 2. FUNGSI TEMA & UI
-    function toggleThemeMenu() { 
-        const m = document.getElementById('themeMenu'); 
-        m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; 
-    }
-    
-    function setTheme(t) { 
-        document.body.className = t; 
-        document.getElementById('themeMenu').style.display = 'none'; 
-        addLog(`Theme set: ${t.toUpperCase()}`); 
-    }
+    function toggleThemeMenu() { const m = document.getElementById('themeMenu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
+    function setTheme(t) { document.body.className = t; document.getElementById('themeMenu').style.display = 'none'; addLog(`Theme set: ${t.toUpperCase()}`); }
 
-    function toggleModeMenu() {
-        const m = document.getElementById('modeMenu');
-        m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-    function setNameMode(m) {
-        nameMode = m;
-        // Baris currentModeDisplay dihapus karena sudah pakai dropdown <select>
-        renderConfig();
-        addLog(`Switched to Cara: ${m}`);
-    }
-
-    function toggleMode(t, v) { if(isProcessing) return; if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); }
-    
-    function switchTab(t) { 
-        if(isProcessing) return; 
-        currentTab = t; 
-        document.getElementById('tabFormat').className = 'btn-tab ' + (t==='format'?'active':''); 
-        document.getElementById('tabName').className = 'btn-tab ' + (t==='name'?'active':''); 
-        renderConfig(); 
-        addLog(`Switched tab: ${t.toUpperCase()}`); 
-    }
-
-    // 3. RENDER KONFIGURASI INPUT
     function renderConfig() {
         const grid = document.getElementById('configGrid');
         const zipField = document.getElementById('zipName');
         const d = isProcessing ? 'disabled' : '';
-
         if (currentTab === 'name') {
-            const labelA = nameMode === 1 ? "Jumlah Angka" : "Kata Awal";
-            const labelB = nameMode === 1 ? "Jumlah Huruf" : "Jumlah Angka";
-            const typeA = nameMode === 1 ? "number" : "text";
-
-            // Menggunakan struktur div 'input-unit' agar label tidak menabrak
-            grid.innerHTML = `
-                <div class="grid-name-layout">
-                    <div class="input-unit">
-                        <label>Cara</label>
-                        <select class="select-field lock-target" onchange="setNameMode(parseInt(this.value))" ${d}>
-                            <option value="1" ${nameMode === 1 ? 'selected' : ''}>1</option>
-                            <option value="2" ${nameMode === 2 ? 'selected' : ''}>2</option>
-                        </select>
-                    </div>
-                    <div class="input-unit">
-                        <label>${labelA}</label>
-                        <input type="${typeA}" id="numCount" class="input-field lock-target" ${d} placeholder="Isi..." oninput="validateStar()">
-                    </div>
-                    <div class="input-unit">
-                        <label>${labelB}</label>
-                        <input type="number" id="charCount" class="input-field lock-target" ${d} placeholder="0" oninput="validateStar()">
-                    </div>
-                </div>`;
+            grid.innerHTML = `<div><label>Jumlah Angka</label><input type="number" id="numCount" class="input-field lock-target" ${d} placeholder="0" oninput="validateStar()"></div>
+                              <div><label>Jumlah Huruf</label><input type="number" id="charCount" class="input-field lock-target" ${d} placeholder="0" oninput="validateStar()"></div>`;
             zipField.placeholder = "REFORNAM_Name.zip";
         } else {
-            grid.innerHTML = `
-                <div class="grid-format-layout">
-                    <div class="input-unit">
-                        <div class="label-row"><label>Format Awal</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'Manual' : 'List'}</button></div>
-                        ${isManualA ? `<input type="text" id="formatStart" class="input-field lock-target" ${d} placeholder=".ext (opsional)" oninput="validateStar()">` : 
-                        `<select id="formatStart" class="select-field lock-target" ${d} onchange="validateStar()">${formats.map(f => `<option value="${f}">${f === "--" ? "-- (opsional)" : f}</option>`).join('')}</select>`}
-                    </div>
-                    <div class="input-unit">
-                        <div class="label-row"><label>Format Tujuan</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'Manual' : 'List'}</button></div>
-                        ${isManualB ? `<input type="text" id="formatEnd" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : 
-                        `<select id="formatEnd" class="select-field lock-target" ${d} onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`}
-                    </div>
-                </div>`;
+            grid.innerHTML = `<div><div class="label-row"><label>Format Awal</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'List' : 'Manual'}</button></div>
+                              ${isManualA ? `<input type="text" id="formatStart" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : `<select id="formatStart" class="input-field lock-target" ${d} onchange="validateStar()">${formats.map(f => `<option value="${f}">${f === "--" ? "-- (opsional)" : f}</option>`).join('')}</select>`}</div>
+                              <div><div class="label-row"><label>Format Tujuan</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'List' : 'Manual'}</button></div>
+                              ${isManualB ? `<input type="text" id="formatEnd" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : `<select id="formatEnd" class="input-field lock-target" ${d} onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`}</div>`;
             zipField.placeholder = "REFORNAM_Format.zip";
         }
+        document.getElementById('btnZipExport').disabled = true; 
         validateStar();
     }
 
-    // 4. LOGIKA GENERATE NAMA
-    function applyHyphens(charPool) {
-        let result = "";
-        let i = 0;
-        while (i < charPool.length) {
-            let chunkLen = Math.floor(Math.random() * (6 - 3)) + 3;
-            let chunk = charPool.slice(i, i + chunkLen).join('');
-            result += chunk;
-            i += chunkLen;
-            if (i < charPool.length) result += "-";
-        }
-        return result;
-    }
-
-    function generateNewName(file) {
-        const ext = file.name.substring(file.name.lastIndexOf('.'));
-        if(currentTab === 'name') {
-            const valA = document.getElementById('numCount').value; 
-            const valB = parseInt(document.getElementById('charCount').value || 0);
-
-            if (nameMode === 1) {
-                const n = parseInt(valA || 0);
-                const nums = "0123456789", chars = "abcdefghijklmnopqrstuvwxyz";
-                let pool = [];
-                for(let i=0; i<n; i++) pool.push(nums[Math.floor(Math.random()*10)]);
-                for(let i=0; i<valB; i++) pool.push(chars[Math.floor(Math.random()*26)]);
-                pool = pool.sort(() => Math.random() - 0.5);
-                return applyHyphens(pool) + ext;
-            } else {
-                const nums = "0123456789";
-                let pool = [];
-                for(let i=0; i<valB; i++) pool.push(nums[Math.floor(Math.random()*10)]);
-                const formattedNumbers = applyHyphens(pool);
-                return valA + "_" + formattedNumbers + ext;
-            }
-        } else {
-            const sExt = document.getElementById('formatStart').value;
-            let eExt = document.getElementById('formatEnd').value;
-            
-            // Jika format tujuan kosong, jangan ubah apa-apa
-            if (eExt === "--") return file.name;
-
-            if(!eExt.startsWith('.')) eExt = '.' + eExt;
-
-            // LOGIKA OPSIONAL: 
-            // Jika sExt adalah "--", maka semua file akan diganti formatnya.
-            // Jika sExt diisi (misal .jpg), maka hanya file .jpg yang diganti formatnya.
-            if(sExt === "--" || file.name.toLowerCase().endsWith(sExt.toLowerCase())) {
-                const fileNameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.'));
-                return fileNameWithoutExt + eExt;
-            }
-            
-            return file.name;
-        }
-    }
-
-    // 5. SISTEM PROSES & LOGS
+    function toggleMode(t, v) { if(isProcessing) return; if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); }
+    function switchTab(t) { if(isProcessing) return; currentTab = t; document.getElementById('tabFormat').className = 'btn-tab ' + (t==='format'?'active':''); document.getElementById('tabName').className = 'btn-tab ' + (t==='name'?'active':''); renderConfig(); addLog(`Switched tab: ${t.toUpperCase()}`); }
+    
     function validateStar() {
         const btn = document.getElementById('btnStart');
         if (inputFiles.length === 0 || isProcessing) { btn.disabled = true; return; }
@@ -612,21 +394,43 @@
     }
 
     function handleFolderSelect(e) { inputFiles = Array.from(e.target.files); if(inputFiles.length > 0) { document.getElementById('inputPath').innerText = inputFiles[0].webkitRelativePath.split('/')[0]; addLog(`Files detected: ${inputFiles.length}`); validateStar(); } }
-    
-    async function selectOutputFolder() { 
-        try { 
-            outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); 
-            document.getElementById('outputPath').innerText = outputDirHandle.name; 
-            addLog("Folder Linked."); 
-            validateStar(); 
-        } catch (e) { addLog("Folder selection cancelled."); } 
-    }
+    async function selectOutputFolder() { try { outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Folder Linked."); validateStar(); } catch (e) {} }
 
     function addLog(m) { const p = document.getElementById('logPanel'); const t = new Date().toLocaleTimeString(); p.innerHTML += `<div class="log-entry"><span>[${t}]</span> ${m}</div>`; p.scrollTop = p.scrollHeight; }
     function clearLogs() { document.getElementById('logPanel').innerHTML = ''; }
     function copyLogs() { navigator.clipboard.writeText(Array.from(document.querySelectorAll('.log-entry')).map(e=>e.innerText).join('\n')).then(()=>alert("Logs copied!")); }
 
     function setLockUI(isLocked) { isProcessing = isLocked; document.querySelectorAll('.lock-target').forEach(el => el.disabled = isLocked); }
+
+    function generateNewName(file) {
+        const ext = file.name.substring(file.name.lastIndexOf('.'));
+        if(currentTab === 'name') {
+            const n = parseInt(document.getElementById('numCount').value || 0), c = parseInt(document.getElementById('charCount').value || 0);
+            const nums = "0123456789", chars = "abcdefghijklmnopqrstuvwxyz";
+            let pool = [];
+            for(let i=0; i<n; i++) pool.push(nums[Math.floor(Math.random()*10)]);
+            for(let i=0; i<c; i++) pool.push(chars[Math.floor(Math.random()*26)]);
+            pool = pool.sort(() => Math.random() - 0.5);
+            
+            // Logika Jarak 3-5 untuk tanda hubung
+            let result = "";
+            let i = 0;
+            while (i < pool.length) {
+                let chunkLen = Math.floor(Math.random() * (6 - 3)) + 3; // Random 3 to 5
+                let chunk = pool.slice(i, i + chunkLen).join('');
+                result += chunk;
+                i += chunkLen;
+                if (i < pool.length) result += "-";
+            }
+            return result + ext;
+        } else {
+            const sExt = document.getElementById('formatStart').value;
+            let eExt = document.getElementById('formatEnd').value;
+            if(!eExt.startsWith('.') && eExt !== "--") eExt = '.' + eExt;
+            if(sExt === "--" || file.name.toLowerCase().endsWith(sExt.toLowerCase())) return file.name.substring(0, file.name.lastIndexOf('.')) + eExt;
+            return file.name;
+        }
+    }
 
     async function startProcess() {
         isStopped = false; isPaused = false; currentIndex = 0; processedData = []; 
@@ -671,18 +475,24 @@
 
     function updateClock() {
         const now = new Date();
+        
+        // Format Waktu jam:menit:detik
         const h = String(now.getHours()).padStart(2, '0');
         const m = String(now.getMinutes()).padStart(2, '0');
         const s = String(now.getSeconds()).padStart(2, '0');
         document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+        
+        // Format Tanggal hari/bulan/tahun
         const dd = String(now.getDate()).padStart(2, '0');
         const mm = String(now.getMonth() + 1).padStart(2, '0');
         const yyyy = now.getFullYear();
         document.getElementById('date').textContent = `${dd}/${mm}/${yyyy}`;
     }
 
-    // Jalankan awal
     setInterval(updateClock, 1000);
     updateClock();
+    
     renderConfig();
 </script>
+</body>
+</html>
