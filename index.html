@@ -38,35 +38,37 @@
             box-sizing: border-box;
             transition: all 0.3s ease;
             overflow-x: hidden;
+            /* JARAK ANTAR KARTU: Ubah gap ke 5px atau 0 agar sangat rapat */
+            gap: 3px; 
         }
 
-        /* Kartu Judul: Teks 44px, Center Presisi, Jarak 5px */
+        /* Kartu Judul: Teks 44px, Center Presisi */
         .title-card {
-            background-color: var(--card-bg); /* Latar belakang tetap ada */
+            background-color: var(--card-bg);
             width: 100%; 
             max-width: 600px;
-            padding: 12px 0; /* Padding atas-bawah untuk kontrol tinggi kotak */
+            padding: 12px 0; 
             border-radius: 12px; 
             border: 2px solid var(--border);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2px; /* Jarak sangat rapat ke kartu bawah */
             box-sizing: border-box;
             display: flex;
-            justify-content: center; /* Paksa teks ke tengah horizontal */
-            align-items: center;    /* Paksa teks ke tengah vertikal */
+            justify-content: center; 
+            align-items: center;    
             z-index: 6;
+            margin-bottom: 0; /* Hapus margin bottom karena sudah dikontrol oleh gap */
         }
 
         .title-card h1 {
             margin: 0; 
             padding: 0;
             color: var(--primary); 
-            font-size: 44px; /* Ukuran teks lebih besar */
+            font-size: 44px; 
             font-weight: 900; 
             letter-spacing: 8px; 
             text-transform: uppercase;
-            border: none; /* Garis bawah hilang */
-            line-height: 1; /* Mengunci posisi vertikal teks agar tidak melayang */
+            border: none; 
+            line-height: 1; 
             text-align: center;
         }
         
@@ -234,7 +236,7 @@
 
     <div class="container">
         <div class="top-nav">
-            <div id="datetime" style="text-align: left; line-height: 1.2;">
+             <div id="datetime" style="text-align: left; line-height: 1.2;">
                 <div id="clock" style="font-size: 22px; font-weight: bold; color: var(--text);">00:00:00</div>
                 <div id="date" style="font-size: 13px; color: var(--text); opacity: 0.8; font-weight: bold;">00/00/0000</div>
             </div>
