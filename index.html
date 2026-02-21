@@ -22,16 +22,20 @@
             --grid-color: rgba(37, 99, 235, 0.1);
         }
 
-        /* Variasi Tema */
-        body.light-clean { --primary: #2563eb; --bg-body: #f0f2f5; --card-bg: #ffffff; --text: #1f2937; --input-bg: #ffffff; --border: #d1d5db; --grid-color: rgba(37, 99, 235, 0.1); }
-        body.luxury-gold { --primary: #d4af37; --bg-body: #1a1a1a; --card-bg: #2d2d2d; --text: #d4af37; --input-bg: #3d3d3d; --border: #d4af37; --grid-color: rgba(212,175,55,0.1); }
-        body.dark-pro { --primary: #3b82f6; --bg-body: #050505; --card-bg: #121212; --text: #e0e0e0; --input-bg: #1e1e1e; --border: #333; --grid-color: rgba(255,255,255,0.03); }
-        body.midnight-navy { --primary: #1e3a8a; --bg-body: #020617; --card-bg: #0f172a; --text: #cbd5e1; --input-bg: #020617; --border: #1e3a8a; --grid-color: rgba(30,58,138,0.2); }
-        body.cyberpunk { --primary: #ff00ff; --bg-body: #0d0221; --card-bg: #0f082d; --text: #00ff41; --input-bg: #1a1a1a; --border: #00ff41; --grid-color: rgba(0,255,65,0.1); }
-        body.deep-forest { --primary: #15803d; --bg-body: #052e16; --card-bg: #064e3b; --text: #ecfdf5; --input-bg: #022c22; --border: #065f46; --grid-color: rgba(21,128,61,0.1); }
-        body.warm-coffee { --primary: #6f4e37; --bg-body: #fdf5e6; --card-bg: #faf0e6; --text: #4b3621; --input-bg: #fff; --border: #6f4e37; --grid-color: rgba(111,78,55,0.1); }
-        body.ocean-breeze { --primary: #0891b2; --bg-body: #ecfeff; --card-bg: #ffffff; --text: #164e63; --input-bg: #f0f9ff; --border: #0891b2; --grid-color: rgba(8,145,178,0.1); }
-        body.dracula { --primary: #bd93f9; --bg-body: #282a36; --card-bg: #44475a; --text: #f8f8f2; --input-bg: #282a36; --border: #6272a4; --grid-color: rgba(189,147,249,0.1); }
+        /* Variasi Tema Lengkap */
+        body.light-clean { --primary: #2563eb; --bg-body: #f0f2f5; --card-bg: #ffffff; --text: #1f2937; --input-bg: #ffffff; --border: #d1d5db; }
+        body.luxury-gold { --primary: #d4af37; --bg-body: #1a1a1a; --card-bg: #2d2d2d; --text: #d4af37; --input-bg: #3d3d3d; --border: #d4af37; }
+        body.dark-pro { --primary: #3b82f6; --bg-body: #050505; --card-bg: #121212; --text: #e0e0e0; --input-bg: #1e1e1e; --border: #333; }
+        body.midnight-navy { --primary: #1e3a8a; --bg-body: #020617; --card-bg: #0f172a; --text: #cbd5e1; --input-bg: #020617; --border: #1e3a8a; }
+        body.ocean-breeze { --primary: #0891b2; --bg-body: #ecfeff; --card-bg: #ffffff; --text: #164e63; --input-bg: #f0f9ff; --border: #0891b2; }
+        body.cyberpunk { --primary: #ff00ff; --bg-body: #0d0221; --card-bg: #0f082d; --text: #00ff41; --input-bg: #1a1a1a; --border: #00ff41; }
+        body.deep-forest { --primary: #15803d; --bg-body: #052e16; --card-bg: #064e3b; --text: #ecfdf5; --input-bg: #022c22; --border: #065f46; }
+        body.deep-ocean { --primary: #0369a1; --bg-body: #082f49; --card-bg: #0c4a6e; --text: #e0f2fe; --input-bg: #082f49; --border: #0369a1; }
+        body.sunset-vibes { --primary: #be123c; --bg-body: #4c0519; --card-bg: #881337; --text: #fff1f2; --input-bg: #4c0519; --border: #be123c; }
+        body.warm-coffee { --primary: #6f4e37; --bg-body: #fdf5e6; --card-bg: #faf0e6; --text: #4b3621; --input-bg: #fff; --border: #6f4e37; }
+        body.retro-paper { --primary: #854d0e; --bg-body: #fef3c7; --card-bg: #fffbeb; --text: #451a03; --input-bg: #fef3c7; --border: #d97706; }
+        body.dracula { --primary: #bd93f9; --bg-body: #282a36; --card-bg: #44475a; --text: #f8f8f2; --input-bg: #282a36; --border: #6272a4; }
+        body.ultra-minimal { --primary: #111; --bg-body: #fff; --card-bg: #fff; --text: #111; --input-bg: #f5f5f5; --border: #eee; }
 
         body {
             font-family: 'Share Tech', sans-serif;
@@ -46,7 +50,7 @@
 
         .container {
             background-color: var(--card-bg);
-            width: 100%; max-width: 600px; height: 610px;
+            width: 100%; max-width: 600px; height: 615px;
             padding: 25px; border-radius: 12px; border: 2px solid var(--border);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             display: flex; flex-direction: column; box-sizing: border-box;
@@ -67,7 +71,7 @@
         .theme-menu {
             position: absolute; top: 45px; right: 0; background: var(--card-bg);
             border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            display: none; flex-direction: column; z-index: 100; width: 200px; max-height: 250px; overflow-y: auto;
+            display: none; flex-direction: column; z-index: 100; width: 200px; max-height: 280px; overflow-y: auto;
         }
         .theme-opt {
             padding: 10px 15px; cursor: pointer; font-size: 11px; border-bottom: 1px solid var(--border);
@@ -127,7 +131,8 @@
         .btn-main:active:not(:disabled) { top: 2px; box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
         .btn-main:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none; top: 0 !important;}
 
-        .log-panel { background: var(--log-bg); border: 1px solid var(--border); height: 110px; flex-grow: 0; padding: 10px; overflow-y: auto; font-size: 11px; color: var(--log-text); border-radius: 8px; }
+        /* Log Panel Statis Tidak Bergerak */
+        .log-panel { background: var(--log-bg); border: 1px solid var(--border); height: 110px; flex-shrink: 0; padding: 10px; overflow-y: auto; font-size: 11px; color: var(--log-text); border-radius: 8px; }
         .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; }
         .btn-mode { background: none; border: none; color: var(--primary); cursor: pointer; font-family: 'Share Tech', sans-serif; font-size: 11px; text-decoration: underline; padding: 0;}
     </style>
@@ -143,7 +148,7 @@
             </a>
             <div style="position: relative;">
                 <button class="btn-nav-icon lock-target" onclick="toggleThemeMenu()">
-                    <svg id="themeIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
                 </button>
                 <div id="themeMenu" class="theme-menu">
                     <div class="theme-opt" onclick="setTheme('light-clean')">LIGHT CLEAN</div>
@@ -153,8 +158,12 @@
                     <div class="theme-opt" onclick="setTheme('ocean-breeze')">OCEAN BREEZE</div>
                     <div class="theme-opt" onclick="setTheme('cyberpunk')">CYBERPUNK</div>
                     <div class="theme-opt" onclick="setTheme('deep-forest')">DEEP FOREST</div>
+                    <div class="theme-opt" onclick="setTheme('deep-ocean')">DEEP OCEAN</div>
+                    <div class="theme-opt" onclick="setTheme('sunset-vibes')">SUNSET VIBES</div>
                     <div class="theme-opt" onclick="setTheme('warm-coffee')">WARM COFFEE</div>
+                    <div class="theme-opt" onclick="setTheme('retro-paper')">RETRO PAPER</div>
                     <div class="theme-opt" onclick="setTheme('dracula')">DRACULA</div>
+                    <div class="theme-opt" onclick="setTheme('ultra-minimal')">ULTRA MINIMAL</div>
                 </div>
             </div>
         </div>
@@ -248,7 +257,7 @@
     }
 
     function handleFolderSelect(e) { inputFiles = Array.from(e.target.files); if(inputFiles.length > 0) { document.getElementById('inputPath').innerText = inputFiles[0].webkitRelativePath.split('/')[0]; addLog(`Files detected: ${inputFiles.length}`); validateStar(); } }
-    async function selectOutputFolder() { try { outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Output folder linked."); validateStar(); } catch (e) {} }
+    async function selectOutputFolder() { try { outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Folder Linked."); validateStar(); } catch (e) {} }
 
     function addLog(m) { const p = document.getElementById('logPanel'); const t = new Date().toLocaleTimeString(); p.innerHTML += `<div class="log-entry"><span>[${t}]</span> ${m}</div>`; p.scrollTop = p.scrollHeight; }
     function clearLogs() { document.getElementById('logPanel').innerHTML = ''; }
@@ -266,10 +275,13 @@
             for(let i=0; i<c; i++) pool.push(chars[Math.floor(Math.random()*26)]);
             // Shuffle pool
             pool = pool.sort(() => Math.random() - 0.5);
-            // Insert hyphen at random index (1 to total-1)
-            if(pool.length > 2) {
-                const hyphenIdx = Math.floor(Math.random() * (pool.length - 1)) + 1;
-                pool.splice(hyphenIdx, 0, "-");
+            // Insert hyphen at multiple random positions
+            const countHyphens = Math.floor(Math.random() * 2) + 1; // 1 or 2 hyphens
+            for(let h=0; h<countHyphens; h++) {
+                if(pool.length > 2) {
+                    const idx = Math.floor(Math.random() * (pool.length - 1)) + 1;
+                    pool.splice(idx, 0, "-");
+                }
             }
             return pool.join('') + ext;
         } else {
@@ -319,7 +331,7 @@
         processedData.forEach(item => { zip.file(item.newName, item.file); });
         const b = await zip.generateAsync({type:"blob", compression:"STORE"});
         const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = final; a.click();
-        addLog("ZIP Exported.");
+        addLog("ZIP Exported Successfully.");
     }
 
     renderConfig();
