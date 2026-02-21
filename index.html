@@ -220,13 +220,35 @@
         }
         .btn-browse:active:not(:disabled) { top: 2px; box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
 
-        .config-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 15px; 
-            margin-bottom: 10px; 
-            min-height: 65px; /* Kunci tinggi minimum agar tidak meloncat */
-            align-items: end; /* Memastikan input selalu sejajar di bawah */
+        /* Container utama untuk input dinamis */
+        #configGrid {
+            width: 100%;
+            margin-bottom: 15px; /* Jarak ke Custom Filename */
+        }
+
+        /* Grid khusus NAME (3 kolom: Cara, Input 1, Input 2) */
+        .grid-name-layout {
+            display: grid;
+            grid-template-columns: 85px 1fr 1fr;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        /* Grid khusus FORMAT (2 kolom: Awal, Tujuan) */
+        .grid-format-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        /* Pastikan label selalu di atas kotak dan tidak tertimpa */
+        .input-unit label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--primary);
         }
         .action-bars { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn-main { 
@@ -477,28 +499,26 @@
         const zipField = document.getElementById('zipName');
         const d = isProcessing ? 'disabled' : '';
 
-        // Bersihkan class lama agar tidak tabrakan
-        grid.className = "config-area";
-
         if (currentTab === 'name') {
             const labelA = nameMode === 1 ? "Jumlah Angka" : "Kata Awal";
             const labelB = nameMode === 1 ? "Jumlah Huruf" : "Jumlah Angka";
             const typeA = nameMode === 1 ? "number" : "text";
 
+            // Menggunakan struktur div 'input-unit' agar label tidak menabrak
             grid.innerHTML = `
-                <div class="grid-name">
-                    <div>
+                <div class="grid-name-layout">
+                    <div class="input-unit">
                         <label>Cara</label>
                         <select class="select-field lock-target" onchange="setNameMode(parseInt(this.value))" ${d}>
                             <option value="1" ${nameMode === 1 ? 'selected' : ''}>1</option>
                             <option value="2" ${nameMode === 2 ? 'selected' : ''}>2</option>
                         </select>
                     </div>
-                    <div>
+                    <div class="input-unit">
                         <label>${labelA}</label>
                         <input type="${typeA}" id="numCount" class="input-field lock-target" ${d} placeholder="Isi..." oninput="validateStar()">
                     </div>
-                    <div>
+                    <div class="input-unit">
                         <label>${labelB}</label>
                         <input type="number" id="charCount" class="input-field lock-target" ${d} placeholder="0" oninput="validateStar()">
                     </div>
@@ -506,14 +526,16 @@
             zipField.placeholder = "REFORNAM_Name.zip";
         } else {
             grid.innerHTML = `
-                <div class="grid-format">
-                    <div>
+                <div class="grid-format-layout">
+                    <div class="input-unit">
                         <div class="label-row"><label>Format Awal</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'Manual' : 'List'}</button></div>
-                        ${isManualA ? `<input type="text" id="formatStart" class="input-field lock-target" ${d} placeholder=".ext (opsional)" oninput="validateStar()">` : `<select id="formatStart" class="input-field lock-target" ${d} onchange="validateStar()">${formats.map(f => `<option value="${f}">${f === "--" ? "-- (opsional)" : f}</option>`).join('')}</select>`}
+                        ${isManualA ? `<input type="text" id="formatStart" class="input-field lock-target" ${d} placeholder=".ext (opsional)" oninput="validateStar()">` : 
+                        `<select id="formatStart" class="select-field lock-target" ${d} onchange="validateStar()">${formats.map(f => `<option value="${f}">${f === "--" ? "-- (opsional)" : f}</option>`).join('')}</select>`}
                     </div>
-                    <div>
+                    <div class="input-unit">
                         <div class="label-row"><label>Format Tujuan</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'Manual' : 'List'}</button></div>
-                        ${isManualB ? `<input type="text" id="formatEnd" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : `<select id="formatEnd" class="select-field lock-target" ${d} onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`}
+                        ${isManualB ? `<input type="text" id="formatEnd" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : 
+                        `<select id="formatEnd" class="select-field lock-target" ${d} onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`}
                     </div>
                 </div>`;
             zipField.placeholder = "REFORNAM_Format.zip";
