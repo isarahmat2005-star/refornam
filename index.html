@@ -220,13 +220,14 @@
         }
         .btn-browse:active:not(:disabled) { top: 2px; box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
 
-        .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px; height: 60px; overflow: hidden;}
-        .input-field {
-            width: 100%; background: var(--input-bg); border: 1px solid var(--border); padding: 8px;
-            color: var(--text); font-family: 'Share Tech', sans-serif; box-sizing: border-box;
-            border-radius: 8px; font-size: 14px; height: 36px;
+        .config-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+            margin-bottom: 10px; 
+            min-height: 65px; /* Kunci tinggi minimum agar tidak meloncat */
+            align-items: end; /* Memastikan input selalu sejajar di bawah */
         }
-
         .action-bars { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn-main { 
             flex: 1; border: none; padding: 0; cursor: pointer; font-family: 'Share Tech', sans-serif; 
@@ -403,6 +404,7 @@
 
     function setNameMode(m) {
         nameMode = m;
+        // Baris currentModeDisplay dihapus karena sudah pakai dropdown <select>
         renderConfig();
         addLog(`Switched to Cara: ${m}`);
     }
@@ -429,9 +431,8 @@
             const labelB = nameMode === 1 ? "Jumlah Huruf" : "Jumlah Angka";
             const typeA = nameMode === 1 ? "number" : "text";
 
-            // Menggunakan grid layout yang sama agar tidak terjadi pergerakan posisi
             grid.style.display = "grid";
-            grid.style.gridTemplateColumns = "80px 1fr 1fr";
+            grid.style.gridTemplateColumns = "80px 1fr 1fr"; // Tetap 3 kolom
             grid.style.gap = "15px";
             
             grid.innerHTML = `
@@ -452,15 +453,35 @@
                 </div>`;
             zipField.placeholder = "REFORNAM_Name.zip";
         } else {
-            // Halaman FORMAT tetap menggunakan grid-template-columns: 1fr 1fr
             grid.style.display = "grid";
-            grid.style.gridTemplateColumns = "1fr 1fr";
+            grid.style.gridTemplateColumns = "1fr 1fr"; 
             grid.style.gap = "15px";
             grid.innerHTML = `
-                <div><div class="label-row"><label>Format Awal</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'Manual' : 'List'}</button></div>
-                ${isManualA ? `<input type="text" id="formatStart" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : `<select id="formatStart" class="select-field lock-target" ${d} onchange="validateStar()">${formats.map(f => `<option value="${f}">${f === "--" ? "--" : f}</option>`).join('')}</select>`}</div>
-                <div><div class="label-row"><label>Format Tujuan</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'Manual' : 'List'}</button></div>
-                ${isManualB ? `<input type="text" id="formatEnd" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : `<select id="formatEnd" class="select-field lock-target" ${d} onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`}</div>`;
+                <div>
+                    <div class="label-row">
+                        <label>Format Awal</label>
+                        <button class="btn-mode lock-target" ${d} onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'Manual' : 'List'}</button>
+                    </div>
+                    ${isManualA ? 
+                        `<input type="text" id="formatStart" class="input-field lock-target" ${d} placeholder=".ext (opsional)" oninput="validateStar()">` : 
+                        `<select id="formatStart" class="select-field lock-target" ${d} onchange="validateStar()">
+                            ${formats.map(f => `<option value="${f}">${f === "--" ? "-- (opsional)" : f}</option>`).join('')}
+                        </select>`
+                    }
+                </div>
+                <div>
+                    <div class="label-row">
+                        <label>Format Tujuan</label>
+                        <button class="btn-mode lock-target" ${d} onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'Manual' : 'List'}</button>
+                    </div>
+                    ${isManualB ? 
+                        `<input type="text" id="formatEnd" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : 
+                        `<select id="formatEnd" class="select-field lock-target" ${d} onchange="validateStar()">
+                            <option value="--">--</option>
+                            ${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}
+                        </select>`
+                    }
+                </div>`;
             zipField.placeholder = "REFORNAM_Format.zip";
         }
         validateStar();
@@ -504,8 +525,20 @@
         } else {
             const sExt = document.getElementById('formatStart').value;
             let eExt = document.getElementById('formatEnd').value;
-            if(!eExt.startsWith('.') && eExt !== "--") eExt = '.' + eExt;
-            if(sExt === "--" || file.name.toLowerCase().endsWith(sExt.toLowerCase())) return file.name.substring(0, file.name.lastIndexOf('.')) + eExt;
+            
+            // Jika format tujuan kosong, jangan ubah apa-apa
+            if (eExt === "--") return file.name;
+
+            if(!eExt.startsWith('.')) eExt = '.' + eExt;
+
+            // LOGIKA OPSIONAL: 
+            // Jika sExt adalah "--", maka semua file akan diganti formatnya.
+            // Jika sExt diisi (misal .jpg), maka hanya file .jpg yang diganti formatnya.
+            if(sExt === "--" || file.name.toLowerCase().endsWith(sExt.toLowerCase())) {
+                const fileNameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.'));
+                return fileNameWithoutExt + eExt;
+            }
+            
             return file.name;
         }
     }
