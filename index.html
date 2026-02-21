@@ -374,16 +374,25 @@
 </div>
 
 <script>
+    <script>
+    // 1. Deklarasi Variabel Global (Hanya sekali di sini)
     let inputFiles = [], outputDirHandle = null, isPaused = false, isStopped = false, currentIndex = 0, isProcessing = false;
     let currentTab = 'format', isManualA = false, isManualB = false;
-    let nameMode = 1;
+    let nameMode = 1; // Cara Default
     let processedData = []; 
     const formats = ["--", ".jpg", ".png", ".gif", ".pdf", ".mp4", ".mp3", ".txt", ".docx"];
 
-    function toggleThemeMenu() { const m = document.getElementById('themeMenu'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
-    function setTheme(t) { document.body.className = t; document.getElementById('themeMenu').style.display = 'none'; addLog(`Theme set: ${t.toUpperCase()}`); }
-
-    let nameMode = 1; // Default Cara 1
+    // 2. Fungsi UI & Tema
+    function toggleThemeMenu() { 
+        const m = document.getElementById('themeMenu'); 
+        m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; 
+    }
+    
+    function setTheme(t) { 
+        document.body.className = t; 
+        document.getElementById('themeMenu').style.display = 'none'; 
+        addLog(`Theme set: ${t.toUpperCase()}`); 
+    }
 
     function toggleModeMenu() {
         const m = document.getElementById('modeMenu');
@@ -398,13 +407,13 @@
         addLog(`Switched to Cara: ${m}`);
     }
 
+    // 3. Konfigurasi Tampilan Input
     function renderConfig() {
         const grid = document.getElementById('configGrid');
         const zipField = document.getElementById('zipName');
         const d = isProcessing ? 'disabled' : '';
 
         if (currentTab === 'name') {
-            // Label dinamis berdasarkan cara yang dipilih
             const labelA = nameMode === 1 ? "Jumlah Angka" : "Kata Awal";
             const labelB = nameMode === 1 ? "Jumlah Huruf" : "Jumlah Angka";
             const typeA = nameMode === 1 ? "number" : "text";
@@ -434,7 +443,6 @@
                 </div>`;
             zipField.placeholder = "REFORNAM_Name.zip";
         } else {
-            // Bagian Format Awal/Tujuan tetap sama
             grid.style.display = "grid";
             grid.innerHTML = `<div><div class="label-row"><label>Format Awal</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'Manual' : 'List'}</button></div>
                               ${isManualA ? `<input type="text" id="formatStart" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : `<select id="formatStart" class="input-field lock-target" ${d} onchange="validateStar()">${formats.map(f => `<option value="${f}">${f === "--" ? "-- (opsional)" : f}</option>`).join('')}</select>`}</div>
@@ -445,7 +453,7 @@
         validateStar();
     }
 
-    // Fungsi pembantu untuk membuat tanda hubung acak (3-5 karakter)
+    // 4. Logika Penamaan
     function applyHyphens(charPool) {
         let result = "";
         let i = 0;
@@ -462,11 +470,10 @@
     function generateNewName(file) {
         const ext = file.name.substring(file.name.lastIndexOf('.'));
         if(currentTab === 'name') {
-            const valA = document.getElementById('numCount').value; // Kata Awal (Mode 2) atau Jml Angka (Mode 1)
-            const valB = parseInt(document.getElementById('charCount').value || 0); // Jml Angka (Mode 2) atau Jml Huruf (Mode 1)
+            const valA = document.getElementById('numCount').value; 
+            const valB = parseInt(document.getElementById('charCount').value || 0);
 
             if (nameMode === 1) {
-                // CARA 1: Acak Angka & Huruf dengan Tanda Hubung
                 const n = parseInt(valA || 0);
                 const nums = "0123456789", chars = "abcdefghijklmnopqrstuvwxyz";
                 let pool = [];
@@ -475,7 +482,6 @@
                 pool = pool.sort(() => Math.random() - 0.5);
                 return applyHyphens(pool) + ext;
             } else {
-                // CARA 2: KataAwal_Angka-Angka
                 const nums = "0123456789";
                 let pool = [];
                 for(let i=0; i<valB; i++) pool.push(nums[Math.floor(Math.random()*10)]);
@@ -483,7 +489,6 @@
                 return valA + "_" + formattedNumbers + ext;
             }
         } else {
-            // Logika Tab Format (Tetap sama)
             const sExt = document.getElementById('formatStart').value;
             let eExt = document.getElementById('formatEnd').value;
             if(!eExt.startsWith('.') && eExt !== "--") eExt = '.' + eExt;
@@ -492,18 +497,36 @@
         }
     }
 
+    // 5. Proses Sistem (Start, Pause, Stop, ZIP, Log, dll)
+    function toggleMode(t, v) { if(isProcessing) return; if(t === 'A') isManualA = v; else isManualB = v; renderConfig(); }
+    function switchTab(t) { if(isProcessing) return; currentTab = t; document.getElementById('tabFormat').className = 'btn-tab ' + (t==='format'?'active':''); document.getElementById('tabName').className = 'btn-tab ' + (t==='name'?'active':''); renderConfig(); addLog(`Switched tab: ${t.toUpperCase()}`); }
+    
+    function validateStar() {
+        const btn = document.getElementById('btnStart');
+        if (inputFiles.length === 0 || isProcessing) { btn.disabled = true; return; }
+        if (currentTab === 'name') btn.disabled = !(document.getElementById('numCount')?.value || document.getElementById('charCount')?.value);
+        else { let b = document.getElementById('formatEnd')?.value; btn.disabled = (!b || b === "--" || b.trim() === ""); }
+    }
+
+    function handleFolderSelect(e) { inputFiles = Array.from(e.target.files); if(inputFiles.length > 0) { document.getElementById('inputPath').innerText = inputFiles[0].webkitRelativePath.split('/')[0]; addLog(`Files detected: ${inputFiles.length}`); validateStar(); } }
+    async function selectOutputFolder() { try { outputDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' }); document.getElementById('outputPath').innerText = outputDirHandle.name; addLog("Folder Linked."); validateStar(); } catch (e) {} }
+
+    function addLog(m) { const p = document.getElementById('logPanel'); const t = new Date().toLocaleTimeString(); p.innerHTML += `<div class="log-entry"><span>[${t}]</span> ${m}</div>`; p.scrollTop = p.scrollHeight; }
+    function clearLogs() { document.getElementById('logPanel').innerHTML = ''; }
+    function copyLogs() { navigator.clipboard.writeText(Array.from(document.querySelectorAll('.log-entry')).map(e=>e.innerText).join('\n')).then(()=>alert("Logs copied!")); }
+
+    function setLockUI(isLocked) { isProcessing = isLocked; document.querySelectorAll('.lock-target').forEach(el => el.disabled = isLocked); }
+
     async function startProcess() {
         isStopped = false; isPaused = false; currentIndex = 0; processedData = []; 
         setLockUI(true); document.getElementById('btnPause').disabled = false; document.getElementById('btnStop').disabled = false;
         addLog("--- PROCESS STARTED ---");
-        
         for(; currentIndex < inputFiles.length; currentIndex++) {
             if(isStopped) break;
             while(isPaused) await new Promise(r => setTimeout(r, 500));
             const file = inputFiles[currentIndex];
             const name = generateNewName(file);
             processedData.push({ file: file, newName: name }); 
-
             if(outputDirHandle) {
                 try {
                     const h = await outputDirHandle.getFileHandle(name, { create: true });
@@ -535,14 +558,10 @@
 
     function updateClock() {
         const now = new Date();
-        
-        // Format Waktu jam:menit:detik
         const h = String(now.getHours()).padStart(2, '0');
         const m = String(now.getMinutes()).padStart(2, '0');
         const s = String(now.getSeconds()).padStart(2, '0');
         document.getElementById('clock').textContent = `${h}:${m}:${s}`;
-        
-        // Format Tanggal hari/bulan/tahun
         const dd = String(now.getDate()).padStart(2, '0');
         const mm = String(now.getMonth() + 1).padStart(2, '0');
         const yyyy = now.getFullYear();
@@ -551,8 +570,5 @@
 
     setInterval(updateClock, 1000);
     updateClock();
-    
     renderConfig();
 </script>
-</body>
-</html>
