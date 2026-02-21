@@ -23,41 +23,51 @@
         }
 
         body {
+            font-family: 'Share Tech', sans-serif;
+            background-color: var(--bg-body);
+            background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text);
             display: flex;
-            flex-direction: column; /* Menyusun kartu judul dan container secara vertikal */
-            gap: 8px; /* Jarak antara kartu judul dan container utama */
+            flex-direction: column; 
             justify-content: center;
             align-items: center;
             min-height: 100dvh;
+            margin: 0;
+            padding: 15px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            overflow-x: hidden;
         }
 
-        /* Kartu Judul: Teks Lebih Besar, Tengah Presisi, Jarak Lebih Rapat */
+        /* Kartu Judul: Teks 44px, Center Presisi, Jarak 5px */
         .title-card {
-            background-color: var(--card-bg); 
+            background-color: var(--card-bg); /* Latar belakang tetap ada */
             width: 100%; 
             max-width: 600px;
-            padding: 10px 15px; /* Padding atas-bawah dikurangi agar kotak lebih ramping */
+            padding: 12px 0; /* Padding atas-bawah untuk kontrol tinggi kotak */
             border-radius: 12px; 
             border: 2px solid var(--border);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            text-align: center; 
-            margin-bottom: 5px; /* JARAK DI SINI: Diubah ke 5px agar sangat rapat */
+            margin-bottom: 5px; /* Jarak sangat rapat ke kartu bawah */
             box-sizing: border-box;
             display: flex;
-            justify-content: center; /* Memastikan teks horizontal di tengah */
-            align-items: center;    /* Memastikan teks vertikal di tengah */
+            justify-content: center; /* Paksa teks ke tengah horizontal */
+            align-items: center;    /* Paksa teks ke tengah vertikal */
             z-index: 6;
         }
 
         .title-card h1 {
             margin: 0; 
+            padding: 0;
             color: var(--primary); 
-            font-size: 44px; /* UKURAN TEKS: Dibesarkan lagi dari 38px ke 44px */
+            font-size: 44px; /* Ukuran teks lebih besar */
             font-weight: 900; 
-            letter-spacing: 8px; /* Jarak antar huruf ditambah agar lebih gagah */
+            letter-spacing: 8px; 
             text-transform: uppercase;
-            border: none; 
-            line-height: 1;
+            border: none; /* Garis bawah hilang */
+            line-height: 1; /* Mengunci posisi vertikal teks agar tidak melayang */
+            text-align: center;
         }
         
         .top-nav {
