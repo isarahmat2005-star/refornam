@@ -253,33 +253,51 @@
             width: 100%; 
         }
 
-        .config-grid, .config-grid-name { 
-            display: grid; 
-            gap: 15px; 
-            margin-bottom: 20px; 
-            align-items: flex-end;
+        /* Container untuk baris input dinamis */
+        .config-area {
             width: 100%;
+            margin-bottom: 20px;
         }
 
-        /* Grid Tab Name: 3 Kolom Modern */
-        .config-grid-name { grid-template-columns: 85px 1fr 1fr; }
+        /* Grid khusus untuk tab Name (3 Kolom) */
+        .grid-name {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            align-items: flex-end;
+        }
 
-        /* Grid Tab Format: 2 Kolom Modern */
-        .config-grid { grid-template-columns: 1fr 1fr; }
+        /* Grid khusus untuk tab Format (2 Kolom) */
+        .grid-format {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            align-items: flex-end;
+        }
 
-        /* Desain Input & Select Modern */
+        /* Memastikan label tidak tertabrak */
+        .config-area label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Input field agar seragam tinggi dan rapi */
         .input-field, .select-field {
-            width: 100%; 
-            background: var(--input-bg); 
-            border: 1.5px solid var(--border); 
-            padding: 10px 12px;
-            color: var(--text); 
-            font-family: 'Share Tech', sans-serif; 
-            border-radius: 10px; 
-            font-size: 14px; 
-            height: 42px; /* Lebih tinggi agar tidak terlihat bantet */
+            height: 42px;
+            padding: 0 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--input-bg);
+            color: var(--text);
+            font-family: 'Share Tech', sans-serif;
+            width: 100%;
             box-sizing: border-box;
-            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .input-field:focus, .select-field:focus {
@@ -459,41 +477,44 @@
         const zipField = document.getElementById('zipName');
         const d = isProcessing ? 'disabled' : '';
 
+        // Bersihkan class lama agar tidak tabrakan
+        grid.className = "config-area";
+
         if (currentTab === 'name') {
             const labelA = nameMode === 1 ? "Jumlah Angka" : "Kata Awal";
             const labelB = nameMode === 1 ? "Jumlah Huruf" : "Jumlah Angka";
             const typeA = nameMode === 1 ? "number" : "text";
 
-            grid.className = "config-grid-name";
             grid.innerHTML = `
-                <div>
-                    <label>Cara</label>
-                    <select class="select-field lock-target" onchange="setNameMode(parseInt(this.value))" ${d}>
-                        <option value="1" ${nameMode === 1 ? 'selected' : ''}>1</option>
-                        <option value="2" ${nameMode === 2 ? 'selected' : ''}>2</option>
-                    </select>
-                </div>
-                <div>
-                    <label>${labelA}</label>
-                    <input type="${typeA}" id="numCount" class="input-field lock-target" ${d} placeholder="Ketik di sini..." oninput="validateStar()">
-                </div>
-                <div>
-                    <label>${labelB}</label>
-                    <input type="number" id="charCount" class="input-field lock-target" ${d} placeholder="0" oninput="validateStar()">
+                <div class="grid-name">
+                    <div>
+                        <label>Cara</label>
+                        <select class="select-field lock-target" onchange="setNameMode(parseInt(this.value))" ${d}>
+                            <option value="1" ${nameMode === 1 ? 'selected' : ''}>1</option>
+                            <option value="2" ${nameMode === 2 ? 'selected' : ''}>2</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>${labelA}</label>
+                        <input type="${typeA}" id="numCount" class="input-field lock-target" ${d} placeholder="Isi..." oninput="validateStar()">
+                    </div>
+                    <div>
+                        <label>${labelB}</label>
+                        <input type="number" id="charCount" class="input-field lock-target" ${d} placeholder="0" oninput="validateStar()">
+                    </div>
                 </div>`;
             zipField.placeholder = "REFORNAM_Name.zip";
         } else {
-            grid.className = "config-grid";
             grid.innerHTML = `
-                <div>
-                    <div class="label-row"><label>Format Awal</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'Manual' : 'List'}</button></div>
-                    ${isManualA ? `<input type="text" id="formatStart" class="input-field lock-target" ${d} placeholder=".ext (opsional)" oninput="validateStar()">` : 
-                    `<select id="formatStart" class="select-field lock-target" ${d} onchange="validateStar()">${formats.map(f => `<option value="${f}">${f === "--" ? "-- (opsional)" : f}</option>`).join('')}</select>`}
-                </div>
-                <div>
-                    <div class="label-row"><label>Format Tujuan</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'Manual' : 'List'}</button></div>
-                    ${isManualB ? `<input type="text" id="formatEnd" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : 
-                    `<select id="formatEnd" class="select-field lock-target" ${d} onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`}
+                <div class="grid-format">
+                    <div>
+                        <div class="label-row"><label>Format Awal</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('A', ${!isManualA})">${isManualA ? 'Manual' : 'List'}</button></div>
+                        ${isManualA ? `<input type="text" id="formatStart" class="input-field lock-target" ${d} placeholder=".ext (opsional)" oninput="validateStar()">` : `<select id="formatStart" class="input-field lock-target" ${d} onchange="validateStar()">${formats.map(f => `<option value="${f}">${f === "--" ? "-- (opsional)" : f}</option>`).join('')}</select>`}
+                    </div>
+                    <div>
+                        <div class="label-row"><label>Format Tujuan</label><button class="btn-mode lock-target" ${d} onclick="toggleMode('B', ${!isManualB})">${isManualB ? 'Manual' : 'List'}</button></div>
+                        ${isManualB ? `<input type="text" id="formatEnd" class="input-field lock-target" ${d} placeholder=".ext" oninput="validateStar()">` : `<select id="formatEnd" class="select-field lock-target" ${d} onchange="validateStar()"><option value="--">--</option>${formats.slice(1).map(f => `<option value="${f}">${f}</option>`).join('')}</select>`}
+                    </div>
                 </div>`;
             zipField.placeholder = "REFORNAM_Format.zip";
         }
